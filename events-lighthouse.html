@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="灯塔计划｜启言社交训练中心" />
+    <title>灯塔计划｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">
+      跳到正文
+    </a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <!-- Hero Section -->
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative">
+          <nav class="flex items-center gap-2 text-sm font-medium text-slate-400 mb-6">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <a href="./events.html" class="hover:text-brand-500 transition-colors">专项活动</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">灯塔计划</span>
+          </nav>
+          <div class="max-w-3xl">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+              灯塔计划：<span class="text-brand-500">早期干预家长公益课堂</span>
+            </h1>
+            <p class="mt-8 text-lg leading-relaxed text-slate-600">
+              为新手家长提供科学的引导方案与心理支持，帮助家庭在孩子成长的关键期建立信心，掌握科学的干预方法。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content Section -->
+      <section class="py-24 bg-slate-50 relative">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-12 lg:grid-cols-3">
+            <div class="lg:col-span-2 space-y-12">
+              <div class="rounded-3xl bg-white p-8 md:p-10 shadow-card border border-slate-100">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                  <i data-lucide="info" class="h-6 w-6 text-brand-500"></i>
+                  计划介绍
+                </h2>
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-4">
+                  <p>
+                    “灯塔计划”是由启言社交训练中心发起的一项公益性家长赋能计划。我们深知，家庭是孩子成长的第一课堂，家长的科学引导对孩子的康复至关重要。
+                  </p>
+                  <p>
+                    该计划通过定期的线上/线下讲座、实操工作坊及心理疏导小组，将专业的康复知识转化为家长听得懂、学得会、用得上的日常技巧。
+                  </p>
+                </div>
+              </div>
+
+              <div class="rounded-3xl bg-white p-8 md:p-10 shadow-card border border-slate-100">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                  <i data-lucide="users" class="h-6 w-6 text-brand-500"></i>
+                  参与对象
+                </h2>
+                <ul class="grid gap-4 sm:grid-cols-2">
+                  <li class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50">
+                    <i data-lucide="check-circle-2" class="h-5 w-5 text-brand-500 mt-0.5"></i>
+                    <span class="text-sm text-slate-700">2-6岁语言发育迟缓儿童家长</span>
+                  </li>
+                  <li class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50">
+                    <i data-lucide="check-circle-2" class="h-5 w-5 text-brand-500 mt-0.5"></i>
+                    <span class="text-sm text-slate-700">面临社交沟通障碍困扰的家庭</span>
+                  </li>
+                  <li class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50">
+                    <i data-lucide="check-circle-2" class="h-5 w-5 text-brand-500 mt-0.5"></i>
+                    <span class="text-sm text-slate-700">希望提升亲子沟通质量的照顾者</span>
+                  </li>
+                  <li class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50">
+                    <i data-lucide="check-circle-2" class="h-5 w-5 text-brand-500 mt-0.5"></i>
+                    <span class="text-sm text-slate-700">对早期干预感兴趣的教育从业者</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="rounded-3xl bg-white p-8 md:p-10 shadow-card border border-slate-100">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                  <i data-lucide="calendar" class="h-6 w-6 text-brand-500"></i>
+                  活动安排
+                </h2>
+                <div class="space-y-6">
+                  <div class="flex gap-4 pb-6 border-b border-slate-100">
+                    <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-brand-50 flex flex-col items-center justify-center text-brand-600">
+                      <span class="text-lg font-bold">15</span>
+                      <span class="text-xs">每月</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-slate-900">专家主题讲座</h4>
+                      <p class="text-sm text-slate-500 mt-1">每月15日定期举办，涵盖语言、社交、感统等核心领域。</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-4 pb-6 border-b border-slate-100">
+                    <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-accent-50 flex flex-col items-center justify-center text-accent-600">
+                      <span class="text-lg font-bold">周六</span>
+                      <span class="text-xs">隔周</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-slate-900">实操工作坊</h4>
+                      <p class="text-sm text-slate-500 mt-1">手把手教家长如何在居家场景中开展康复训练。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sidebar CTA -->
+            <div class="space-y-6">
+              <div class="sticky top-24 rounded-3xl bg-brand-600 p-8 text-white shadow-xl shadow-brand-200">
+                <h3 class="text-xl font-bold mb-4">想报名参与？</h3>
+                <p class="text-brand-50 text-sm leading-relaxed mb-8">
+                  灯塔计划名额有限，点击下方按钮提交您的基本信息，我们的顾问将与您联系确认。
+                </p>
+                <a href="./events.html#booking" class="flex h-12 items-center justify-center rounded-xl bg-white text-sm font-bold text-brand-600 hover:bg-brand-50 transition-colors">
+                  立即预约名额
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

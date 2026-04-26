@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="公益行动｜启言社交训练中心" />
+    <title>公益行动｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">跳到正文</a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <!-- Hero Section -->
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative">
+          <nav class="flex items-center gap-2 text-sm font-medium text-slate-400 mb-8">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <a href="./about.html" class="hover:text-brand-500 transition-colors">关于启言</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">公益行动</span>
+          </nav>
+          
+          <div class="max-w-3xl">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+              公益行动
+            </h1>
+            <p class="mt-6 text-xl leading-relaxed text-slate-600 font-medium">
+              专业赋能公益，让康复之光照亮更多角落。我们坚持长期主义，用行动传递温暖与希望。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-12 md:py-20">
+        <div class="grid gap-8 md:grid-cols-3">
+          <div class="group rounded-3xl border border-slate-100 bg-white p-8 shadow-card hover:shadow-hover transition-all duration-300">
+            <div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
+              <i data-lucide="heart" class="h-6 w-6"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-4">“启言”星火计划</h3>
+            <p class="text-slate-600 leading-relaxed">
+              为偏远地区的言语师、家长提供免费的线上培训课程，已惠及超过200个偏远县市的特教从业者。
+            </p>
+          </div>
+
+          <div class="group rounded-3xl border border-slate-100 bg-white p-8 shadow-card hover:shadow-hover transition-all duration-300">
+            <div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-50 text-accent-600">
+              <i data-lucide="users" class="h-6 w-6"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-4">社区义诊行动</h3>
+            <p class="text-slate-600 leading-relaxed">
+              定期深入社区开展儿童言语发育筛查与科普讲座，提升社会对儿童沟通障碍的早期预防意识。
+            </p>
+          </div>
+
+          <div class="group rounded-3xl border border-slate-100 bg-white p-8 shadow-card hover:shadow-hover transition-all duration-300">
+            <div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
+              <i data-lucide="award" class="h-6 w-6"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-4">赋能家庭支持</h3>
+            <p class="text-slate-600 leading-relaxed">
+              设立家庭赋能专项基金，为困难家庭提供康复补贴及心理支持，减轻家庭康复负担。
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-16 rounded-3xl border border-slate-100 bg-slate-50 p-8 shadow-card">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2 bg-brand-100 text-brand-600 rounded-lg">
+              <i data-lucide="handshake" class="h-5 w-5"></i>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900">合作与支持</h2>
+          </div>
+          <p class="text-slate-600 mb-8 leading-relaxed">
+            启言积极寻求与公益组织、科研机构及爱心企业的深度合作。如果您有合作意向，请随时联系我们。
+          </p>
+          <a href="./contact.html" class="inline-flex items-center justify-center rounded-xl bg-brand-600 px-6 py-3 text-sm font-bold text-white shadow-soft hover:bg-brand-700 transition-all duration-300">
+            联系我们 <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+
+
+

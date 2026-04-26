@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="火种行动｜启言社交训练中心" />
+    <title>火种行动｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">
+      跳到正文
+    </a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <!-- Hero Section -->
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative">
+          <nav class="flex items-center gap-2 text-sm font-medium text-slate-400 mb-6">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <a href="./events.html" class="hover:text-brand-500 transition-colors">专项活动</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">火种行动</span>
+          </nav>
+          <div class="max-w-3xl">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+              火种行动：<span class="text-accent-500">户外社交实践营</span>
+            </h1>
+            <p class="mt-8 text-lg leading-relaxed text-slate-600">
+              在真实的社会环境中提升孩子的互动能力与应变技巧，让康复成果走出教室，融入生活。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content Section -->
+      <section class="py-24 bg-slate-50 relative">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-12 lg:grid-cols-3">
+            <div class="lg:col-span-2 space-y-12">
+              <div class="rounded-3xl bg-white p-8 md:p-10 shadow-card border border-slate-100">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                  <i data-lucide="sparkles" class="h-6 w-6 text-accent-500"></i>
+                  行动介绍
+                </h2>
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-4">
+                  <p>
+                    “火种行动”是启言社交训练中心推出的特色户外实践项目。我们相信，真实的社交场景是检验和提升孩子社交能力的最佳场所。
+                  </p>
+                  <p>
+                    通过模拟购物、公园互动、图书馆探索等多样化的校外活动，老师们会现场指导孩子如何应对各种突发状况，建立自信，掌握真实的社会交往规则。
+                  </p>
+                </div>
+              </div>
+
+              <div class="rounded-3xl bg-white p-8 md:p-10 shadow-card border border-slate-100">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                  <i data-lucide="map-pin" class="h-6 w-6 text-accent-500"></i>
+                  活动记录
+                </h2>
+                <div class="grid gap-6 sm:grid-cols-2">
+                  <div class="group relative overflow-hidden rounded-2xl bg-slate-100 aspect-video">
+                    <div class="absolute inset-0 flex items-center justify-center text-slate-300">
+                      <i data-lucide="image" class="h-10 w-10"></i>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent flex items-end p-4">
+                      <span class="text-white text-xs font-bold">超市购物实践</span>
+                    </div>
+                  </div>
+                  <div class="group relative overflow-hidden rounded-2xl bg-slate-100 aspect-video">
+                    <div class="absolute inset-0 flex items-center justify-center text-slate-300">
+                      <i data-lucide="image" class="h-10 w-10"></i>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent flex items-end p-4">
+                      <span class="text-white text-xs font-bold">公园社交游戏</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-3xl bg-white p-8 md:p-10 shadow-card border border-slate-100">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                  <i data-lucide="help-circle" class="h-6 w-6 text-accent-500"></i>
+                  参与方式
+                </h2>
+                <div class="space-y-4">
+                  <div class="p-6 rounded-2xl bg-accent-50 border border-accent-100">
+                    <h4 class="font-bold text-accent-900">内部学员预约</h4>
+                    <p class="text-sm text-accent-700 mt-2">在读学员可直接通过带教老师预约，优先参与每周末的实践活动。</p>
+                  </div>
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <h4 class="font-bold text-slate-900">外部家庭体验</h4>
+                    <p class="text-sm text-slate-600 mt-2">非在读学员家庭可关注公众号或通过官网预约表单申请体验名额。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sidebar CTA -->
+            <div class="space-y-6">
+              <div class="sticky top-24 rounded-3xl bg-accent-600 p-8 text-white shadow-xl shadow-accent-200">
+                <h3 class="text-xl font-bold mb-4">想参与或了解更多？</h3>
+                <p class="text-accent-50 text-sm leading-relaxed mb-8">
+                  火种行动定期在周末举行，名额有限。点击下方按钮提交您的信息，我们将为您匹配合适的场次。
+                </p>
+                <a href="./events.html#booking" class="flex h-12 items-center justify-center rounded-xl bg-white text-sm font-bold text-accent-600 hover:bg-accent-50 transition-colors">
+                  立即咨询详情
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

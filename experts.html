@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="启言专家｜启言社交训练中心" />
+    <title>启言专家｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      [data-aos] {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      [data-aos].aos-animate {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">
+      跳到正文
+    </a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative text-center">
+          <nav class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mb-6">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">专家团队</span>
+          </nav>
+          <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            汇聚多学科专家，<span class="text-brand-500">护航孩子成长</span>
+          </h1>
+          <p class="mt-8 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
+            启言拥有一支由资深言语治疗师、社交沟通专家及特殊教育顾问组成的专业团队，以科学、系统、有温度的康复理念，为每一个家庭提供专业保障。
+          </p>
+        </div>
+      </section>
+
+      <section class="py-24 bg-slate-50 relative">
+        <div class="mx-auto max-w-7xl px-6">
+          <!-- Filter Tabs -->
+          <div class="flex flex-wrap justify-center gap-4 mb-16">
+            <button class="px-6 py-2 rounded-full bg-brand-500 text-white font-bold text-sm shadow-soft">全部专家</button>
+            <button class="px-6 py-2 rounded-full bg-white text-slate-600 font-bold text-sm hover:text-brand-500 transition-all shadow-sm">言语治疗 (SLT)</button>
+            <button class="px-6 py-2 rounded-full bg-white text-slate-600 font-bold text-sm hover:text-brand-500 transition-all shadow-sm">社交沟通</button>
+            <button class="px-6 py-2 rounded-full bg-white text-slate-600 font-bold text-sm hover:text-brand-500 transition-all shadow-sm">作业治疗 (OT)</button>
+            <button class="px-6 py-2 rounded-full bg-white text-slate-600 font-bold text-sm hover:text-brand-500 transition-all shadow-sm">心理咨询</button>
+          </div>
+
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <!-- Expert 1 -->
+            <a href="./expert-001.html" class="group relative rounded-3xl bg-white p-4 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover">
+              <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-slate-100 relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <!-- Image placeholder -->
+                <div class="absolute inset-0 flex items-center justify-center text-slate-300">
+                  <i data-lucide="user" class="h-20 w-20"></i>
+                </div>
+              </div>
+              <div class="p-4 pt-6">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-2xl font-bold text-slate-900" data-content="expert1Name">张老师</h3>
+                  <span class="px-3 py-1 rounded-lg bg-brand-50 text-brand-600 text-xs font-bold">资深专家</span>
+                </div>
+                <p class="text-sm font-bold text-brand-600 mb-4" data-content="expert1Title">资深言语治疗师 / SLT 主管</p>
+                <p class="text-sm leading-relaxed text-slate-500 mb-6" data-content="expert1Dir">拥有超过10年康复经验，擅长构音障碍、语言发育迟缓及口部肌肉训练。</p>
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-brand-500 transition-colors">
+                  查看详细履历 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                </div>
+              </div>
+            </a>
+
+            <!-- Expert 2 -->
+            <a href="./expert-002.html" class="group relative rounded-3xl bg-white p-4 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover">
+              <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-slate-100 relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-slate-300">
+                  <i data-lucide="user" class="h-20 w-20"></i>
+                </div>
+              </div>
+              <div class="p-4 pt-6">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-2xl font-bold text-slate-900" data-content="expert2Name">王老师</h3>
+                  <span class="px-3 py-1 rounded-lg bg-accent-50 text-accent-600 text-xs font-bold">高级顾问</span>
+                </div>
+                <p class="text-sm font-bold text-accent-500 mb-4" data-content="expert2Title">社交沟通专家 / 融合教育主管</p>
+                <p class="text-sm leading-relaxed text-slate-500 mb-6" data-content="expert2Dir">专注于儿童社交沟通障碍（ASD）的干预，在社会融合与情绪管理方面有深厚造诣。</p>
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-accent-500 transition-colors">
+                  查看详细履历 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                </div>
+              </div>
+            </a>
+
+            <!-- Expert 3 -->
+            <a href="./expert-003.html" class="group relative rounded-3xl bg-white p-4 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover">
+              <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-slate-100 relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-slate-300">
+                  <i data-lucide="user" class="h-20 w-20"></i>
+                </div>
+              </div>
+              <div class="p-4 pt-6">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-2xl font-bold text-slate-900" data-content="expert3Name">陈老师</h3>
+                  <span class="px-3 py-1 rounded-lg bg-slate-50 text-slate-600 text-xs font-bold">专业讲师</span>
+                </div>
+                <p class="text-sm font-bold text-slate-600 mb-4" data-content="expert3Title">作业治疗师 (OT) / 感觉统合专家</p>
+                <p class="text-sm leading-relaxed text-slate-500 mb-6" data-content="expert3Dir">擅长通过趣味化的游戏活动提升孩子的精细动作、感觉处理能力及生活自理能力。</p>
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-slate-600 transition-colors">
+                  查看详细履历 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                </div>
+              </div>
+            </a>
+          </div>
+          
+          <!-- Dynamic Expert List -->
+          <div id="dynamicExpertList" class="mt-10 grid gap-10 md:grid-cols-2 lg:grid-cols-3"></div>
+
+          <!-- Pagination -->
+          <div class="mt-20 flex justify-center items-center gap-4">
+            <button class="h-10 w-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:border-brand-500 hover:text-brand-500 transition-all bg-white shadow-sm">
+              <i data-lucide="chevron-left" class="h-5 w-5"></i>
+            </button>
+            <button class="h-10 w-10 flex items-center justify-center rounded-xl bg-brand-500 text-white font-bold shadow-soft">1</button>
+            <button class="h-10 w-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:border-brand-500 hover:text-brand-500 transition-all font-bold bg-white shadow-sm">2</button>
+            <button class="h-10 w-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:border-brand-500 hover:text-brand-500 transition-all font-bold bg-white shadow-sm">3</button>
+            <button class="h-10 w-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:border-brand-500 hover:text-brand-500 transition-all bg-white shadow-sm">
+              <i data-lucide="chevron-right" class="h-5 w-5"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="py-24 bg-white">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="relative overflow-hidden rounded-4xl bg-brand-500 px-8 py-16 shadow-2xl sm:px-16 md:py-24">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 h-64 w-64 rounded-full bg-brand-400/20 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 h-64 w-64 rounded-full bg-accent-400/20 blur-3xl"></div>
+            
+            <div class="relative mx-auto max-w-3xl text-center">
+              <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                想了解更多关于专家团队的信息？
+              </h2>
+              <p class="mt-6 text-lg leading-relaxed text-orange-50">
+                我们的每一位专家都经过严格的筛选与培训。如果您不确定哪位专家最适合您的孩子，欢迎预约我们的初步咨询，我们将为您匹配最合适的资源。
+              </p>
+              <div class="mt-10 flex flex-wrap justify-center gap-4">
+                <a href="./contact.html" class="flex h-14 items-center justify-center rounded-2xl bg-white px-8 text-base font-bold text-brand-600 shadow-lg transition-all hover:scale-105 active:scale-95">
+                  立即咨询匹配专家
+                </a>
+                <a href="tel:400-XXX-XXXX" class="flex h-14 items-center justify-center rounded-2xl border-2 border-white/30 px-8 text-base font-bold text-white transition-all hover:bg-white/10">
+                  电话咨询
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+

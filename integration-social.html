@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="社会融合课堂｜启言社交训练中心" />
+    <title>社会融合课堂｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">跳到正文</a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <section class="bg-gradient-to-b from-brand-50 to-white">
+        <div class="mx-auto max-w-7xl px-6 py-12 md:py-14">
+          <nav class="flex items-center gap-2 text-sm font-medium text-slate-400 mb-6" aria-label="面包屑导航">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <a href="./integration.html" class="hover:text-brand-500 transition-colors">幼康融合</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">社会融合课堂</span>
+          </nav>
+          <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-slate-900">社会融合课堂</h1>
+          <p class="mt-3 max-w-3xl text-slate-600">
+            在真实的社会环境中提升孩子的互动能力与应变技巧，让康复成果走出教室，真正融入社会生活。
+          </p>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-12 md:py-14">
+        <div class="grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-card">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center">
+                <i data-lucide="target" class="h-4 w-4"></i>
+              </div>
+              <div class="text-base font-bold text-slate-900">课程目标</div>
+            </div>
+            <div class="text-sm leading-6 text-slate-500">
+              培养社交主动性、提升规则意识、增强情绪调节能力、锻炼同伴协作技巧。
+            </div>
+          </div>
+          <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-card">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-8 h-8 rounded-lg bg-accent-50 text-accent-600 flex items-center justify-center">
+                <i data-lucide="users" class="h-4 w-4"></i>
+              </div>
+              <div class="text-base font-bold text-slate-900">适合人群</div>
+            </div>
+            <div class="text-sm leading-6 text-slate-500">
+              需要同伴互动支持、社会适应能力待提升、准备过渡到普通教育环境的孩子。
+            </div>
+          </div>
+          <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-card">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center">
+                <i data-lucide="calendar" class="h-4 w-4"></i>
+              </div>
+              <div class="text-base font-bold text-slate-900">上课形式</div>
+            </div>
+            <div class="text-sm leading-6 text-slate-500">
+              采用 3-6 人精品小班制，根据孩子能力进行精准分组，确保针对性干预效果。
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10 rounded-3xl border border-slate-100 bg-slate-50 p-8 shadow-card">
+          <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div class="text-lg font-bold text-slate-900">想了解排班与分组建议？</div>
+              <div class="mt-2 text-sm text-slate-500">立即提交预约，我们的资深顾问将为您提供专业的时间安排与分组评估方案。</div>
+            </div>
+            <a href="./events.html#booking" class="inline-flex h-12 items-center justify-center rounded-xl bg-brand-600 px-8 text-sm font-bold text-white shadow-soft hover:bg-brand-500 transition-all">
+              立即预约咨询
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+
+
+

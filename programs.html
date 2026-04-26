@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="康复项目｜启言社交训练中心 - 专业的言语治疗、社交康复与启智康复。" />
+    <title>康复项目 - 启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-900">
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <!-- Hero Section -->
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative text-center">
+          <nav class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mb-6">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">康复项目</span>
+          </nav>
+          <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            科学康复，<span class="text-brand-500">点亮未来</span>
+          </h1>
+          <p class="mt-8 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
+            我们提供多维度、全方位的儿童康复训练项目，结合国际循证医学标准，为每个孩子量身定制成长方案。
+          </p>
+        </div>
+      </section>
+
+      <!-- Programs Grid -->
+      <section class="py-24 bg-slate-50">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <!-- Program 1 -->
+            <div class="group relative bg-white rounded-3xl p-8 shadow-card transition-all hover:shadow-hover hover:-translate-y-1">
+              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 mb-8 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+                <i data-lucide="message-circle" class="h-7 w-7"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-4">言语治疗 (SLT)</h3>
+              <p class="text-slate-600 leading-relaxed mb-8">
+                针对构音障碍、语言发育迟缓、口吃等问题，通过科学的口部运动训练和语言激发，提升表达与沟通能力。
+              </p>
+              <ul class="space-y-3 mb-10">
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-brand-500"></i>
+                  构音矫治与口肌训练
+                </li>
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-brand-500"></i>
+                  语言理解与逻辑表达
+                </li>
+              </ul>
+              <a href="./program-slt.html" class="inline-flex items-center gap-2 text-brand-600 font-bold hover:gap-3 transition-all">
+                了解更多 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+            </div>
+
+            <!-- Program 2 -->
+            <div class="group relative bg-white rounded-3xl p-8 shadow-card transition-all hover:shadow-hover hover:-translate-y-1">
+              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 mb-8 transition-colors group-hover:bg-accent-500 group-hover:text-white">
+                <i data-lucide="users" class="h-7 w-7"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-4">社交康复训练</h3>
+              <p class="text-slate-600 leading-relaxed mb-8">
+                模拟真实社交场景，训练同伴互动、情绪识别与调节、对话轮替等社交技能，助力孩子融入社会。
+              </p>
+              <ul class="space-y-3 mb-10">
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-accent-500"></i>
+                  情绪理解与行为管控
+                </li>
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-accent-500"></i>
+                  社交规则与同伴互动
+                </li>
+              </ul>
+              <a href="./program-social.html" class="inline-flex items-center gap-2 text-accent-600 font-bold hover:gap-3 transition-all">
+                了解更多 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+            </div>
+
+            <!-- Program 3 -->
+            <div class="group relative bg-white rounded-3xl p-8 shadow-card transition-all hover:shadow-hover hover:-translate-y-1">
+              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 mb-8 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+                <i data-lucide="brain" class="h-7 w-7"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-4">启智康复</h3>
+              <p class="text-slate-600 leading-relaxed mb-8">
+                提升注意力、记忆力、逻辑思维等核心认知能力，为后续的学习和生活自理打下坚实的基础。
+              </p>
+              <ul class="space-y-3 mb-10">
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-brand-500"></i>
+                  认知广度与执行功能
+                </li>
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-brand-500"></i>
+                  逻辑推理与问题解决
+                </li>
+              </ul>
+              <a href="./program-cognitive.html" class="inline-flex items-center gap-2 text-brand-600 font-bold hover:gap-3 transition-all">
+                了解更多 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+            </div>
+
+            <!-- Program 4 -->
+            <div class="group relative bg-white rounded-3xl p-8 shadow-card transition-all hover:shadow-hover hover:-translate-y-1">
+              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 mb-8 transition-colors group-hover:bg-accent-500 group-hover:text-white">
+                <i data-lucide="baby" class="h-7 w-7"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-4">幼儿园融合课</h3>
+              <p class="text-slate-600 leading-relaxed mb-8">
+                衔接幼儿园环境，重点培养课堂常规、指令听从、集体活动参与能力，助力孩子顺利升学。
+              </p>
+              <ul class="space-y-3 mb-10">
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-accent-500"></i>
+                  模拟课堂与环境适应
+                </li>
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-accent-500"></i>
+                  独立自理与集体规范
+                </li>
+              </ul>
+              <a href="./program-kindergarten.html" class="inline-flex items-center gap-2 text-accent-600 font-bold hover:gap-3 transition-all">
+                了解更多 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+            </div>
+
+            <!-- Program 5 -->
+            <div class="group relative bg-white rounded-3xl p-8 shadow-card transition-all hover:shadow-hover hover:-translate-y-1">
+              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 mb-8 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+                <i data-lucide="puzzle" class="h-7 w-7"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-4">职能治疗 (OT)</h3>
+              <p class="text-slate-600 leading-relaxed mb-8">
+                提升精细动作、感觉统合与生活自理能力，帮助孩子建立身体协调性，应对日常生活挑战。
+              </p>
+              <ul class="space-y-3 mb-10">
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-brand-500"></i>
+                  感觉统合与前庭训练
+                </li>
+                <li class="flex items-center gap-3 text-sm text-slate-500">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-brand-500"></i>
+                  精细动作与手眼协调
+                </li>
+              </ul>
+              <a href="./program-ot.html" class="inline-flex items-center gap-2 text-brand-600 font-bold hover:gap-3 transition-all">
+                了解更多 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Process Section -->
+      <section class="py-24 bg-white">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="text-center max-w-2xl mx-auto mb-16">
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900">标准康复流程</h2>
+            <p class="mt-4 text-slate-600">每一步都经过严谨科学的论证，确保康复效果最大化。</p>
+          </div>
+          
+          <div class="grid gap-8 md:grid-cols-4">
+            <div class="relative text-center">
+              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-brand-600 text-xl font-bold">1</div>
+              <h3 class="mt-6 text-lg font-bold text-slate-900">专业评估</h3>
+              <p class="mt-2 text-sm text-slate-500">全面测评，定位核心问题</p>
+              <div class="absolute top-8 left-[60%] right-0 h-px bg-slate-200 hidden md:block"></div>
+            </div>
+            <div class="relative text-center">
+              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-brand-600 text-xl font-bold">2</div>
+              <h3 class="mt-6 text-lg font-bold text-slate-900">方案定制</h3>
+              <p class="mt-2 text-sm text-slate-500">针对性制定训练计划</p>
+              <div class="absolute top-8 left-[60%] right-0 h-px bg-slate-200 hidden md:block"></div>
+            </div>
+            <div class="relative text-center">
+              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-brand-600 text-xl font-bold">3</div>
+              <h3 class="mt-6 text-lg font-bold text-slate-900">精准康复</h3>
+              <p class="mt-2 text-sm text-slate-500">专家指导，阶段性训练</p>
+              <div class="absolute top-8 left-[60%] right-0 h-px bg-slate-200 hidden md:block"></div>
+            </div>
+            <div class="text-center">
+              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-brand-600 text-xl font-bold">4</div>
+              <h3 class="mt-6 text-lg font-bold text-slate-900">效果追踪</h3>
+              <p class="mt-2 text-sm text-slate-500">动态调整，确保持续进步</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ or CTA -->
+      <section class="py-24 bg-slate-900 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div class="mx-auto max-w-7xl px-6 relative">
+          <div class="bg-brand-500 rounded-[3rem] p-12 md:p-20 text-center text-white shadow-2xl">
+            <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">不确定孩子适合哪个项目？</h2>
+            <p class="mt-6 text-lg text-brand-50 max-w-2xl mx-auto">
+              我们的资深康复师将为您提供一对一的专业评估建议，帮助您选择最适合孩子的成长路径。
+            </p>
+            <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
+              <a href="./events.html#booking" class="w-full sm:w-auto rounded-full bg-white px-10 py-4 text-base font-bold text-brand-600 shadow-xl hover:bg-brand-50 transition-all">立即预约专业评估</a>
+              <a href="tel:4001234567" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 text-lg font-bold hover:text-brand-100 transition-colors">
+                <i data-lucide="phone-call" class="h-6 w-6"></i> 400-123-4567
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
