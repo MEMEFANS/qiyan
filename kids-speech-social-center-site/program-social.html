@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="社交康复训练｜启言社交训练中心 - 模拟真实社交场景，助力孩子融入社会。" />
+    <title>社交康复训练 - 启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-900">
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <!-- Hero Section -->
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative">
+          <nav class="flex items-center gap-2 text-sm font-medium text-slate-400 mb-6">
+            <a href="./index.html" class="hover:text-accent-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <a href="./programs.html" class="hover:text-accent-500 transition-colors">康复项目</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">社交康复训练</span>
+          </nav>
+          <div class="max-w-3xl">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+              社交康复 <span class="text-accent-500">训练</span>
+            </h1>
+            <p class="mt-6 text-lg leading-relaxed text-slate-600">
+              社交康复训练通过小组互动、情景模拟和行为演练，帮助孩子建立基本的社交规则意识，提升情绪管理能力与同伴交往技巧。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content Section -->
+      <section class="py-24 bg-slate-50">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-12 lg:grid-cols-3">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-12">
+              <!-- Training Modules -->
+              <div class="bg-white rounded-3xl p-8 shadow-card">
+                <h2 class="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-3">
+                  <span class="w-1.5 h-8 bg-accent-500 rounded-full"></span>
+                  核心训练模块
+                </h2>
+                <div class="grid gap-6 md:grid-cols-2">
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div class="w-10 h-10 rounded-xl bg-accent-50 text-accent-600 flex items-center justify-center mb-4">
+                      <i data-lucide="message-circle" class="h-5 w-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">对话轮替</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">训练孩子在交流中倾听、等待并适时回应，掌握基本的沟通节奏。</p>
+                  </div>
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div class="w-10 h-10 rounded-xl bg-accent-50 text-accent-600 flex items-center justify-center mb-4">
+                      <i data-lucide="smile" class="h-5 w-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">情绪识别与调节</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">学习识别他人的面部表情与情绪状态，并练习自我情绪的合理表达。</p>
+                  </div>
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div class="w-10 h-10 rounded-xl bg-accent-50 text-accent-600 flex items-center justify-center mb-4">
+                      <i data-lucide="users" class="h-5 w-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">同伴合作与竞争</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">在游戏和集体活动中，学习分享、协作以及面对胜负的正确心态。</p>
+                  </div>
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div class="w-10 h-10 rounded-xl bg-accent-50 text-accent-600 flex items-center justify-center mb-4">
+                      <i data-lucide="map-pin" class="h-5 w-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">社会环境适应</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">模拟超市、公园等公共场景，训练孩子遵守社会规则与求助技能。</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Methodology -->
+              <div class="bg-white rounded-3xl p-8 shadow-card">
+                <h2 class="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-3">
+                  <span class="w-1.5 h-8 bg-brand-500 rounded-full"></span>
+                  我们的干预特色
+                </h2>
+                <div class="space-y-8">
+                  <div class="flex gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-accent-50 text-accent-600 flex items-center justify-center">
+                      <i data-lucide="layers" class="h-6 w-6"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-bold text-slate-900 mb-2 text-lg">分阶教学体系</h3>
+                      <p class="text-slate-600 leading-relaxed">根据孩子的社交发展水平，分为初级（基础关注）、中级（简单互动）和高级（复杂社交）三个阶段。</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-accent-50 text-accent-600 flex items-center justify-center">
+                      <i data-lucide="play-circle" class="h-6 w-6"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-bold text-slate-900 mb-2 text-lg">PCI 游戏介入</h3>
+                      <p class="text-slate-600 leading-relaxed">强调在自然游戏环境中通过“文化传递”的方式，诱发孩子的社会性动机与自发性互动。</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-accent-50 text-accent-600 flex items-center justify-center">
+                      <i data-lucide="video" class="h-6 w-6"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-bold text-slate-900 mb-2 text-lg">视频建模 (Video Modeling)</h3>
+                      <p class="text-slate-600 leading-relaxed">利用视频直观展示正确的社交行为，帮助孩子更快速、更准确地模仿与习得复杂技能。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-8">
+              <div class="sticky top-24">
+                <div class="bg-slate-900 rounded-3xl p-8 text-white shadow-xl overflow-hidden relative">
+                  <div class="absolute -right-8 -top-8 w-32 h-32 bg-accent-500 rounded-full blur-3xl opacity-20"></div>
+                  <h3 class="text-2xl font-bold mb-4 relative z-10">预约咨询</h3>
+                  <p class="text-slate-400 mb-8 relative z-10">想了解适合孩子的小组排班吗？我们的专业老师将根据评估结果为您推荐最合适的课程。</p>
+                  
+                  <div class="space-y-4 relative z-10">
+                    <a href="./events.html#booking" class="flex items-center justify-center w-full py-4 bg-accent-500 hover:bg-accent-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-accent-500/20">
+                      预约社交评估
+                    </a>
+                    <a href="tel:400-123-4567" class="flex items-center justify-center w-full py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl transition-all backdrop-blur-sm border border-white/10">
+                      电话咨询: 400-123-4567
+                    </a>
+                  </div>
+                </div>
+
+                <div class="mt-8 p-8 bg-white rounded-3xl border border-slate-200">
+                  <h3 class="text-lg font-bold text-slate-900 mb-6">其他热门项目</h3>
+                  <div class="space-y-4">
+                    <a href="./program-slt.html" class="flex items-center justify-between group">
+                      <span class="text-slate-600 group-hover:text-accent-500 transition-colors">言语治疗 (SLT)</span>
+                      <i data-lucide="arrow-right" class="h-4 w-4 text-slate-300 group-hover:text-accent-500 transition-all group-hover:translate-x-1"></i>
+                    </a>
+                    <a href="./program-cognitive.html" class="flex items-center justify-between group">
+                      <span class="text-slate-600 group-hover:text-accent-500 transition-colors">启智康复</span>
+                      <i data-lucide="arrow-right" class="h-4 w-4 text-slate-300 group-hover:text-accent-500 transition-all group-hover:translate-x-1"></i>
+                    </a>
+                    <a href="./integration.html" class="flex items-center justify-between group">
+                      <span class="text-slate-600 group-hover:text-accent-500 transition-colors">幼康融合课</span>
+                      <i data-lucide="arrow-right" class="h-4 w-4 text-slate-300 group-hover:text-accent-500 transition-all group-hover:translate-x-1"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

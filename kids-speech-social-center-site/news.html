@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="启言新闻｜启言社交训练中心" />
+    <title>启言新闻｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">
+      跳到正文
+    </a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative text-center">
+          <nav class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mb-6">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">启言新闻</span>
+          </nav>
+          <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            资讯与科普，<span class="text-brand-500">与你共话成长</span>
+          </h1>
+          <p class="mt-8 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
+            获取最新的行业动态，学习科学的育儿知识，解答在康复道路上的种种疑惑。
+          </p>
+        </div>
+      </section>
+
+      <section class="py-24 bg-slate-50 relative">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
+            <!-- News 1 -->
+            <a href="./news-info.html" class="group relative rounded-3xl bg-white p-8 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100">
+              <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+                <i data-lucide="megaphone" class="h-7 w-7"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-3">启言资讯</h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-6">机构动态、活动公告、中心资讯，第一时间了解启言的最新动态。</p>
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-brand-500 transition-colors">
+                进入资讯中心 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </div>
+            </a>
+
+            <!-- News 2 -->
+            <a href="./news-knowledge.html" class="group relative rounded-3xl bg-white p-8 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100">
+              <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 transition-colors group-hover:bg-accent-500 group-hover:text-white">
+                <i data-lucide="book-open" class="h-7 w-7"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-3">知识普及</h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-6">言语社交相关科普与家庭练习建议，让康复融入日常生活。</p>
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-accent-500 transition-colors">
+                阅读科普文章 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </div>
+            </a>
+
+            <!-- News 3 -->
+            <a href="./news-qa.html" class="group relative rounded-3xl bg-white p-8 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100">
+              <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+                <i data-lucide="help-circle" class="h-7 w-7"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-3">问题解答</h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-6">常见问题 Q&A 与误区澄清，解决你在孩子康复过程中的困惑。</p>
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-brand-500 transition-colors">
+                查看常见问题 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </div>
+            </a>
+
+            <!-- News 4 -->
+            <a href="./news-topic.html" class="group relative rounded-3xl bg-white p-8 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100">
+              <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 transition-colors group-hover:bg-accent-500 group-hover:text-white">
+                <i data-lucide="layout" class="h-7 w-7"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-3">启言专题</h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-6">针对语言迟缓、ASD、入园准备等核心话题的深度专题合集。</p>
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-accent-500 transition-colors">
+                浏览专题合集 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </div>
+            </a>
+          </div>
+        
+        <!-- Dynamic News List -->
+        <div id="dynamicNewsList" class="mt-8 grid gap-4 md:grid-cols-2"></div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+
+
+

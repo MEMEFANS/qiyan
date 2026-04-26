@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>后台管理 - 启言社交训练中心</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+            tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.12)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.06)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.15)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '3rem',
+            }
+          }
+        }
+      };
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const id = link.dataset.tab;
+          document.querySelectorAll('.nav-link').forEach(l => {
+            l.classList.remove('active', 'bg-brand-600/10', 'text-brand-400');
+            l.classList.add('text-slate-400');
+          });
+          link.classList.add('active', 'bg-brand-600/10', 'text-brand-400');
+          link.classList.remove('text-slate-400');
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+          document.getElementById('tab-' + id).classList.remove('hidden');
+          document.getElementById('pageTitle').textContent = link.textContent.trim();
+          if (id === 'bookings') loadBookings();
+        });
+      });
+
+      // Universal load / save using data-key attributes
+      async function loadAll() {
+        try {
+          const res = await fetch('/api/content');
+          if (!res.ok) return;
+          
+          const contentType = res.headers.get("content-type");
+          if (contentType && contentType.includes("application/json")) {
+            const data = await res.json();
+            document.querySelectorAll('[data-key]').forEach(el => {
+              const k = el.dataset.key;
+              if (data[k] != null) {
+                if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') el.value = data[k];
+              }
+            });
+          }
+        } catch (e) {
+          console.warn('CMS: 无法从服务器加载内容，请确保 node server.js 已运行');
+        }
+      }
+
+      async function saveAll() {
+        const data = {};
+        document.querySelectorAll('[data-key]').forEach(el => {
+          const k = el.dataset.key;
+          const v = el.value.trim();
+          if (v) data[k] = v;
+        });
+
+        try {
+          const res = await fetch('/api/content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const result = await res.json();
+          if (result.success) {
+            const t = document.getElementById('toast');
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 2000);
+          } else {
+            alert('保存失败: ' + result.message);
+          }
+        } catch (e) {
+          alert('请求失败，请检查网络');
+        }
+      }
+
+      async function loadBookings() {
+        try {
+          const res = await fetch('/api/bookings');
+          const data = await res.json();
+          const list = document.getElementById('bookingsList');
+          list.innerHTML = data.map(b => `
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="px-8 py-5 text-slate-400 font-medium">${new Date(b.timestamp).toLocaleString()}</td>
+              <td class="px-8 py-5 font-bold text-slate-900">${b.parentName}</td>
+              <td class="px-8 py-5"><span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold">${b.childAge}</span></td>
+              <td class="px-8 py-5 font-medium text-brand-600">${b.phone}</td>
+              <td class="px-8 py-5 text-slate-600">${b.needs}</td>
+              <td class="px-8 py-5 text-slate-400 italic text-xs">${b.notes || '-'}</td>
+            </tr>
+          `).join('');
+        } catch (e) {
+          console.error('Failed to load bookings');
+        }
+      }
+
+      loadAll();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+
+

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="启言分布｜启言社交训练中心" />
+    <title>启言分布｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">跳到正文</a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <!-- Hero Section -->
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative">
+          <nav class="flex items-center gap-2 text-sm font-medium text-slate-400 mb-8">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <a href="./about.html" class="hover:text-brand-500 transition-colors">关于启言</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">启言分布</span>
+          </nav>
+          <div class="max-w-3xl">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+              启言分布
+            </h1>
+            <p class="mt-6 text-xl leading-relaxed text-slate-600 font-medium">
+              我们在多个城市设有专业训练中心，致力于为更多家庭提供便捷、高效的康复支持。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Locations Grid -->
+      <section class="py-24 bg-slate-50">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-8 md:grid-cols-3">
+            <!-- Location 1 -->
+            <div class="group relative bg-white rounded-3xl p-8 shadow-card hover:shadow-hover transition-all duration-300 border border-slate-100 md:col-span-3">
+              <div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 group-hover:scale-110 transition-transform duration-300">
+                <i data-lucide="map-pin" class="h-6 w-6"></i>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 mb-4">六枝特区启言儿童健康咨询中心</h3>
+              <p class="text-slate-600 leading-relaxed mb-6">
+                作为我们在贵州地区的专业康复咨询中心，拥有资深的康复专家团队与温馨的干预环境，致力于为当地及周边地区的儿童提供个性化健康支持。
+              </p>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-3">
+                  <div class="flex items-center gap-3 text-sm text-slate-500">
+                    <i data-lucide="phone" class="h-4 w-4"></i>
+                    <span>400-888-9999</span>
+                  </div>
+                  <div class="flex items-center gap-3 text-sm text-slate-500">
+                    <i data-lucide="navigation" class="h-4 w-4"></i>
+                    <span>贵州省六盘水市六枝特区九龙路特区社保局公交站对面</span>
+                  </div>
+                </div>
+                <div class="flex items-center md:justify-end">
+                  <a href="/contact.html" class="inline-flex items-center gap-2 text-sm font-bold text-brand-600 hover:text-brand-700">
+                    查看详细地图与预约指引
+                    <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Map Placeholder -->
+          <div class="mt-20 relative rounded-4xl overflow-hidden border border-slate-200 bg-white p-4 shadow-card">
+            <div class="aspect-[21/9] w-full rounded-3xl bg-slate-100 flex flex-col items-center justify-center text-center p-8">
+              <div class="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-soft mb-6">
+                <i data-lucide="map" class="h-8 w-8 text-brand-500"></i>
+              </div>
+              <h4 class="text-2xl font-bold text-slate-900 mb-2">全国服务地图</h4>
+              <p class="text-slate-500 max-w-md">正在通过数字化技术打通全国中心资源，为您推荐最近的服务站点。</p>
+              <div class="mt-8 px-6 py-2 bg-brand-500 text-white rounded-full font-semibold text-sm cursor-not-allowed">
+                地图加载中...
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+
+
+
