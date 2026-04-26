@@ -3,21 +3,21 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 
-const root = __dirname;
+const root = process.cwd();
 const port = Number(process.env.PORT || 3000);
-const DATA_FILE = path.join(root, "data.json");
-const BOOKINGS_FILE = path.join(root, "bookings.json");
+const DATA_FILE = "/tmp/data.json";
+const BOOKINGS_FILE = "/tmp/bookings.json";
 
 // 安全配置：建议通过环境变量设置
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123"; // 生产环境必须通过环境变量修改
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 
-// 登录失败限制
+// 登录失败限制 (注意：Vercel Serverless 环境下 Map 会在实例销毁时重置)
 const loginAttempts = new Map();
 const MAX_ATTEMPTS = 5;
-const LOCK_TIME = 15 * 60 * 1000; // 15分钟锁定
+const LOCK_TIME = 15 * 60 * 1000;
 
-// 初始化数据文件
+// 初始化数据文件 (Vercel 临时目录)
 if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, "{}");
 if (!fs.existsSync(BOOKINGS_FILE)) fs.writeFileSync(BOOKINGS_FILE, "[]");
 
@@ -45,6 +45,13 @@ const server = http.createServer((req, res) => {
   console.log(`${req.method} ${urlPath}`);
   const rel = urlPath === "/" ? "/index.html" : urlPath;
   const filePath = safeJoin(root, "." + rel);
+
+  // Vercel Serverless 环境下，如果不是 API 请求且文件不存在，返回 404
+  if (!urlPath.startsWith("/api/") && !fs.existsSync(filePath)) {
+    res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("Not Found");
+    return;
+  }
 
   // 1. 设置基础安全响应头
   res.setHeader("X-Content-Type-Options", "nosniff");
@@ -224,6 +231,10 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(port, "127.0.0.1", () => {
-  console.log(`Server running: http://localhost:${port}`);
-});
+module.exports = server;
+
+if (require.main === module) {
+  server.listen(port, "127.0.0.1", () => {
+    console.log(`Server running: http://localhost:${port}`);
+  });
+}
