@@ -95,51 +95,29 @@ const server = http.createServer((req, res) => {
 
   // 3. 处理登录 API
   if (urlPath === "/api/login" && req.method === "POST") {
-    let body = "";
-    req.on("data", chunk => { body += chunk.toString(); });
+    let body = [];
+    req.on("data", chunk => { body.push(chunk); });
     req.on("end", () => {
       try {
-        const { username, password } = JSON.parse(body);
-        const ip = req.socket.remoteAddress;
+        const bodyStr = Buffer.concat(body).toString();
+        const { username, password } = JSON.parse(bodyStr);
+        const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown";
         
-        // 检查是否被锁定
-        const attempts = loginAttempts.get(ip) || { count: 0, lastAttempt: 0 };
-        if (attempts.count >= MAX_ATTEMPTS && Date.now() - attempts.lastAttempt < LOCK_TIME) {
-          res.writeHead(429, { 
-            "Content-Type": "text/plain; charset=utf-8",
-            "Access-Control-Allow-Origin": requestOrigin,
-            "Access-Control-Allow-Credentials": "true"
-          });
-          res.end(JSON.stringify({ success: false, message: "Too many attempts. Please try again later." }));
-          return;
-        }
-
-        // 使用环境变量中的凭据进行校验
-        // 注意：此处为了演示修复，使用了基本的字符串比对。
-        // 在实际生产中，ADMIN_PASSWORD 应存储为哈希值，并使用 crypto.timingSafeEqual 进行比对。
         if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-          // 登录成功，重置失败次数
-          loginAttempts.delete(ip);
-          
           res.writeHead(200, {
-            "Set-Cookie": "admin_session=authenticated; Path=/; HttpOnly; SameSite=Strict",
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": requestOrigin,
-            "Access-Control-Allow-Credentials": "true"
+            "Access-Control-Allow-Credentials": "true",
+            "Set-Cookie": "admin_session=authenticated; Path=/; HttpOnly; SameSite=Lax"
           });
-          res.end(JSON.stringify({ success: true }));
+          res.end('{"success":true}');
         } else {
-          // 登录失败，记录次数
-          attempts.count++;
-          attempts.lastAttempt = Date.now();
-          loginAttempts.set(ip, attempts);
-          
           res.writeHead(401, { 
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": requestOrigin,
             "Access-Control-Allow-Credentials": "true"
           });
-          res.end(JSON.stringify({ success: false, message: "Invalid credentials" }));
+          res.end('{"success":false,"message":"Invalid credentials"}');
         }
       } catch (e) {
         res.writeHead(400, { 
@@ -147,8 +125,12 @@ const server = http.createServer((req, res) => {
           "Access-Control-Allow-Origin": requestOrigin,
           "Access-Control-Allow-Credentials": "true"
         });
-        res.end(JSON.stringify({ success: false, message: "Bad Request" }));
+        res.end('{"success":false,"message":"Bad Request"}');
       }
+    });
+    req.on("error", () => {
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end('{"success":false,"message":"Server Error"}');
     });
     return;
   }

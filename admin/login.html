@@ -103,7 +103,8 @@
             errorDiv.classList.remove('hidden');
           }
         } catch (err) {
-          errorDiv.textContent = '登录请求失败，请稍后再试';
+          console.error('Login error:', err);
+          errorDiv.textContent = '登录请求失败: ' + (err.message || '请检查网络连接');
           errorDiv.classList.remove('hidden');
         }
       });
