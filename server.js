@@ -49,10 +49,10 @@ const server = http.createServer((req, res) => {
   const filePath = safeJoin(root, "." + rel);
 
   // CORS 预检请求处理
+  const requestOrigin = req.headers.origin;
   if (req.method === "OPTIONS") {
-    const origin = req.headers.origin || "*";
     res.writeHead(200, {
-      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Origin": requestOrigin || "*",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
       "Access-Control-Allow-Credentials": "true"
@@ -61,8 +61,18 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取请求来源用于CORS
-  const requestOrigin = req.headers.origin || "*";
+  // 统一处理响应头的助手函数
+  const sendJsonResponse = (statusCode, data, origin) => {
+    const headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": "true"
+    };
+    if (origin) {
+      headers["Access-Control-Allow-Origin"] = origin;
+    }
+    res.writeHead(statusCode, headers);
+    res.end(JSON.stringify(data));
+  };
 
   // Vercel Serverless 环境下，如果不是 API 请求且文件不存在，返回 404
   if (!urlPath.startsWith("/api/") && !fs.existsSync(filePath)) {
@@ -100,47 +110,41 @@ const server = http.createServer((req, res) => {
     req.on("end", () => {
       try {
         const bodyStr = Buffer.concat(body).toString();
+        if (!bodyStr) {
+          return sendJsonResponse(400, { success: false, message: "Empty request body" }, requestOrigin);
+        }
         const { username, password } = JSON.parse(bodyStr);
-        const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown";
         
         if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-          res.writeHead(200, {
+          const headers = {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": requestOrigin,
             "Access-Control-Allow-Credentials": "true",
             "Set-Cookie": "admin_session=authenticated; Path=/; HttpOnly; SameSite=Lax"
-          });
-          res.end('{"success":true}');
+          };
+          if (requestOrigin) headers["Access-Control-Allow-Origin"] = requestOrigin;
+          
+          res.writeHead(200, headers);
+          res.end(JSON.stringify({ success: true }));
         } else {
-          res.writeHead(401, { 
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": requestOrigin,
-            "Access-Control-Allow-Credentials": "true"
-          });
-          res.end('{"success":false,"message":"Invalid credentials"}');
+          sendJsonResponse(401, { success: false, message: "Invalid credentials" }, requestOrigin);
         }
       } catch (e) {
-        res.writeHead(400, { 
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": requestOrigin,
-          "Access-Control-Allow-Credentials": "true"
-        });
-        res.end('{"success":false,"message":"Bad Request"}');
+        console.error("Login API error:", e);
+        sendJsonResponse(400, { success: false, message: "Invalid JSON" }, requestOrigin);
       }
-    });
-    req.on("error", () => {
-      res.writeHead(500, { "Content-Type": "application/json" });
-      res.end('{"success":false,"message":"Server Error"}');
     });
     return;
   }
 
   // 4. 处理退出登录 API
   if (urlPath === "/api/logout" && req.method === "POST") {
-    res.writeHead(200, {
-      "Set-Cookie": "admin_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0",
-      "Content-Type": "application/json"
-    });
+    const headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": "true",
+      "Set-Cookie": "admin_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"
+    };
+    if (requestOrigin) headers["Access-Control-Allow-Origin"] = requestOrigin;
+    res.writeHead(200, headers);
     res.end(JSON.stringify({ success: true }));
     return;
   }
