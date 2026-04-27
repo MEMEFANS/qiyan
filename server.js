@@ -50,8 +50,9 @@ const server = http.createServer((req, res) => {
 
   // CORS 预检请求处理
   if (req.method === "OPTIONS") {
+    const origin = req.headers.origin || "*";
     res.writeHead(200, {
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": origin,
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
       "Access-Control-Allow-Credentials": "true"
@@ -59,6 +60,9 @@ const server = http.createServer((req, res) => {
     res.end();
     return;
   }
+
+  // 获取请求来源用于CORS
+  const requestOrigin = req.headers.origin || "*";
 
   // Vercel Serverless 环境下，如果不是 API 请求且文件不存在，返回 404
   if (!urlPath.startsWith("/api/") && !fs.existsSync(filePath)) {
@@ -73,8 +77,6 @@ const server = http.createServer((req, res) => {
   res.setHeader("X-XSS-Protection", "1; mode=block");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   res.setHeader("Content-Security-Policy", "default-src 'self' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net; img-src 'self' data: https://www.transparenttextures.com;");
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   // 2. 限制访问敏感文件
   const sensitiveFiles = [
@@ -103,7 +105,11 @@ const server = http.createServer((req, res) => {
         // 检查是否被锁定
         const attempts = loginAttempts.get(ip) || { count: 0, lastAttempt: 0 };
         if (attempts.count >= MAX_ATTEMPTS && Date.now() - attempts.lastAttempt < LOCK_TIME) {
-          res.writeHead(429, { "Content-Type": "text/plain; charset=utf-8" });
+          res.writeHead(429, { 
+            "Content-Type": "text/plain; charset=utf-8",
+            "Access-Control-Allow-Origin": requestOrigin,
+            "Access-Control-Allow-Credentials": "true"
+          });
           res.end(JSON.stringify({ success: false, message: "Too many attempts. Please try again later." }));
           return;
         }
@@ -117,7 +123,9 @@ const server = http.createServer((req, res) => {
           
           res.writeHead(200, {
             "Set-Cookie": "admin_session=authenticated; Path=/; HttpOnly; SameSite=Strict",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": requestOrigin,
+            "Access-Control-Allow-Credentials": "true"
           });
           res.end(JSON.stringify({ success: true }));
         } else {
@@ -126,11 +134,19 @@ const server = http.createServer((req, res) => {
           attempts.lastAttempt = Date.now();
           loginAttempts.set(ip, attempts);
           
-          res.writeHead(401, { "Content-Type": "application/json" });
+          res.writeHead(401, { 
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": requestOrigin,
+            "Access-Control-Allow-Credentials": "true"
+          });
           res.end(JSON.stringify({ success: false, message: "Invalid credentials" }));
         }
       } catch (e) {
-        res.writeHead(400, { "Content-Type": "application/json" });
+        res.writeHead(400, { 
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": requestOrigin,
+          "Access-Control-Allow-Credentials": "true"
+        });
         res.end(JSON.stringify({ success: false, message: "Bad Request" }));
       }
     });
