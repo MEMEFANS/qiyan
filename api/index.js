@@ -94,9 +94,17 @@ module.exports = (req, res) => {
     // 5. 内容管理接口 (CMS API)
     if (urlPath.endsWith("/content")) {
       if (req.method === "GET") {
-        const data = fs.readFileSync(DATA_FILE, "utf-8");
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(data);
+        try {
+          const data = fs.readFileSync(DATA_FILE, "utf-8");
+          res.writeHead(200, {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": requestOrigin || "*",
+            "Access-Control-Allow-Credentials": "true"
+          });
+          res.end(data);
+        } catch (e) {
+          sendJsonResponse(200, {}, requestOrigin);
+        }
         return;
       }
       if (req.method === "POST") {
@@ -111,7 +119,8 @@ module.exports = (req, res) => {
             fs.writeFileSync(DATA_FILE, body);
             sendJsonResponse(200, { success: true }, requestOrigin);
           } catch (e) {
-            sendJsonResponse(500, { success: false, message: "Save failed" }, requestOrigin);
+            console.error("Save content error:", e);
+            sendJsonResponse(500, { success: false, message: "Save failed: " + e.message }, requestOrigin);
           }
         });
         return;
@@ -127,7 +136,10 @@ module.exports = (req, res) => {
           const booking = JSON.parse(body);
           booking.id = Date.now();
           booking.createdAt = new Date().toISOString();
-          const bookings = JSON.parse(fs.readFileSync(BOOKINGS_FILE, "utf-8"));
+          let bookings = [];
+          try {
+            bookings = JSON.parse(fs.readFileSync(BOOKINGS_FILE, "utf-8"));
+          } catch (e) {}
           bookings.push(booking);
           fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
           sendJsonResponse(200, { success: true }, requestOrigin);
@@ -144,17 +156,33 @@ module.exports = (req, res) => {
       if (!cookies.includes("admin_session=authenticated")) {
         return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
       }
-      const data = fs.readFileSync(BOOKINGS_FILE, "utf-8");
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(data);
+      try {
+        const data = fs.readFileSync(BOOKINGS_FILE, "utf-8");
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": requestOrigin || "*",
+          "Access-Control-Allow-Credentials": "true"
+        });
+        res.end(data);
+      } catch (e) {
+        sendJsonResponse(200, [], requestOrigin);
+      }
       return;
     }
 
     // 7b. 康复案例接口 (公开获取)
     if (urlPath.endsWith("/cases") && req.method === "GET") {
-      const data = fs.readFileSync(CASES_FILE, "utf-8");
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(data);
+      try {
+        const data = fs.readFileSync(CASES_FILE, "utf-8");
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": requestOrigin || "*",
+          "Access-Control-Allow-Credentials": "true"
+        });
+        res.end(data);
+      } catch (e) {
+        sendJsonResponse(200, [], requestOrigin);
+      }
       return;
     }
 
@@ -169,7 +197,10 @@ module.exports = (req, res) => {
       req.on("end", () => {
         try {
           const newCase = JSON.parse(body);
-          let cases = JSON.parse(fs.readFileSync(CASES_FILE, "utf-8"));
+          let cases = [];
+          try {
+            cases = JSON.parse(fs.readFileSync(CASES_FILE, "utf-8"));
+          } catch (e) {}
           const index = cases.findIndex(c => c.id === newCase.id);
           if (index >= 0) cases[index] = newCase;
           else cases.push(newCase);
@@ -182,7 +213,7 @@ module.exports = (req, res) => {
       return;
     }
 
-    // 8. 图片上传接口
+    // 8. 图片上传接口 (Vercel 环境特殊处理)
     if (urlPath.endsWith("/upload") && req.method === "POST") {
       const cookies = req.headers.cookie || "";
       if (!cookies.includes("admin_session=authenticated")) {
@@ -196,19 +227,52 @@ module.exports = (req, res) => {
           if (!imageData || !fileName) {
             return sendJsonResponse(400, { success: false, message: "Missing data" }, requestOrigin);
           }
-          const uploadDir = path.join(root, "assets", folder || "uploads");
+          
+          // 在 Vercel 生产环境下，由于文件系统是只读的，
+          // 我们只能尝试保存到 /tmp，但这样图片在重启后会丢失。
+          // 更好的方案是使用云存储（如 Vercel Blob, OSS 等）。
+          // 这里先尝试写入 /tmp 并在响应中说明。
+          const uploadDir = path.join("/tmp", "assets", folder || "uploads");
           if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+          
           const base64Data = imageData.replace(/^data:image\/\w+;base64,/, "");
-          fs.writeFileSync(path.join(uploadDir, fileName), Buffer.from(base64Data, "base64"));
-          sendJsonResponse(200, { success: true, path: `/assets/${folder || "uploads"}/${fileName}` }, requestOrigin);
+          const buffer = Buffer.from(base64Data, 'base64');
+          const finalPath = path.join(uploadDir, fileName);
+          
+          fs.writeFileSync(finalPath, buffer);
+          
+          // 注意：前端可能无法直接访问 /tmp 下的图片
+          sendJsonResponse(200, { 
+            success: true, 
+            message: "Uploaded to temporary storage (will be lost on restart)",
+            path: "/api/images?path=" + encodeURIComponent(path.join(folder || "uploads", fileName))
+          }, requestOrigin);
         } catch (e) {
-          sendJsonResponse(500, { success: false, message: "Upload failed" }, requestOrigin);
+          console.error("Upload error:", e);
+          sendJsonResponse(500, { success: false, message: "Upload failed: " + e.message }, requestOrigin);
         }
       });
       return;
     }
 
-    // 9. 获取文件列表接口
+    // 9. 获取上传的图片 (代理访问 /tmp 目录)
+    if (urlPath.endsWith("/images") && req.method === "GET") {
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const imagePath = url.searchParams.get("path");
+      if (!imagePath) return sendJsonResponse(400, { message: "Missing path" }, requestOrigin);
+      
+      const fullPath = path.join("/tmp", "assets", imagePath);
+      if (fs.existsSync(fullPath)) {
+        const ext = path.extname(fullPath).toLowerCase();
+        res.writeHead(200, { "Content-Type": mime[ext] || "image/png" });
+        res.end(fs.readFileSync(fullPath));
+      } else {
+        res.writeHead(404);
+        res.end("Not Found");
+      }
+      return;
+    }
+    // 10. 获取文件列表接口
     if (urlPath.endsWith("/files") && req.method === "GET") {
       const cookies = req.headers.cookie || "";
       if (!cookies.includes("admin_session=authenticated")) {
