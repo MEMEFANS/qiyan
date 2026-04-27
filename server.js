@@ -5,20 +5,20 @@ const crypto = require("crypto");
 
 const root = process.cwd();
 const port = Number(process.env.PORT || 3000);
-const DATA_FILE = "/tmp/data.json";
-const BOOKINGS_FILE = "/tmp/bookings.json";
-const CASES_FILE = "/tmp/cases.json";
 
-// 安全配置：建议通过环境变量设置
+// 数据持久化目录：自有服务器环境下保存在项目根目录的 data 文件夹中
+const DATA_DIR = path.join(root, "data");
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+
+const DATA_FILE = path.join(DATA_DIR, "data.json");
+const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
+const CASES_FILE = path.join(DATA_DIR, "cases.json");
+
+// 安全配置
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 
-// 登录失败限制 (注意：Vercel Serverless 环境下 Map 会在实例销毁时重置)
-const loginAttempts = new Map();
-const MAX_ATTEMPTS = 5;
-const LOCK_TIME = 15 * 60 * 1000;
-
-// 初始化数据文件 (Vercel 临时目录)
+// 初始化数据文件
 if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, "{}");
 if (!fs.existsSync(BOOKINGS_FILE)) fs.writeFileSync(BOOKINGS_FILE, "[]");
 if (!fs.existsSync(CASES_FILE)) fs.writeFileSync(CASES_FILE, "[]");
@@ -44,13 +44,23 @@ const safeJoin = (base, target) => {
 
 const serverHandler = (req, res) => {
   const urlPath = decodeURIComponent((req.url || "/").split("?")[0]);
-  console.log(`${req.method} ${urlPath}`);
-  const rel = urlPath === "/" ? "/index.html" : urlPath;
-  const filePath = safeJoin(root, "." + rel);
+  const requestOrigin = req.headers.origin;
+
+  // 统一处理响应头的助手函数
+  const sendJsonResponse = (statusCode, data, origin) => {
+    const headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": "true"
+    };
+    if (origin) {
+      headers["Access-Control-Allow-Origin"] = origin;
+    }
+    res.writeHead(statusCode, headers);
+    res.end(JSON.stringify(data));
+  };
 
   try {
     // CORS 预检请求处理
-    const requestOrigin = req.headers.origin;
     if (req.method === "OPTIONS") {
       res.writeHead(200, {
         "Access-Control-Allow-Origin": requestOrigin || "*",
@@ -62,311 +72,201 @@ const serverHandler = (req, res) => {
       return;
     }
 
-    // 统一处理响应头的助手函数
-    const sendJsonResponse = (statusCode, data, origin) => {
-      const headers = {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": "true"
-      };
-      if (origin) {
-        headers["Access-Control-Allow-Origin"] = origin;
-      }
-      res.writeHead(statusCode, headers);
-      res.end(JSON.stringify(data));
-    };
+    // --- API 路由处理 ---
 
-    // Vercel Serverless 环境下，如果不是 API 请求且文件不存在，返回 404
-    if (!urlPath.startsWith("/api/") && !fs.existsSync(filePath)) {
-      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-      res.end("Not Found");
-      return;
-    }
-
-  // 1. 设置基础安全响应头
-  res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("X-Frame-Options", "DENY");
-  res.setHeader("X-XSS-Protection", "1; mode=block");
-  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-  res.setHeader("Content-Security-Policy", "default-src 'self' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net; img-src 'self' data: https://www.transparenttextures.com;");
-
-  // 2. 限制访问敏感文件
-  const sensitiveFiles = [
-    "package.json",
-    "package-lock.json",
-    "server.js",
-    ".gitignore",
-    "README.md"
-  ];
-  const fileName = path.basename(filePath);
-  if (sensitiveFiles.includes(fileName) || fileName.startsWith(".")) {
-    res.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
-    res.end("Forbidden: Access to this file is restricted.");
-    return;
-  }
-
-  // 3. 处理登录 API
-  if (urlPath === "/api/login" && req.method === "POST") {
-    let body = [];
-    req.on("data", chunk => { body.push(chunk); });
-    req.on("end", () => {
-      try {
-        const bodyStr = Buffer.concat(body).toString();
-        if (!bodyStr) {
-          return sendJsonResponse(400, { success: false, message: "Empty request body" }, requestOrigin);
-        }
-        const { username, password } = JSON.parse(bodyStr);
-        
-        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-          const headers = {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Credentials": "true",
-            "Set-Cookie": "admin_session=authenticated; Path=/; HttpOnly; SameSite=Lax"
-          };
-          if (requestOrigin) headers["Access-Control-Allow-Origin"] = requestOrigin;
-          
-          res.writeHead(200, headers);
-          res.end(JSON.stringify({ success: true }));
-        } else {
-          sendJsonResponse(401, { success: false, message: "Invalid credentials" }, requestOrigin);
-        }
-      } catch (e) {
-        console.error("Login API error:", e);
-        sendJsonResponse(400, { success: false, message: "Invalid JSON" }, requestOrigin);
-      }
-    });
-    return;
-  }
-
-  // 4. 处理退出登录 API
-  if (urlPath === "/api/logout" && req.method === "POST") {
-    const headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": "true",
-      "Set-Cookie": "admin_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"
-    };
-    if (requestOrigin) headers["Access-Control-Allow-Origin"] = requestOrigin;
-    res.writeHead(200, headers);
-    res.end(JSON.stringify({ success: true }));
-    return;
-  }
-
-  // 5. 内容管理接口 (CMS API)
-  if (urlPath === "/api/content") {
-    if (req.method === "GET") {
-      const data = fs.readFileSync(DATA_FILE, "utf-8");
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(data);
-      return;
-    }
-    if (req.method === "POST") {
-      // 检查权限
-      const cookies = req.headers.cookie || "";
-      if (!cookies.includes("admin_session=authenticated")) {
-        res.writeHead(401, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ success: false, message: "Unauthorized" }));
-        return;
-      }
-
-      let body = "";
-      req.on("data", chunk => { body += chunk.toString(); });
+    // 1. 登录 API
+    if (urlPath === "/api/login" && req.method === "POST") {
+      let body = [];
+      req.on("data", chunk => { body.push(chunk); });
       req.on("end", () => {
         try {
-          fs.writeFileSync(DATA_FILE, body);
-          res.writeHead(200, { "Content-Type": "application/json" });
-          res.end(JSON.stringify({ success: true }));
+          const { username, password } = JSON.parse(Buffer.concat(body).toString());
+          if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+            res.writeHead(200, {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Credentials": "true",
+              "Access-Control-Allow-Origin": requestOrigin || "*",
+              "Set-Cookie": "admin_session=authenticated; Path=/; HttpOnly; SameSite=Lax"
+            });
+            res.end(JSON.stringify({ success: true }));
+          } else {
+            sendJsonResponse(401, { success: false, message: "Invalid credentials" }, requestOrigin);
+          }
         } catch (e) {
-          res.writeHead(500, { "Content-Type": "application/json" });
-          res.end(JSON.stringify({ success: false, message: "Save failed" }));
+          sendJsonResponse(400, { success: false, message: "Invalid JSON" }, requestOrigin);
         }
       });
       return;
     }
-  }
 
-  // 6. 预约接口 (Booking API)
-  if (urlPath === "/api/book" && req.method === "POST") {
-    let body = "";
-    req.on("data", chunk => { body += chunk.toString(); });
-    req.on("end", () => {
-      try {
-        const booking = JSON.parse(body);
-        booking.id = Date.now();
-        booking.createdAt = new Date().toISOString();
-        
-        const bookings = JSON.parse(fs.readFileSync(BOOKINGS_FILE, "utf-8"));
-        bookings.push(booking);
-        fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
-
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ success: true }));
-      } catch (e) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ success: false, message: "Bad Request" }));
-      }
-    });
-    return;
-  }
-
-  // 7. 获取预约列表接口 (仅管理员)
-  if (urlPath === "/api/bookings" && req.method === "GET") {
-    const cookies = req.headers.cookie || "";
-    if (!cookies.includes("admin_session=authenticated")) {
-      res.writeHead(401, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ success: false, message: "Unauthorized" }));
+    // 2. 退出登录 API
+    if (urlPath === "/api/logout" && req.method === "POST") {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Origin": requestOrigin || "*",
+        "Set-Cookie": "admin_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"
+      });
+      res.end(JSON.stringify({ success: true }));
       return;
     }
-    const data = fs.readFileSync(BOOKINGS_FILE, "utf-8");
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(data);
-    return;
-  }
 
-  // 7b. 康复案例接口 (公开获取)
-  if (urlPath === "/api/cases" && req.method === "GET") {
-    const data = fs.readFileSync(CASES_FILE, "utf-8");
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(data);
-    return;
-  }
-
-  // 7c. 保存康复案例 (仅管理员)
-  if (urlPath === "/api/cases" && req.method === "POST") {
-    const cookies = req.headers.cookie || "";
-    if (!cookies.includes("admin_session=authenticated")) {
-      res.writeHead(401, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ success: false, message: "Unauthorized" }));
-      return;
-    }
-    let body = "";
-    req.on("data", chunk => { body += chunk.toString(); });
-    req.on("end", () => {
-      try {
-        const newCase = JSON.parse(body);
-        let cases = JSON.parse(fs.readFileSync(CASES_FILE, "utf-8"));
-        const index = cases.findIndex(c => c.id === newCase.id);
-        if (index >= 0) {
-          cases[index] = newCase;
-        } else {
-          cases.push(newCase);
+    // 3. 内容管理接口 (CMS API)
+    if (urlPath === "/api/content") {
+      if (req.method === "GET") {
+        try {
+          const data = fs.readFileSync(DATA_FILE, "utf-8");
+          res.writeHead(200, {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": requestOrigin || "*",
+            "Access-Control-Allow-Credentials": "true"
+          });
+          res.end(data);
+        } catch (e) {
+          sendJsonResponse(200, {}, requestOrigin);
         }
-        fs.writeFileSync(CASES_FILE, JSON.stringify(cases, null, 2));
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ success: true }));
-      } catch (e) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ success: false, message: "Bad Request" }));
-      }
-    });
-    return;
-  }
-
-  // 8. 图片上传接口
-  if (urlPath === "/api/upload" && req.method === "POST") {
-    const cookies = req.headers.cookie || "";
-    if (!cookies.includes("admin_session=authenticated")) {
-      res.writeHead(401, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ success: false, message: "Unauthorized" }));
-      return;
-    }
-
-    let body = "";
-    req.on("data", chunk => { body += chunk.toString(); });
-    req.on("end", () => {
-      try {
-        const { imageData, fileName, folder } = JSON.parse(body);
-        
-        if (!imageData || !fileName) {
-          res.writeHead(400, { "Content-Type": "application/json" });
-          res.end(JSON.stringify({ success: false, message: "Missing data" }));
-          return;
-        }
-
-        const uploadDir = path.join(root, "assets", folder || "uploads");
-        if (!fs.existsSync(uploadDir)) {
-          fs.mkdirSync(uploadDir, { recursive: true });
-        }
-
-        const base64Data = imageData.replace(/^data:image\/\w+;base64,/, "");
-        const filePath = path.join(uploadDir, fileName);
-        fs.writeFileSync(filePath, Buffer.from(base64Data, "base64"));
-
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ success: true, path: `/assets/${folder || "uploads"}/${fileName}` }));
-      } catch (e) {
-        res.writeHead(500, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ success: false, message: "Upload failed" }));
-      }
-    });
-    return;
-  }
-
-  // 9. 获取文件列表接口
-  if (urlPath === "/api/files" && req.method === "GET") {
-    const cookies = req.headers.cookie || "";
-    if (!cookies.includes("admin_session=authenticated")) {
-      res.writeHead(401, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ success: false, message: "Unauthorized" }));
-      return;
-    }
-
-    const folder = req.headers.folder || "uploads";
-    const uploadDir = path.join(root, "assets", folder);
-    
-    try {
-      if (!fs.existsSync(uploadDir)) {
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify([]));
         return;
       }
-      
-      const files = fs.readdirSync(uploadDir)
-        .filter(f => /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(f))
-        .map(f => ({
-          name: f,
-          path: `/assets/${folder}/${f}`,
-          size: fs.statSync(path.join(uploadDir, f)).size
-        }));
-      
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(files));
-    } catch (e) {
-      res.writeHead(500, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ success: false, message: "Failed to list files" }));
-    }
-    return;
-  }
-
-  // 10. 后台页面权限检查
-  if (urlPath.startsWith("/admin/dashboard.html")) {
-    const cookies = req.headers.cookie || "";
-    if (!cookies.includes("admin_session=authenticated")) {
-      res.writeHead(302, { "Location": "/admin/login.html" });
-      res.end();
-      return;
-    }
-  }
-
-  if (!filePath) {
-    res.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
-    res.end("Forbidden");
-    return;
-  }
-
-    fs.stat(filePath, (err, st) => {
-      if (err || !st.isFile()) {
-        res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-        res.end("Not Found");
+      if (req.method === "POST") {
+        const cookies = req.headers.cookie || "";
+        if (!cookies.includes("admin_session=authenticated")) {
+          return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+        }
+        let body = "";
+        req.on("data", chunk => { body += chunk.toString(); });
+        req.on("end", () => {
+          try {
+            fs.writeFileSync(DATA_FILE, body);
+            sendJsonResponse(200, { success: true }, requestOrigin);
+          } catch (e) {
+            sendJsonResponse(500, { success: false, message: "Save failed" }, requestOrigin);
+          }
+        });
         return;
       }
+    }
 
+    // 4. 预约接口
+    if (urlPath === "/api/book" && req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk.toString(); });
+      req.on("end", () => {
+        try {
+          const booking = JSON.parse(body);
+          booking.id = Date.now();
+          booking.createdAt = new Date().toISOString();
+          let bookings = [];
+          try { bookings = JSON.parse(fs.readFileSync(BOOKINGS_FILE, "utf-8")); } catch(e){}
+          bookings.push(booking);
+          fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
+          sendJsonResponse(200, { success: true }, requestOrigin);
+        } catch (e) {
+          sendJsonResponse(400, { success: false, message: "Bad Request" }, requestOrigin);
+        }
+      });
+      return;
+    }
+
+    // 5. 获取预约列表
+    if (urlPath === "/api/bookings" && req.method === "GET") {
+      const cookies = req.headers.cookie || "";
+      if (!cookies.includes("admin_session=authenticated")) {
+        return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+      }
+      try {
+        const data = fs.readFileSync(BOOKINGS_FILE, "utf-8");
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": requestOrigin || "*",
+          "Access-Control-Allow-Credentials": "true"
+        });
+        res.end(data);
+      } catch (e) {
+        sendJsonResponse(200, [], requestOrigin);
+      }
+      return;
+    }
+
+    // 6. 康复案例接口
+    if (urlPath === "/api/cases") {
+      if (req.method === "GET") {
+        try {
+          const data = fs.readFileSync(CASES_FILE, "utf-8");
+          res.writeHead(200, {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": requestOrigin || "*",
+            "Access-Control-Allow-Credentials": "true"
+          });
+          res.end(data);
+        } catch (e) {
+          sendJsonResponse(200, [], requestOrigin);
+        }
+        return;
+      }
+      if (req.method === "POST") {
+        const cookies = req.headers.cookie || "";
+        if (!cookies.includes("admin_session=authenticated")) {
+          return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+        }
+        let body = "";
+        req.on("data", chunk => { body += chunk.toString(); });
+        req.on("end", () => {
+          try {
+            const newCase = JSON.parse(body);
+            let cases = [];
+            try { cases = JSON.parse(fs.readFileSync(CASES_FILE, "utf-8")); } catch(e){}
+            const index = cases.findIndex(c => c.id === newCase.id);
+            if (index >= 0) cases[index] = newCase;
+            else cases.push(newCase);
+            fs.writeFileSync(CASES_FILE, JSON.stringify(cases, null, 2));
+            sendJsonResponse(200, { success: true }, requestOrigin);
+          } catch (e) {
+            sendJsonResponse(400, { success: false, message: "Bad Request" }, requestOrigin);
+          }
+        });
+        return;
+      }
+    }
+
+    // 7. 图片上传接口 (自有服务器直接存 assets)
+    if (urlPath === "/api/upload" && req.method === "POST") {
+      const cookies = req.headers.cookie || "";
+      if (!cookies.includes("admin_session=authenticated")) {
+        return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+      }
+      let body = "";
+      req.on("data", chunk => { body += chunk.toString(); });
+      req.on("end", () => {
+        try {
+          const { imageData, fileName, folder } = JSON.parse(body);
+          const uploadDir = path.join(root, "assets", folder || "uploads");
+          if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+          const base64Data = imageData.replace(/^data:image\/\w+;base64,/, "");
+          fs.writeFileSync(path.join(uploadDir, fileName), Buffer.from(base64Data, "base64"));
+          sendJsonResponse(200, { success: true, path: `/assets/${folder || "uploads"}/${fileName}` }, requestOrigin);
+        } catch (e) {
+          sendJsonResponse(500, { success: false, message: "Upload failed" }, requestOrigin);
+        }
+      });
+      return;
+    }
+
+    // --- 静态文件处理 ---
+    const rel = urlPath === "/" ? "/index.html" : urlPath;
+    const filePath = safeJoin(root, "." + rel);
+
+    if (filePath && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
       const ext = path.extname(filePath).toLowerCase();
       res.writeHead(200, { "Content-Type": mime[ext] || "application/octet-stream" });
       fs.createReadStream(filePath).pipe(res);
-    });
-  } catch (globalError) {
-    console.error("Global Server Error:", globalError);
-    res.writeHead(500, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ success: false, message: "Internal Server Error", detail: globalError.message }));
+    } else {
+      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      res.end("404 Not Found");
+    }
+
+  } catch (err) {
+    console.error(err);
+    sendJsonResponse(500, { success: false, message: "Internal Server Error" }, requestOrigin);
   }
 };
 
@@ -375,7 +275,7 @@ const server = http.createServer(serverHandler);
 module.exports = serverHandler;
 
 if (require.main === module) {
-  server.listen(port, "127.0.0.1", () => {
+  server.listen(port, "0.0.0.0", () => {
     console.log(`Server running: http://localhost:${port}`);
   });
 }
