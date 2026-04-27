@@ -7,6 +7,7 @@ const root = process.cwd();
 const port = Number(process.env.PORT || 3000);
 const DATA_FILE = "/tmp/data.json";
 const BOOKINGS_FILE = "/tmp/bookings.json";
+const CASES_FILE = "/tmp/cases.json";
 
 // 安全配置：建议通过环境变量设置
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
@@ -20,6 +21,7 @@ const LOCK_TIME = 15 * 60 * 1000;
 // 初始化数据文件 (Vercel 临时目录)
 if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, "{}");
 if (!fs.existsSync(BOOKINGS_FILE)) fs.writeFileSync(BOOKINGS_FILE, "[]");
+if (!fs.existsSync(CASES_FILE)) fs.writeFileSync(CASES_FILE, "[]");
 
 const mime = {
   ".html": "text/html; charset=utf-8",
@@ -202,7 +204,122 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 8. 后台页面权限检查
+  // 7b. 康复案例接口 (公开获取)
+  if (urlPath === "/api/cases" && req.method === "GET") {
+    const data = fs.readFileSync(CASES_FILE, "utf-8");
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(data);
+    return;
+  }
+
+  // 7c. 保存康复案例 (仅管理员)
+  if (urlPath === "/api/cases" && req.method === "POST") {
+    const cookies = req.headers.cookie || "";
+    if (!cookies.includes("admin_session=authenticated")) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: false, message: "Unauthorized" }));
+      return;
+    }
+    let body = "";
+    req.on("data", chunk => { body += chunk.toString(); });
+    req.on("end", () => {
+      try {
+        const newCase = JSON.parse(body);
+        let cases = JSON.parse(fs.readFileSync(CASES_FILE, "utf-8"));
+        const index = cases.findIndex(c => c.id === newCase.id);
+        if (index >= 0) {
+          cases[index] = newCase;
+        } else {
+          cases.push(newCase);
+        }
+        fs.writeFileSync(CASES_FILE, JSON.stringify(cases, null, 2));
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: true }));
+      } catch (e) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: false, message: "Bad Request" }));
+      }
+    });
+    return;
+  }
+
+  // 8. 图片上传接口
+  if (urlPath === "/api/upload" && req.method === "POST") {
+    const cookies = req.headers.cookie || "";
+    if (!cookies.includes("admin_session=authenticated")) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: false, message: "Unauthorized" }));
+      return;
+    }
+
+    let body = "";
+    req.on("data", chunk => { body += chunk.toString(); });
+    req.on("end", () => {
+      try {
+        const { imageData, fileName, folder } = JSON.parse(body);
+        
+        if (!imageData || !fileName) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ success: false, message: "Missing data" }));
+          return;
+        }
+
+        const uploadDir = path.join(root, "assets", folder || "uploads");
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        const base64Data = imageData.replace(/^data:image\/\w+;base64,/, "");
+        const filePath = path.join(uploadDir, fileName);
+        fs.writeFileSync(filePath, Buffer.from(base64Data, "base64"));
+
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: true, path: `/assets/${folder || "uploads"}/${fileName}` }));
+      } catch (e) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: false, message: "Upload failed" }));
+      }
+    });
+    return;
+  }
+
+  // 9. 获取文件列表接口
+  if (urlPath === "/api/files" && req.method === "GET") {
+    const cookies = req.headers.cookie || "";
+    if (!cookies.includes("admin_session=authenticated")) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: false, message: "Unauthorized" }));
+      return;
+    }
+
+    const folder = req.headers.folder || "uploads";
+    const uploadDir = path.join(root, "assets", folder);
+    
+    try {
+      if (!fs.existsSync(uploadDir)) {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify([]));
+        return;
+      }
+      
+      const files = fs.readdirSync(uploadDir)
+        .filter(f => /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(f))
+        .map(f => ({
+          name: f,
+          path: `/assets/${folder}/${f}`,
+          size: fs.statSync(path.join(uploadDir, f)).size
+        }));
+      
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(files));
+    } catch (e) {
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: false, message: "Failed to list files" }));
+    }
+    return;
+  }
+
+  // 10. 后台页面权限检查
   if (urlPath.startsWith("/admin/dashboard.html")) {
     const cookies = req.headers.cookie || "";
     if (!cookies.includes("admin_session=authenticated")) {
