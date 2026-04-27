@@ -97,7 +97,8 @@
           if (!contentType || !contentType.includes('application/json')) {
             const text = await res.text();
             console.error('Non-JSON response:', text);
-            throw new Error('服务器返回了非JSON格式响应');
+            // 只显示前 100 个字符，防止错误信息太长
+            throw new Error('服务器返回了非JSON格式响应: ' + text.substring(0, 100));
           }
 
           const data = await res.json();

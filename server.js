@@ -42,44 +42,45 @@ const safeJoin = (base, target) => {
   return targetPath;
 };
 
-const server = http.createServer((req, res) => {
+const serverHandler = (req, res) => {
   const urlPath = decodeURIComponent((req.url || "/").split("?")[0]);
   console.log(`${req.method} ${urlPath}`);
   const rel = urlPath === "/" ? "/index.html" : urlPath;
   const filePath = safeJoin(root, "." + rel);
 
-  // CORS 预检请求处理
-  const requestOrigin = req.headers.origin;
-  if (req.method === "OPTIONS") {
-    res.writeHead(200, {
-      "Access-Control-Allow-Origin": requestOrigin || "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Allow-Credentials": "true"
-    });
-    res.end();
-    return;
-  }
-
-  // 统一处理响应头的助手函数
-  const sendJsonResponse = (statusCode, data, origin) => {
-    const headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": "true"
-    };
-    if (origin) {
-      headers["Access-Control-Allow-Origin"] = origin;
+  try {
+    // CORS 预检请求处理
+    const requestOrigin = req.headers.origin;
+    if (req.method === "OPTIONS") {
+      res.writeHead(200, {
+        "Access-Control-Allow-Origin": requestOrigin || "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Credentials": "true"
+      });
+      res.end();
+      return;
     }
-    res.writeHead(statusCode, headers);
-    res.end(JSON.stringify(data));
-  };
 
-  // Vercel Serverless 环境下，如果不是 API 请求且文件不存在，返回 404
-  if (!urlPath.startsWith("/api/") && !fs.existsSync(filePath)) {
-    res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-    res.end("Not Found");
-    return;
-  }
+    // 统一处理响应头的助手函数
+    const sendJsonResponse = (statusCode, data, origin) => {
+      const headers = {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": "true"
+      };
+      if (origin) {
+        headers["Access-Control-Allow-Origin"] = origin;
+      }
+      res.writeHead(statusCode, headers);
+      res.end(JSON.stringify(data));
+    };
+
+    // Vercel Serverless 环境下，如果不是 API 请求且文件不存在，返回 404
+    if (!urlPath.startsWith("/api/") && !fs.existsSync(filePath)) {
+      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      res.end("Not Found");
+      return;
+    }
 
   // 1. 设置基础安全响应头
   res.setHeader("X-Content-Type-Options", "nosniff");
@@ -351,20 +352,27 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  fs.stat(filePath, (err, st) => {
-    if (err || !st.isFile()) {
-      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-      res.end("Not Found");
-      return;
-    }
+    fs.stat(filePath, (err, st) => {
+      if (err || !st.isFile()) {
+        res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+        res.end("Not Found");
+        return;
+      }
 
-    const ext = path.extname(filePath).toLowerCase();
-    res.writeHead(200, { "Content-Type": mime[ext] || "application/octet-stream" });
-    fs.createReadStream(filePath).pipe(res);
-  });
-});
+      const ext = path.extname(filePath).toLowerCase();
+      res.writeHead(200, { "Content-Type": mime[ext] || "application/octet-stream" });
+      fs.createReadStream(filePath).pipe(res);
+    });
+  } catch (globalError) {
+    console.error("Global Server Error:", globalError);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ success: false, message: "Internal Server Error", detail: globalError.message }));
+  }
+};
 
-module.exports = server;
+const server = http.createServer(serverHandler);
+
+module.exports = serverHandler;
 
 if (require.main === module) {
   server.listen(port, "127.0.0.1", () => {
