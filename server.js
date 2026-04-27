@@ -48,6 +48,18 @@ const server = http.createServer((req, res) => {
   const rel = urlPath === "/" ? "/index.html" : urlPath;
   const filePath = safeJoin(root, "." + rel);
 
+  // CORS 预检请求处理
+  if (req.method === "OPTIONS") {
+    res.writeHead(200, {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Credentials": "true"
+    });
+    res.end();
+    return;
+  }
+
   // Vercel Serverless 环境下，如果不是 API 请求且文件不存在，返回 404
   if (!urlPath.startsWith("/api/") && !fs.existsSync(filePath)) {
     res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
@@ -61,6 +73,8 @@ const server = http.createServer((req, res) => {
   res.setHeader("X-XSS-Protection", "1; mode=block");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   res.setHeader("Content-Security-Policy", "default-src 'self' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net; img-src 'self' data: https://www.transparenttextures.com;");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   // 2. 限制访问敏感文件
   const sensitiveFiles = [
