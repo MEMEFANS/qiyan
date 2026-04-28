@@ -14,8 +14,13 @@
       // For stat counters, also update data-count so animated numbers work
       if (key.startsWith('stat')) {
         el.setAttribute('data-count', data[key]);
+        el.textContent = data[key];
+      } else {
+        // Use innerHTML to support <br> and other formatting
+        // Convert newlines to <br> if it's from a textarea
+        const val = data[key].toString().replace(/\n/g, '<br>');
+        el.innerHTML = val;
       }
-      el.textContent = data[key];
     });
   };
 

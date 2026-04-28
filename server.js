@@ -65,8 +65,8 @@ const serverHandler = (req, res) => {
     if (req.method === "OPTIONS") {
       res.writeHead(200, {
         "Access-Control-Allow-Origin": requestOrigin || "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, folder",
         "Access-Control-Allow-Credentials": "true"
       });
       res.end();
@@ -131,16 +131,22 @@ const serverHandler = (req, res) => {
       if (req.method === "POST") {
         const cookies = req.headers.cookie || "";
         if (!cookies.includes("admin_session=authenticated")) {
+          console.log("[Auth] Unauthorized save attempt to /api/content");
           return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
         }
         let body = "";
         req.on("data", chunk => { body += chunk.toString(); });
         req.on("end", () => {
           try {
+            if (!body) throw new Error("Empty body");
+            // 验证是否为有效 JSON
+            JSON.parse(body);
             fs.writeFileSync(DATA_FILE, body);
+            console.log("[CMS] Content updated successfully");
             sendJsonResponse(200, { success: true }, requestOrigin);
           } catch (e) {
-            sendJsonResponse(500, { success: false, message: "Save failed" }, requestOrigin);
+            console.error("[CMS] Save failed:", e.message);
+            sendJsonResponse(500, { success: false, message: "Save failed: " + e.message }, requestOrigin);
           }
         });
         return;
@@ -227,6 +233,25 @@ const serverHandler = (req, res) => {
         });
         return;
       }
+      if (req.method === "DELETE") {
+        const cookies = req.headers.cookie || "";
+        if (!cookies.includes("admin_session=authenticated")) {
+          return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+        }
+        const query = new URL(req.url, `http://${req.headers.host}`).searchParams;
+        const id = query.get("id");
+        if (!id) return sendJsonResponse(400, { success: false, message: "ID is required" }, requestOrigin);
+
+        try {
+          let cases = JSON.parse(fs.readFileSync(CASES_FILE, "utf-8"));
+          cases = cases.filter(c => c.id !== id);
+          fs.writeFileSync(CASES_FILE, JSON.stringify(cases, null, 2));
+          sendJsonResponse(200, { success: true }, requestOrigin);
+        } catch (e) {
+          sendJsonResponse(500, { success: false, message: "Delete failed" }, requestOrigin);
+        }
+        return;
+      }
     }
 
     // 7. 图片上传接口 (自有服务器直接存 assets)
@@ -250,6 +275,61 @@ const serverHandler = (req, res) => {
         }
       });
       return;
+    }
+
+    // 8. 获取/删除文件接口
+    if (urlPath === "/api/files") {
+      const cookies = req.headers.cookie || "";
+      if (!cookies.includes("admin_session=authenticated")) {
+        return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+      }
+
+      if (req.method === "GET") {
+        const folder = req.headers.folder || "uploads";
+        const dirPath = path.join(root, "assets", folder);
+        try {
+          if (!fs.existsSync(dirPath)) {
+            return sendJsonResponse(200, [], requestOrigin);
+          }
+          const files = fs.readdirSync(dirPath)
+            .filter(file => !file.startsWith("."))
+            .map(file => ({
+              name: file,
+              path: `/assets/${folder}/${file}`
+            }));
+          sendJsonResponse(200, files, requestOrigin);
+        } catch (e) {
+          sendJsonResponse(500, { success: false, message: "Read folder failed" }, requestOrigin);
+        }
+        return;
+      }
+
+      if (req.method === "DELETE") {
+        const query = new URL(req.url, `http://${req.headers.host}`).searchParams;
+        const filePathParam = query.get("path");
+        if (!filePathParam) {
+          return sendJsonResponse(400, { success: false, message: "Path is required" }, requestOrigin);
+        }
+
+        // 安全校验：只允许删除 assets 目录下的文件
+        if (!filePathParam.startsWith("/assets/")) {
+          return sendJsonResponse(403, { success: false, message: "Forbidden" }, requestOrigin);
+        }
+
+        const fullPath = path.join(root, filePathParam);
+        try {
+          if (fs.existsSync(fullPath)) {
+            fs.unlinkSync(fullPath);
+            sendJsonResponse(200, { success: true }, requestOrigin);
+          } else {
+            sendJsonResponse(404, { success: false, message: "File not found" }, requestOrigin);
+          }
+        } catch (e) {
+          console.error("[Storage] Delete failed:", e);
+          sendJsonResponse(500, { success: false, message: "Delete failed" }, requestOrigin);
+        }
+        return;
+      }
     }
 
     // --- 静态文件处理 ---

@@ -585,6 +585,11 @@
     </div>
 
     <script>
+      // 检查登录状态
+      if (localStorage.getItem('adminLoggedIn') !== 'true') {
+        window.location.href = '/admin/login.html';
+      }
+
       lucide.createIcons();
 
       let currentQRData = { qrOfficial: null, qrService: null };
@@ -606,40 +611,80 @@
       });
 
       async function loadAll() {
+        console.log('正在从服务器加载内容...');
         try {
-          const res = await fetch('/api/content');
-          if (!res.ok) return;
+          const res = await fetch('/api/content', { credentials: 'include' });
+          if (!res.ok) {
+            console.warn('服务器响应不正常:', res.status);
+            return;
+          }
           const data = await res.json();
+          console.log('内容加载成功:', Object.keys(data).length, '个字段');
           document.querySelectorAll('[data-key]').forEach(el => {
             const k = el.dataset.key;
             if (data[k] != null) el.value = data[k];
           });
         } catch (e) {
-          console.warn('无法加载内容');
+          console.warn('无法连接到服务器加载内容:', e);
         }
       }
 
       document.getElementById('contentForm').addEventListener('submit', async e => {
         e.preventDefault();
+        console.log('提交按钮已点击，开始准备数据...');
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        // 禁用按钮防止重复点击
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 inline mr-2 animate-spin"></i> 正在保存...';
+        lucide.createIcons();
+
         const data = {};
         document.querySelectorAll('[data-key]').forEach(el => {
           const k = el.dataset.key;
           const v = el.value.trim();
-          if (v) data[k] = v;
+          data[k] = v; // 即使是空字符串也保存，以支持清空内容
         });
+
+        console.log('准备保存的数据:', data);
+
         try {
           const res = await fetch('/api/content', {
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
           });
+          
+          console.log('服务器返回状态:', res.status);
+          
+          if (!res.ok) {
+            if (res.status === 401) {
+              throw new Error('登录已过期，请重新登录');
+            }
+            throw new Error(`服务器响应错误: ${res.status}`);
+          }
+
           const result = await res.json();
+          console.log('保存结果:', result);
           if (result.success) {
             document.getElementById('toast').classList.remove('hidden');
             setTimeout(() => document.getElementById('toast').classList.add('hidden'), 2000);
+          } else {
+            throw new Error(result.message || '保存失败');
           }
         } catch (e) {
-          alert('保存失败');
+          console.error('保存过程中出错:', e);
+          alert('保存失败: ' + e.message);
+          if (e.message.includes('登录已过期')) {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.href = '/admin/login.html';
+          }
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+          lucide.createIcons();
         }
       });
 
@@ -658,12 +703,22 @@
       }
 
       async function saveQR(type) {
-        if (!currentQRData[type]) return;
-        const folder = type === 'qrOfficial' ? 'qrcodes' : 'service';
+        if (!currentQRData[type]) {
+          alert('请先选择图片');
+          return;
+        }
+        const folder = 'qrcodes';
         const fileName = type === 'qrOfficial' ? 'qr-official.png' : 'qr-service.png';
+        const btn = document.getElementById(type + 'SaveBtn');
+        const originalText = btn.innerHTML;
+        
+        btn.disabled = true;
+        btn.innerHTML = '正在上传...';
+
         try {
           const res = await fetch('/api/upload', {
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               imageData: currentQRData[type],
@@ -671,20 +726,30 @@
               folder: folder
             })
           });
+          
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          
           const result = await res.json();
           if (result.success) {
             document.getElementById('toast').classList.remove('hidden');
             setTimeout(() => document.getElementById('toast').classList.add('hidden'), 2000);
-            document.getElementById(type + 'SaveBtn').classList.add('hidden');
+            btn.classList.add('hidden');
+            currentQRData[type] = null;
+          } else {
+            throw new Error(result.message || '上传失败');
           }
         } catch (e) {
-          alert('上传失败');
+          console.error('QR上传失败:', e);
+          alert('上传失败: ' + e.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
         }
       }
 
       async function loadCases() {
         try {
-          const res = await fetch('/api/cases');
+          const res = await fetch('/api/cases', { credentials: 'include' });
           if (!res.ok) {
             document.getElementById('casesList').innerHTML = '<p class="text-slate-500 text-center py-8">暂无案例，点击右上角添加</p>';
             return;
@@ -692,6 +757,7 @@
           casesData = await res.json();
           renderCases();
         } catch (e) {
+          console.error('加载案例失败:', e);
           document.getElementById('casesList').innerHTML = '<p class="text-slate-500 text-center py-8">加载失败</p>';
         }
       }
@@ -729,6 +795,11 @@
         document.getElementById('caseImagePath').value = caseData ? caseData.image : '';
         if (caseData && caseData.image) {
           document.getElementById('caseImagePreview').innerHTML = '<img src="' + caseData.image + '" class="w-full h-full object-contain rounded-2xl">';
+        } else {
+          document.getElementById('caseImagePreview').innerHTML = `
+            <i data-lucide="image" class="h-10 w-10 text-slate-400 mb-2"></i>
+            <span class="text-sm text-slate-500 font-medium">点击上传封面图片</span>
+          `;
         }
         document.getElementById('caseModalTitle').textContent = caseData ? '编辑案例' : '新增案例';
         lucide.createIcons();
@@ -742,19 +813,97 @@
         document.getElementById('caseModal').classList.add('hidden');
       }
 
-      function handleCaseImageUpload(input) {
+      async function deleteCase() {
+        const id = document.getElementById('caseId').value;
+        if (!id) return;
+        if (!confirm('确定要删除这个案例吗？')) return;
+        
+        const btn = document.querySelector('button[onclick="deleteCase()"]');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin"></i>';
+        lucide.createIcons();
+
+        try {
+          const res = await fetch(`/api/cases?id=${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const result = await res.json();
+          if (result.success) {
+            closeCaseEditor();
+            loadCases();
+            document.getElementById('toast').textContent = '删除成功';
+            document.getElementById('toast').classList.remove('hidden');
+            setTimeout(() => {
+              document.getElementById('toast').classList.add('hidden');
+              document.getElementById('toast').textContent = '保存成功！';
+            }, 2000);
+          } else {
+            throw new Error(result.message || '删除失败');
+          }
+        } catch (e) {
+          alert('删除失败: ' + e.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+          lucide.createIcons();
+        }
+      }
+
+      async function handleCaseImageUpload(input) {
         const file = input.files[0];
         if (!file) return;
-        const reader = new FileReader();
-        reader.onload = e => {
-          document.getElementById('caseImagePreview').innerHTML = '<img src="' + e.target.result + '" class="w-full h-full object-contain rounded-2xl">';
-          document.getElementById('caseImagePath').value = e.target.result;
-        };
-        reader.readAsDataURL(file);
+        
+        const preview = document.getElementById('caseImagePreview');
+        const originalContent = preview.innerHTML;
+        preview.innerHTML = '<div class="flex flex-col items-center"><i data-lucide="loader-2" class="h-8 w-8 text-brand-500 animate-spin mb-2"></i><span class="text-xs text-slate-500">正在上传...</span></div>';
+        lucide.createIcons();
+
+        try {
+          const reader = new FileReader();
+          const dataUrl = await new Promise((resolve, reject) => {
+            reader.onload = e => resolve(e.target.result);
+            reader.onerror = e => reject(e);
+            reader.readAsDataURL(file);
+          });
+
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              imageData: dataUrl,
+              fileName: 'case-' + Date.now() + '-' + file.name,
+              folder: 'cases'
+            })
+          });
+
+          if (!res.ok) throw new Error(`上传失败: ${res.status}`);
+          const result = await res.json();
+          
+          if (result.success) {
+            preview.innerHTML = '<img src="' + (result.path || dataUrl) + '" class="w-full h-full object-contain rounded-2xl">';
+            document.getElementById('caseImagePath').value = result.path;
+          } else {
+            throw new Error(result.message || '上传失败');
+          }
+        } catch (e) {
+          console.error('案例图片上传失败:', e);
+          alert('图片上传失败: ' + e.message);
+          preview.innerHTML = originalContent;
+          lucide.createIcons();
+        }
       }
 
       document.getElementById('caseForm').addEventListener('submit', async e => {
         e.preventDefault();
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '正在保存...';
+
         const caseData = {
           id: document.getElementById('caseId').value || Date.now().toString(),
           title: document.getElementById('caseTitle').value,
@@ -767,25 +916,36 @@
         try {
           const res = await fetch('/api/cases', {
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(caseData)
           });
-          if (res.ok) {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const result = await res.json();
+          if (result.success) {
             closeCaseEditor();
             loadCases();
             document.getElementById('toast').classList.remove('hidden');
             setTimeout(() => document.getElementById('toast').classList.add('hidden'), 2000);
+          } else {
+            throw new Error(result.message || '保存失败');
           }
         } catch (e) {
-          alert('保存失败');
+          console.error('案例保存失败:', e);
+          alert('保存失败: ' + e.message);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
         }
       });
 
       async function loadImages() {
         try {
           const res = await fetch('/api/files', {
+            credentials: 'include',
             headers: { 'folder': 'uploads' }
           });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const files = await res.json();
           if (!files.length) {
             document.getElementById('imagesGrid').innerHTML = '<p class="text-slate-500 text-center py-8 col-span-full">暂无图片，点击右上角上传</p>';
@@ -794,12 +954,15 @@
           document.getElementById('imagesGrid').innerHTML = files.map(f => `
             <div class="relative group aspect-square rounded-xl overflow-hidden bg-slate-100">
               <img src="${f.path}" class="w-full h-full object-cover">
-              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <button onclick="copyImagePath('${f.path}')" class="px-3 py-1 bg-white text-slate-900 text-xs font-bold rounded-lg">复制路径</button>
+              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                <button onclick="copyImagePath('${f.path}')" class="px-3 py-1 bg-white text-slate-900 text-xs font-bold rounded-lg hover:bg-slate-50 transition-colors">复制路径</button>
+                <button onclick="deleteImage('${f.path}')" class="p-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
               </div>
             </div>
           `).join('');
+          lucide.createIcons();
         } catch (e) {
+          console.error('加载图片失败:', e);
           document.getElementById('imagesGrid').innerHTML = '<p class="text-slate-500 text-center py-8 col-span-full">加载失败</p>';
         }
       }
@@ -814,50 +977,108 @@
         }, 2000);
       }
 
+      async function deleteImage(path) {
+        if (!confirm('确定要删除这张图片吗？')) return;
+        try {
+          const res = await fetch(`/api/files?path=${encodeURIComponent(path)}`, { 
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          const result = await res.json();
+          if (result.success) {
+            loadImages();
+          } else {
+            alert('删除失败: ' + result.message);
+          }
+        } catch (e) {
+          alert('请求失败');
+        }
+      }
+
       async function handleGeneralUpload(input) {
         const files = Array.from(input.files);
-        for (const file of files) {
-          const reader = new FileReader();
-          reader.onload = async e => {
-            try {
-              await fetch('/api/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  imageData: e.target.result,
-                  fileName: file.name,
-                  folder: 'uploads'
-                })
-              });
-            } catch (e) {
-              console.error('上传失败', file.name);
+        if (files.length === 0) return;
+
+        const toast = document.getElementById('toast');
+        const originalToastText = toast.textContent;
+        toast.textContent = '正在上传...';
+        toast.classList.remove('hidden');
+
+        try {
+          let successCount = 0;
+          for (const file of files) {
+            const dataUrl = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = e => resolve(e.target.result);
+              reader.onerror = e => reject(e);
+              reader.readAsDataURL(file);
+            });
+
+            const res = await fetch('/api/upload', {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                imageData: dataUrl,
+                fileName: 'img-' + Date.now() + '-' + file.name,
+                folder: 'uploads'
+              })
+            });
+
+            if (!res.ok) {
+              if (res.status === 401) throw new Error('登录已过期，请重新登录');
+              throw new Error(`上传 ${file.name} 失败: ${res.status}`);
             }
-          };
-          reader.readAsDataURL(file);
+            
+            const result = await res.json();
+            if (result.success) successCount++;
+            else throw new Error(result.message || `上传 ${file.name} 失败`);
+          }
+          
+          toast.textContent = `成功上传 ${successCount} 张图片！`;
+          setTimeout(() => toast.classList.add('hidden'), 2000);
+          loadImages();
+        } catch (e) {
+          console.error('上传出错:', e);
+          alert('部分或全部图片上传失败: ' + e.message);
+          toast.classList.add('hidden');
+        } finally {
+          setTimeout(() => {
+            toast.textContent = originalToastText;
+          }, 2500);
+          input.value = ''; // 清空选择
         }
-        setTimeout(loadImages, 500);
       }
 
       async function loadBookings() {
         try {
-          const res = await fetch('/api/bookings');
+          const res = await fetch('/api/bookings', { credentials: 'include' });
+          if (!res.ok) {
+            if (res.status === 401) throw new Error('登录已过期');
+            throw new Error(`HTTP ${res.status}`);
+          }
           const data = await res.json();
           const list = document.getElementById('bookingsList');
-          if (!data.length) {
+          if (!data || !data.length) {
             list.innerHTML = '<tr><td colspan="6" class="px-8 py-12 text-center text-slate-400">暂无预约记录</td></tr>';
             return;
           }
-          list.innerHTML = data.map(b => `
+          list.innerHTML = data.reverse().map(b => `
             <tr class="hover:bg-slate-50 transition-colors">
               <td class="px-8 py-5 text-slate-400 font-medium">${new Date(b.timestamp || b.createdAt).toLocaleString()}</td>
-              <td class="px-8 py-5 font-bold text-slate-900">${b.parentName}</td>
-              <td class="px-8 py-5"><span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold">${b.childAge}</span></td>
+              <td class="px-8 py-5 font-bold text-slate-900">${b.parentName || b.name}</td>
+              <td class="px-8 py-5"><span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold">${b.childAge || b.age}</span></td>
               <td class="px-8 py-5 font-medium text-brand-600">${b.phone}</td>
-              <td class="px-8 py-5 text-slate-600">${b.needs}</td>
+              <td class="px-8 py-5 text-slate-600">${b.needs || (b.concerns ? b.concerns.join(', ') : '-')}</td>
               <td class="px-8 py-5 text-slate-400 italic text-xs">${b.notes || '-'}</td>
             </tr>
           `).join('');
         } catch (e) {
+          console.error('加载预约失败:', e);
+          if (e.message === '登录已过期') {
+            window.location.href = '/admin/login.html';
+            return;
+          }
           document.getElementById('bookingsList').innerHTML = '<tr><td colspan="6" class="px-8 py-12 text-center text-slate-400">加载失败</td></tr>';
         }
       }
