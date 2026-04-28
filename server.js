@@ -50,7 +50,10 @@ const serverHandler = (req, res) => {
   const sendJsonResponse = (statusCode, data, origin) => {
     const headers = {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": "true"
+      "Access-Control-Allow-Credentials": "true",
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0"
     };
     if (origin) {
       headers["Access-Control-Allow-Origin"] = origin;
