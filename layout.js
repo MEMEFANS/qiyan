@@ -170,7 +170,14 @@
     initBookingFormDemo();
 
     // Refresh content loader to handle dynamically loaded fragments
-    if (window.contentLoader) window.contentLoader.refresh();
+    if (window.contentLoader) {
+      await window.contentLoader.refresh();
+    }
+    
+    // Initialize/Re-initialize Lucide icons for new fragments
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
   };
 
   init();
