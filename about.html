@@ -78,10 +78,10 @@
               <span class="text-slate-900">关于启言</span>
             </nav>
             <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-              用专业与爱，<br/>
-              <span class="text-brand-500">守护每一个孩子的成长</span>
+              <span data-content="aboutHeroTitle1">用专业与爱，</span><br/>
+              <span data-content="aboutHeroTitle2" class="text-brand-500">守护每一个孩子的成长</span>
             </h1>
-            <p class="mt-8 text-lg leading-relaxed text-slate-600">
+            <p data-content="aboutHeroDesc" class="mt-8 text-lg leading-relaxed text-slate-600">
               始于2010年，启言社交训练中心专注2-12岁儿童言语社交康复。我们汇聚国际循证医学力量，用有温度的专业服务，开启孩子自信沟通的新未来。
             </p>
           </div>
@@ -172,13 +172,13 @@
               <!-- Year 2010 -->
               <div class="flex flex-col md:flex-row gap-8 items-center">
                 <div class="flex-1 text-right hidden md:block">
-                  <h3 class="text-2xl font-bold text-slate-900">2010年</h3>
-                  <p class="mt-2 text-slate-600">启言社交训练中心正式成立，首家中心落户北京。</p>
+                  <h3 data-content="historyYear1" class="text-2xl font-bold text-slate-900">2010年</h3>
+                  <p data-content="historyDesc1" class="mt-2 text-slate-600">启言社交训练中心正式成立，首家中心落户北京。</p>
                 </div>
                 <div class="h-4 w-4 rounded-full bg-brand-500 ring-4 ring-brand-100 z-10"></div>
                 <div class="flex-1 md:hidden">
-                  <h3 class="text-xl font-bold text-slate-900">2010年</h3>
-                  <p class="mt-2 text-slate-600">启言社交训练中心正式成立，首家中心落户北京。</p>
+                  <h3 data-content="historyYear1" class="text-xl font-bold text-slate-900">2010年</h3>
+                  <p data-content="historyDesc1" class="mt-2 text-slate-600">启言社交训练中心正式成立，首家中心落户北京。</p>
                 </div>
                 <div class="flex-1 hidden md:block"></div>
               </div>
@@ -188,21 +188,21 @@
                 <div class="flex-1 hidden md:block"></div>
                 <div class="h-4 w-4 rounded-full bg-brand-500 ring-4 ring-brand-100 z-10"></div>
                 <div class="flex-1">
-                  <h3 class="text-2xl font-bold text-slate-900">2015年</h3>
-                  <p class="mt-2 text-slate-600">引入国际循证医学标准，建立标准化的康复训练体系。</p>
+                  <h3 data-content="historyYear2" class="text-2xl font-bold text-slate-900">2015年</h3>
+                  <p data-content="historyDesc2" class="mt-2 text-slate-600">引入国际循证医学标准，建立标准化的康复训练体系。</p>
                 </div>
               </div>
 
               <!-- Year 2020 -->
               <div class="flex flex-col md:flex-row gap-8 items-center">
                 <div class="flex-1 text-right hidden md:block">
-                  <h3 class="text-2xl font-bold text-slate-900">2020年</h3>
-                  <p class="mt-2 text-slate-600">直营中心突破10家，全面覆盖核心一线城市。</p>
+                  <h3 data-content="historyYear3" class="text-2xl font-bold text-slate-900">2020年</h3>
+                  <p data-content="historyDesc3" class="mt-2 text-slate-600">直营中心突破10家，全面覆盖核心一线城市。</p>
                 </div>
                 <div class="h-4 w-4 rounded-full bg-brand-500 ring-4 ring-brand-100 z-10"></div>
                 <div class="flex-1 md:hidden">
-                  <h3 class="text-xl font-bold text-slate-900">2020年</h3>
-                  <p class="mt-2 text-slate-600">直营中心突破10家，全面覆盖核心一线城市。</p>
+                  <h3 data-content="historyYear3" class="text-xl font-bold text-slate-900">2020年</h3>
+                  <p data-content="historyDesc3" class="mt-2 text-slate-600">直营中心突破10家，全面覆盖核心一线城市。</p>
                 </div>
                 <div class="flex-1 hidden md:block"></div>
               </div>
@@ -230,6 +230,7 @@
     <div id="siteFooter"></div>
 
     <script src="./layout.js"></script>
+    <script src="./admin/content-loader.js"></script>
     <script src="./main.js"></script>
     <script>
       lucide.createIcons();

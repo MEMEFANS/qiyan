@@ -49,6 +49,11 @@
     }
   };
 
+  // Expose to global for dynamic content (like footer/header)
+  window.contentLoader = {
+    refresh: load
+  };
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', load);
   } else {

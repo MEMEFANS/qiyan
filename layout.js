@@ -168,6 +168,9 @@
     initMobileMenu();
     initNavActive();
     initBookingFormDemo();
+
+    // Refresh content loader to handle dynamically loaded fragments
+    if (window.contentLoader) window.contentLoader.refresh();
   };
 
   init();

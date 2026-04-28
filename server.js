@@ -6,10 +6,8 @@ const crypto = require("crypto");
 const root = process.cwd();
 const port = Number(process.env.PORT || 3000);
 
-// 数据持久化目录：自有服务器环境下保存在项目根目录的 data 文件夹中
-const DATA_DIR = path.join(root, "data");
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-
+// 数据持久化目录
+const DATA_DIR = root; // 直接保存在根目录，避免路径混乱
 const DATA_FILE = path.join(DATA_DIR, "data.json");
 const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
 const CASES_FILE = path.join(DATA_DIR, "cases.json");

@@ -96,9 +96,9 @@
             <span class="text-slate-900">专项活动</span>
           </nav>
           <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            多元活动，<span class="text-brand-500">开启成长可能</span>
+            <span data-content="eventsHeroTitle1">多元活动，</span><span class="text-brand-500" data-content="eventsHeroTitle2">开启成长可能</span>
           </h1>
-          <p class="mt-8 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
+          <p data-content="eventsHeroSubtitle" class="mt-8 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
             通过丰富的专项活动与工作坊，我们为家长提供专业指导，为孩子创造更多社交与实践的机会。
           </p>
         </div>
@@ -112,8 +112,8 @@
               <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                 <i data-lucide="lightbulb" class="h-7 w-7"></i>
               </div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-3">灯塔计划</h3>
-              <p class="text-slate-600 text-sm leading-relaxed mb-6">针对早期语言干预的公益家长课堂，为新手家长提供科学的引导方案与心理支持。</p>
+              <h3 data-content="event1Title" class="text-2xl font-bold text-slate-900 mb-3">灯塔计划</h3>
+              <p data-content="event1Desc" class="text-slate-600 text-sm leading-relaxed mb-6">针对早期语言干预的公益家长课堂，为新手家长提供科学的引导方案与心理支持。</p>
               <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-brand-500 transition-colors">
                 了解活动详情 <i data-lucide="arrow-right" class="h-4 w-4"></i>
               </div>
@@ -124,8 +124,8 @@
               <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 transition-colors group-hover:bg-accent-500 group-hover:text-white">
                 <i data-lucide="sparkles" class="h-7 w-7"></i>
               </div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-3">火种行动</h3>
-              <p class="text-slate-600 text-sm leading-relaxed mb-6">周末户外社交实践营，在真实的社会环境中提升孩子的互动能力与应变技巧。</p>
+              <h3 data-content="event2Title" class="text-2xl font-bold text-slate-900 mb-3">火种行动</h3>
+              <p data-content="event2Desc" class="text-slate-600 text-sm leading-relaxed mb-6">周末户外社交实践营，在真实的社会环境中提升孩子的互动能力与应变技巧。</p>
               <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-accent-500 transition-colors">
                 了解活动详情 <i data-lucide="arrow-right" class="h-4 w-4"></i>
               </div>
@@ -345,6 +345,7 @@
       }
     </script>
     <script src="./layout.js"></script>
+    <script src="./admin/content-loader.js"></script>
     <script src="./main.js"></script>
     <script>
       // Initialize Lucide icons

@@ -3,9 +3,11 @@ const path = require("path");
 const crypto = require("crypto");
 
 const root = process.cwd();
-const DATA_FILE = "/tmp/data.json";
-const BOOKINGS_FILE = "/tmp/bookings.json";
-const CASES_FILE = "/tmp/cases.json";
+// 在 Vercel 环境下，我们使用 /tmp，但在本地环境下我们优先使用根目录
+const isVercel = process.env.VERCEL || process.env.NOW_REGION;
+const DATA_FILE = isVercel ? "/tmp/data.json" : path.join(root, "data.json");
+const BOOKINGS_FILE = isVercel ? "/tmp/bookings.json" : path.join(root, "bookings.json");
+const CASES_FILE = isVercel ? "/tmp/cases.json" : path.join(root, "cases.json");
 
 // 安全配置
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";

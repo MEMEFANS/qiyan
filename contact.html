@@ -89,9 +89,9 @@
             <span class="text-slate-900">联系启言</span>
           </nav>
           <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            与我们联系，<span class="text-brand-500">开启专业支持</span>
+            <span data-content="contactHeroTitle1">与我们联系，</span><span class="text-brand-500" data-content="contactHeroTitle2">开启专业支持</span>
           </h1>
-          <p class="mt-6 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
+          <p data-content="contactHeroSubtitle" class="mt-6 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
             无论是预约评估、课程咨询还是寻求专业支持，我们的团队都将竭诚为您服务。
           </p>
         </div>
@@ -113,8 +113,8 @@
                     <i data-lucide="phone-call" class="h-7 w-7"></i>
                   </div>
                   <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">咨询热线</h3>
-                  <p class="text-2xl font-bold text-slate-900">400-888-9999</p>
-                  <p class="mt-2 text-sm text-slate-500">周二至周日 09:00 - 18:00</p>
+                  <p data-content="contactHotline" class="text-2xl font-bold text-slate-900">400-888-9999</p>
+                  <p data-content="contactHotlineTime" class="mt-2 text-sm text-slate-500">周二至周日 09:00 - 18:00</p>
                 </div>
 
                 <!-- Email -->
@@ -123,8 +123,8 @@
                     <i data-lucide="mail" class="h-7 w-7"></i>
                   </div>
                   <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">邮件投递</h3>
-                  <p class="text-2xl font-bold text-slate-900">contact@qiyan.com</p>
-                  <p class="mt-2 text-sm text-slate-500">欢迎各类业务咨询与合作</p>
+                  <p data-content="contactEmail" class="text-2xl font-bold text-slate-900">contact@qiyan.com</p>
+                  <p data-content="contactEmailNote" class="mt-2 text-sm text-slate-500">欢迎各类业务咨询与合作</p>
                 </div>
               </div>
 
@@ -137,17 +137,17 @@
                       <i data-lucide="map-pin" class="h-7 w-7"></i>
                     </div>
                     <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">中心地址</h3>
-                    <p class="text-2xl font-bold text-slate-900 leading-tight mb-4">
+                    <p data-content="contactAddress" class="text-2xl font-bold text-slate-900 leading-tight mb-4">
                       贵州省六盘水市<br/>六枝特区九龙路<br/>特区社保局公交站对面
                     </p>
                     <div class="space-y-3">
                       <div class="flex items-center gap-2 text-sm text-slate-500">
                         <i data-lucide="bus" class="h-4 w-4"></i>
-                        <span>特区社保局公交站下车即到</span>
+                        <span data-content="contactBusInfo">特区社保局公交站下车即到</span>
                       </div>
                       <div class="flex items-center gap-2 text-sm text-slate-500">
                         <i data-lucide="navigation" class="h-4 w-4"></i>
-                        <span>六枝特区启言儿童健康咨询中心</span>
+                        <span data-content="contactCenterName">六枝特区启言儿童健康咨询中心</span>
                       </div>
                     </div>
                   </div>
@@ -285,6 +285,7 @@
     <div id="siteFooter"></div>
 
     <script src="./layout.js"></script>
+    <script src="./admin/content-loader.js"></script>
     <script src="./main.js"></script>
     <script>
       // Initialize Lucide icons

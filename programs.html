@@ -79,9 +79,9 @@
             <span class="text-slate-900">康复项目</span>
           </nav>
           <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            科学康复，<span class="text-brand-500">点亮未来</span>
+            <span data-content="programsHeroTitle1">科学康复，</span><span class="text-brand-500" data-content="programsHeroTitle2">点亮未来</span>
           </h1>
-          <p class="mt-8 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
+          <p data-content="programsHeroSubtitle" class="mt-8 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
             我们提供多维度、全方位的儿童康复训练项目，结合国际循证医学标准，为每个孩子量身定制成长方案。
           </p>
         </div>
@@ -96,8 +96,8 @@
               <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 mb-8 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                 <i data-lucide="message-circle" class="h-7 w-7"></i>
               </div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">言语治疗 (SLT)</h3>
-              <p class="text-slate-600 leading-relaxed mb-8">
+              <h3 data-content="program1Title" class="text-2xl font-bold text-slate-900 mb-4">言语治疗 (SLT)</h3>
+              <p data-content="program1Desc" class="text-slate-600 leading-relaxed mb-8">
                 针对构音障碍、语言发育迟缓、口吃等问题，通过科学的口部运动训练和语言激发，提升表达与沟通能力。
               </p>
               <ul class="space-y-3 mb-10">
@@ -120,8 +120,8 @@
               <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 mb-8 transition-colors group-hover:bg-accent-500 group-hover:text-white">
                 <i data-lucide="users" class="h-7 w-7"></i>
               </div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">社交康复训练</h3>
-              <p class="text-slate-600 leading-relaxed mb-8">
+              <h3 data-content="program2Title" class="text-2xl font-bold text-slate-900 mb-4">社交康复训练</h3>
+              <p data-content="program2Desc" class="text-slate-600 leading-relaxed mb-8">
                 模拟真实社交场景，训练同伴互动、情绪识别与调节、对话轮替等社交技能，助力孩子融入社会。
               </p>
               <ul class="space-y-3 mb-10">
@@ -144,8 +144,8 @@
               <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 mb-8 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                 <i data-lucide="brain" class="h-7 w-7"></i>
               </div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">启智康复</h3>
-              <p class="text-slate-600 leading-relaxed mb-8">
+              <h3 data-content="program3Title" class="text-2xl font-bold text-slate-900 mb-4">启智康复</h3>
+              <p data-content="program3Desc" class="text-slate-600 leading-relaxed mb-8">
                 提升注意力、记忆力、逻辑思维等核心认知能力，为后续的学习和生活自理打下坚实的基础。
               </p>
               <ul class="space-y-3 mb-10">
@@ -168,8 +168,8 @@
               <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 mb-8 transition-colors group-hover:bg-accent-500 group-hover:text-white">
                 <i data-lucide="baby" class="h-7 w-7"></i>
               </div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">幼儿园融合课</h3>
-              <p class="text-slate-600 leading-relaxed mb-8">
+              <h3 data-content="program4Title" class="text-2xl font-bold text-slate-900 mb-4">幼儿园融合课</h3>
+              <p data-content="program4Desc" class="text-slate-600 leading-relaxed mb-8">
                 衔接幼儿园环境，重点培养课堂常规、指令听从、集体活动参与能力，助力孩子顺利升学。
               </p>
               <ul class="space-y-3 mb-10">
@@ -192,8 +192,8 @@
               <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 mb-8 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                 <i data-lucide="puzzle" class="h-7 w-7"></i>
               </div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">职能治疗 (OT)</h3>
-              <p class="text-slate-600 leading-relaxed mb-8">
+              <h3 data-content="program5Title" class="text-2xl font-bold text-slate-900 mb-4">职能治疗 (OT)</h3>
+              <p data-content="program5Desc" class="text-slate-600 leading-relaxed mb-8">
                 提升精细动作、感觉统合与生活自理能力，帮助孩子建立身体协调性，应对日常生活挑战。
               </p>
               <ul class="space-y-3 mb-10">
@@ -273,6 +273,7 @@
     <div id="siteFooter"></div>
 
     <script src="./layout.js"></script>
+    <script src="./admin/content-loader.js"></script>
     <script src="./main.js"></script>
     <script>
       // Initialize Lucide icons
