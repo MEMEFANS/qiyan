@@ -20,13 +20,13 @@
   };
 
   const load = async () => {
-    try {
-      const res = await fetch('/api/content');
-      if (!res.ok) {
-        // 如果是 404，说明可能没有启动后端服务，静默退出
-        if (res.status === 404) return;
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+      try {
+        const res = await fetch('/api/content?t=' + Date.now());
+        if (!res.ok) {
+          // 如果是 404，说明可能没有启动后端服务，静默退出
+          if (res.status === 404) return;
+          throw new Error('Failed to load content');
+        }
 
       const contentType = res.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
