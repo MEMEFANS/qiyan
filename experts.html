@@ -114,71 +114,56 @@
             <button class="px-6 py-2 rounded-full bg-white text-slate-600 font-bold text-sm hover:text-brand-500 transition-all shadow-sm">心理咨询</button>
           </div>
 
-          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <!-- Expert 1 -->
-            <a href="./expert-001.html" class="group relative rounded-3xl bg-white p-4 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover">
-              <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-slate-100 relative">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <!-- Image placeholder -->
-                <div class="absolute inset-0 flex items-center justify-center text-slate-300">
-                  <i data-lucide="user" class="h-20 w-20"></i>
-                </div>
-              </div>
-              <div class="p-4 pt-6">
-                <div class="flex items-center justify-between mb-2">
-                  <h3 class="text-2xl font-bold text-slate-900" data-content="expert1Name">张老师</h3>
-                  <span class="px-3 py-1 rounded-lg bg-brand-50 text-brand-600 text-xs font-bold">资深专家</span>
-                </div>
-                <p class="text-sm font-bold text-brand-600 mb-4" data-content="expert1Title">资深言语治疗师 / SLT 主管</p>
-                <p class="text-sm leading-relaxed text-slate-500 mb-6" data-content="expert1Dir">拥有超过10年康复经验，擅长构音障碍、语言发育迟缓及口部肌肉训练。</p>
-                <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-brand-500 transition-colors">
-                  查看详细履历 <i data-lucide="arrow-right" class="h-4 w-4"></i>
-                </div>
-              </div>
-            </a>
-
-            <!-- Expert 2 -->
-            <a href="./expert-002.html" class="group relative rounded-3xl bg-white p-4 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover">
-              <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-slate-100 relative">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div class="absolute inset-0 flex items-center justify-center text-slate-300">
-                  <i data-lucide="user" class="h-20 w-20"></i>
-                </div>
-              </div>
-              <div class="p-4 pt-6">
-                <div class="flex items-center justify-between mb-2">
-                  <h3 class="text-2xl font-bold text-slate-900" data-content="expert2Name">王老师</h3>
-                  <span class="px-3 py-1 rounded-lg bg-accent-50 text-accent-600 text-xs font-bold">高级顾问</span>
-                </div>
-                <p class="text-sm font-bold text-accent-500 mb-4" data-content="expert2Title">社交沟通专家 / 融合教育主管</p>
-                <p class="text-sm leading-relaxed text-slate-500 mb-6" data-content="expert2Dir">专注于儿童社交沟通障碍（ASD）的干预，在社会融合与情绪管理方面有深厚造诣。</p>
-                <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-accent-500 transition-colors">
-                  查看详细履历 <i data-lucide="arrow-right" class="h-4 w-4"></i>
-                </div>
-              </div>
-            </a>
-
-            <!-- Expert 3 -->
-            <a href="./expert-003.html" class="group relative rounded-3xl bg-white p-4 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover">
-              <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-slate-100 relative">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div class="absolute inset-0 flex items-center justify-center text-slate-300">
-                  <i data-lucide="user" class="h-20 w-20"></i>
-                </div>
-              </div>
-              <div class="p-4 pt-6">
-                <div class="flex items-center justify-between mb-2">
-                  <h3 class="text-2xl font-bold text-slate-900" data-content="expert3Name">陈老师</h3>
-                  <span class="px-3 py-1 rounded-lg bg-slate-50 text-slate-600 text-xs font-bold">专业讲师</span>
-                </div>
-                <p class="text-sm font-bold text-slate-600 mb-4" data-content="expert3Title">作业治疗师 (OT) / 感觉统合专家</p>
-                <p class="text-sm leading-relaxed text-slate-500 mb-6" data-content="expert3Dir">擅长通过趣味化的游戏活动提升孩子的精细动作、感觉处理能力及生活自理能力。</p>
-                <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-slate-600 transition-colors">
-                  查看详细履历 <i data-lucide="arrow-right" class="h-4 w-4"></i>
-                </div>
-              </div>
-            </a>
+          <div id="expertsContainer" class="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+            <!-- Experts will be loaded here -->
+            <div class="col-span-full flex justify-center py-20">
+              <i data-lucide="loader-2" class="h-8 w-8 text-brand-500 animate-spin"></i>
+            </div>
           </div>
+
+          <script>
+            async function loadExperts() {
+              const container = document.getElementById('expertsContainer');
+              try {
+                const res = await fetch('/api/experts');
+                if (!res.ok) throw new Error('Failed to fetch');
+                const experts = await res.json();
+                
+                if (experts.length === 0) {
+                  container.innerHTML = '<div class="col-span-full text-center py-20 text-slate-400 font-bold">暂无专家信息</div>';
+                  return;
+                }
+
+                container.innerHTML = experts.map(e => `
+                  <div class="group relative flex flex-col bg-white rounded-[3rem] p-4 shadow-card hover:shadow-hover transition-all duration-500 hover:-translate-y-2 border border-slate-50">
+                    <div class="relative aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-slate-100 mb-8">
+                      <img src="${e.image || 'https://images.unsplash.com/photo-1559839734-2b71f1536783?w=800'}" alt="${e.name}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                      <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    </div>
+                    <div class="px-6 pb-8 text-center">
+                      <div class="inline-block px-4 py-1.5 bg-brand-50 text-brand-600 text-[10px] font-extrabold rounded-full mb-4 group-hover:bg-brand-500 group-hover:text-white transition-colors duration-300">
+                        ${e.title}
+                      </div>
+                      <h3 class="text-2xl font-black text-slate-900 mb-3">${e.name}</h3>
+                      <p class="text-slate-500 text-xs font-bold leading-relaxed mb-6 line-clamp-2">${e.specialty}</p>
+                      <div class="pt-6 border-t border-slate-50">
+                        <a href="/expert-detail.html?id=${e.id}" class="inline-flex items-center gap-2 text-slate-900 text-xs font-black group-hover:text-brand-500 transition-colors">
+                          查看专家简介
+                          <div class="h-8 w-8 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-brand-500 group-hover:text-white transition-all duration-300">
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                `).join('');
+                lucide.createIcons();
+              } catch (e) {
+                container.innerHTML = '<div class="col-span-full text-center py-20 text-red-400 font-bold">加载失败，请刷新重试</div>';
+              }
+            }
+            loadExperts();
+          </script>
           
           <!-- Dynamic Expert List -->
           <div id="dynamicExpertList" class="mt-10 grid gap-10 md:grid-cols-2 lg:grid-cols-3"></div>

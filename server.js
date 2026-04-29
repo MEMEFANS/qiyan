@@ -11,6 +11,7 @@ const DATA_DIR = root; // 直接保存在根目录，避免路径混乱
 const DATA_FILE = path.join(DATA_DIR, "data.json");
 const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
 const CASES_FILE = path.join(DATA_DIR, "cases.json");
+const EXPERTS_FILE = path.join(DATA_DIR, "experts.json");
 
 // 安全配置
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
@@ -20,6 +21,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, "{}");
 if (!fs.existsSync(BOOKINGS_FILE)) fs.writeFileSync(BOOKINGS_FILE, "[]");
 if (!fs.existsSync(CASES_FILE)) fs.writeFileSync(CASES_FILE, "[]");
+if (!fs.existsSync(EXPERTS_FILE)) fs.writeFileSync(EXPERTS_FILE, "[]");
 
 const mime = {
   ".html": "text/html; charset=utf-8",
@@ -246,6 +248,66 @@ const serverHandler = (req, res) => {
           let cases = JSON.parse(fs.readFileSync(CASES_FILE, "utf-8"));
           cases = cases.filter(c => c.id !== id);
           fs.writeFileSync(CASES_FILE, JSON.stringify(cases, null, 2));
+          sendJsonResponse(200, { success: true }, requestOrigin);
+        } catch (e) {
+          sendJsonResponse(500, { success: false, message: "Delete failed" }, requestOrigin);
+        }
+        return;
+      }
+    }
+
+    // 6.5. 专家团队接口
+    if (urlPath === "/api/experts") {
+      if (req.method === "GET") {
+        try {
+          const data = fs.readFileSync(EXPERTS_FILE, "utf-8");
+          res.writeHead(200, {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": requestOrigin || "*",
+            "Access-Control-Allow-Credentials": "true"
+          });
+          res.end(data);
+        } catch (e) {
+          sendJsonResponse(200, [], requestOrigin);
+        }
+        return;
+      }
+      if (req.method === "POST") {
+        const cookies = req.headers.cookie || "";
+        if (!cookies.includes("admin_session=authenticated")) {
+          return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+        }
+        let body = "";
+        req.on("data", chunk => { body += chunk.toString(); });
+        req.on("end", () => {
+          try {
+            const newExpert = JSON.parse(body);
+            let experts = [];
+            try { experts = JSON.parse(fs.readFileSync(EXPERTS_FILE, "utf-8")); } catch(e){}
+            const index = experts.findIndex(e => e.id === newExpert.id);
+            if (index >= 0) experts[index] = newExpert;
+            else experts.push(newExpert);
+            fs.writeFileSync(EXPERTS_FILE, JSON.stringify(experts, null, 2));
+            sendJsonResponse(200, { success: true }, requestOrigin);
+          } catch (e) {
+            sendJsonResponse(400, { success: false, message: "Bad Request" }, requestOrigin);
+          }
+        });
+        return;
+      }
+      if (req.method === "DELETE") {
+        const cookies = req.headers.cookie || "";
+        if (!cookies.includes("admin_session=authenticated")) {
+          return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+        }
+        const query = new URL(req.url, `http://${req.headers.host}`).searchParams;
+        const id = query.get("id");
+        if (!id) return sendJsonResponse(400, { success: false, message: "ID is required" }, requestOrigin);
+
+        try {
+          let experts = JSON.parse(fs.readFileSync(EXPERTS_FILE, "utf-8"));
+          experts = experts.filter(e => e.id !== id);
+          fs.writeFileSync(EXPERTS_FILE, JSON.stringify(experts, null, 2));
           sendJsonResponse(200, { success: true }, requestOrigin);
         } catch (e) {
           sendJsonResponse(500, { success: false, message: "Delete failed" }, requestOrigin);
