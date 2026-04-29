@@ -92,70 +92,12 @@
 
       <section class="py-24 bg-slate-50 relative">
         <div class="mx-auto max-w-7xl px-6">
-          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <!-- Case 1 -->
-            <a href="./case-001.html" class="group flex flex-col rounded-[2.5rem] bg-white shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100 overflow-hidden">
-              <div class="aspect-[16/10] relative overflow-hidden bg-slate-200">
-                <img src="https://img.freepik.com/free-photo/portrait-of-young-girl-playing-outdoors_23-2149282065.jpg?w=800" alt="言语发育迟缓干预案例" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.display='none'" />
-                <div class="absolute top-4 left-4">
-                  <span class="px-3 py-1 bg-brand-500 text-white text-[10px] font-bold rounded-full shadow-soft">言语发育</span>
-                </div>
-              </div>
-              <div class="p-8">
-                <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-500 transition-colors">言语发育迟缓干预案例</h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-2">从2岁半不开口，到4个月后能主动表达需求，见证语言爆发期的华丽转变。</p>
-                <div class="pt-6 border-t border-slate-50 flex items-center justify-between text-xs font-bold">
-                  <span class="text-slate-400">阅读全文</span>
-                  <div class="h-8 w-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-900 group-hover:bg-brand-500 group-hover:text-white transition-all">
-                    <i data-lucide="arrow-right" class="h-4 w-4"></i>
-                  </div>
-                </div>
-              </div>
-            </a>
-
-            <!-- Case 2 -->
-            <a href="./case-002.html" class="group flex flex-col rounded-[2.5rem] bg-white shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100 overflow-hidden">
-              <div class="aspect-[16/10] relative overflow-hidden bg-slate-200">
-                <img src="https://img.freepik.com/free-photo/children-playing-together-outdoors_23-2149246499.jpg?w=800" alt="社交沟通障碍融合案例" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.display='none'" />
-                <div class="absolute top-4 left-4">
-                  <span class="px-3 py-1 bg-accent-500 text-white text-[10px] font-bold rounded-full shadow-soft">社交沟通</span>
-                </div>
-              </div>
-              <div class="p-8">
-                <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-accent-500 transition-colors">社交沟通障碍融合案例</h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-2">帮助高功能自闭症儿童建立社交规则意识，顺利融入普通幼儿园集体生活。</p>
-                <div class="pt-6 border-t border-slate-50 flex items-center justify-between text-xs font-bold">
-                  <span class="text-slate-400">阅读全文</span>
-                  <div class="h-8 w-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-900 group-hover:bg-accent-500 group-hover:text-white transition-all">
-                    <i data-lucide="arrow-right" class="h-4 w-4"></i>
-                  </div>
-                </div>
-              </div>
-            </a>
-
-            <!-- Case 3 -->
-            <a href="./case-003.html" class="group flex flex-col rounded-[2.5rem] bg-white shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100 overflow-hidden">
-              <div class="aspect-[16/10] relative overflow-hidden bg-slate-200">
-                <img src="https://img.freepik.com/free-photo/child-playing-with-toy-blocks_23-2149281960.jpg?w=800" alt="构音障碍纠正案例" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.display='none'" />
-                <div class="absolute top-4 left-4">
-                  <span class="px-3 py-1 bg-brand-500 text-white text-[10px] font-bold rounded-full shadow-soft">构音纠正</span>
-                </div>
-              </div>
-              <div class="p-8">
-                <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-500 transition-colors">构音障碍纠正案例</h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-2">针对发音不清问题，通过系统口肌训练与语音泛化，让孩子重拾沟通自信。</p>
-                <div class="pt-6 border-t border-slate-50 flex items-center justify-between text-xs font-bold">
-                  <span class="text-slate-400">阅读全文</span>
-                  <div class="h-8 w-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-900 group-hover:bg-brand-500 group-hover:text-white transition-all">
-                    <i data-lucide="arrow-right" class="h-4 w-4"></i>
-                  </div>
-                </div>
-              </div>
-            </a>
+          <div id="dynamicCaseList" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div class="col-span-full flex items-center justify-center py-20">
+              <i data-lucide="loader-2" class="h-8 w-8 text-brand-500 animate-spin"></i>
+            </div>
           </div>
-        
-        <!-- Dynamic Case List -->
-        <div id="dynamicCaseList" class="mt-8 grid gap-4 md:grid-cols-3"></div>
+        </div>
       </section>
     </main>
 
@@ -173,17 +115,14 @@
         if (!container) return;
 
         try {
-          const res = await fetch('/api/cases');
-          if (!res.ok) return;
+          const res = await fetch('/api/cases?t=' + Date.now());
+          if (!res.ok) {
+            container.innerHTML = '<div class="col-span-full text-center py-20 text-slate-400">暂无案例内容</div>';
+            return;
+          }
           const cases = await res.json();
           
-          // Only show cases that are NOT the hardcoded ones (case-001, case-002, case-003)
-          // Actually, let's just clear the hardcoded ones if we have dynamic ones?
-          // No, the user might want both. Let's just show all from the API.
-          
           if (cases && cases.length > 0) {
-            // If we have cases from API, we can either append or replace.
-            // Let's append to the dynamic list.
             container.innerHTML = cases.map(c => `
               <a href="./case-detail.html?id=${c.id}" class="group flex flex-col rounded-[2.5rem] bg-white shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100 overflow-hidden">
                 <div class="aspect-[16/10] relative overflow-hidden bg-slate-200">
@@ -205,9 +144,12 @@
               </a>
             `).join('');
             lucide.createIcons();
+          } else {
+            container.innerHTML = '<div class="col-span-full text-center py-20 text-slate-400">暂无案例内容</div>';
           }
         } catch (e) {
           console.error('Failed to load dynamic cases:', e);
+          container.innerHTML = '<div class="col-span-full text-center py-20 text-slate-400">加载失败，请刷新重试</div>';
         }
       }
 
