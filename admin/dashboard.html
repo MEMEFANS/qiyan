@@ -534,20 +534,27 @@
                   <h3 class="text-lg font-bold text-slate-900">联系方式与地址</h3>
                 </div>
 
-                <div class="grid gap-6 md:grid-cols-2">
-                  <div class="space-y-4">
-                    <label class="block text-sm font-bold text-slate-700">基本联系信息</label>
-                    <input type="text" data-key="contactHotline" placeholder="咨询热线" class="w-full px-4 py-3 rounded-xl border border-slate-200">
-                    <input type="text" data-key="contactHotlineTime" placeholder="热线工作时间" class="w-full px-4 py-3 rounded-xl border border-slate-200">
-                    <input type="text" data-key="contactEmail" placeholder="电子邮箱" class="w-full px-4 py-3 rounded-xl border border-slate-200">
-                  </div>
-                  <div class="space-y-4">
-                    <label class="block text-sm font-bold text-slate-700">地址与交通</label>
-                    <textarea data-key="contactAddress" placeholder="中心详细地址" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
-                    <input type="text" data-key="contactBusInfo" placeholder="公交路线说明" class="w-full px-4 py-3 rounded-xl border border-slate-200">
-                    <input type="text" data-key="contactCenterName" placeholder="中心全称" class="w-full px-4 py-3 rounded-xl border border-slate-200">
-                  </div>
+                <div class="grid gap-6">
+                  <input type="text" data-key="contactHeroTitle1" placeholder="联系页标题 1" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactHeroTitle2" placeholder="联系页标题 2 (橙色)" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <textarea data-key="contactHeroSubtitle" placeholder="联系页副标题" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
                 </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                <div class="space-y-4">
+                  <label class="block text-sm font-bold text-slate-700">基本联系信息</label>
+                  <input type="text" data-key="contactHotline" placeholder="咨询热线" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactHotlineTime" placeholder="热线工作时间" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactEmail" placeholder="电子邮箱" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactEmailNote" placeholder="邮箱说明" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                </div>
+                <div class="space-y-4">
+                  <label class="block text-sm font-bold text-slate-700">地址与交通</label>
+                  <textarea data-key="contactAddress" placeholder="中心详细地址" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  <input type="text" data-key="contactBusInfo" placeholder="公交路线说明" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactCenterName" placeholder="中心全称" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                </div>
+              </div>
 
                 <div class="pt-6 flex justify-end">
                   <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
