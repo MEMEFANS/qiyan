@@ -602,15 +602,26 @@
                     康复详述 (支持简单排版)
                   </span>
                   <div class="flex items-center gap-2">
-                    <button type="button" onclick="document.getElementById('contentImageInput').click()" class="text-[10px] px-2 py-1 bg-brand-50 text-brand-600 rounded-md hover:bg-brand-100 transition-colors flex items-center gap-1">
-                      <i data-lucide="image-plus" class="h-3 w-3"></i>
-                      插入图片
-                    </button>
+                    <div class="relative group/menu">
+                      <button type="button" class="text-[10px] px-2 py-1 bg-brand-50 text-brand-600 rounded-md hover:bg-brand-100 transition-colors flex items-center gap-1">
+                        <i data-lucide="image-plus" class="h-3 w-3"></i>
+                        插入图片
+                        <i data-lucide="chevron-down" class="h-2 w-2"></i>
+                      </button>
+                      <div class="absolute right-0 top-full mt-1 hidden group-hover/menu:block bg-white shadow-xl rounded-lg border border-slate-100 p-1 z-10 w-32">
+                        <button type="button" onclick="setUploadMode('single'); document.getElementById('contentImageInput').click()" class="w-full text-left px-3 py-2 text-[10px] font-bold text-slate-600 hover:bg-slate-50 rounded-md flex items-center gap-2">
+                          <i data-lucide="image" class="h-3 w-3"></i> 单张大图
+                        </button>
+                        <button type="button" onclick="setUploadMode('double'); document.getElementById('contentImageInput').click()" class="w-full text-left px-3 py-2 text-[10px] font-bold text-slate-600 hover:bg-slate-50 rounded-md flex items-center gap-2 border-t border-slate-50">
+                          <i data-lucide="layout-grid" class="h-3 w-3"></i> 双图并排
+                        </button>
+                      </div>
+                    </div>
                     <span class="text-[10px] font-medium text-slate-400">使用 ### 标题, **粗体**, > 引用</span>
                   </div>
                 </label>
                 <textarea id="caseContent" rows="10" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all font-mono text-sm leading-relaxed" placeholder="输入详细的康复过程描述..."></textarea>
-                <input type="file" id="contentImageInput" class="hidden" accept="image/*" onchange="handleContentImageUpload(this)">
+                <input type="file" id="contentImageInput" class="hidden" accept="image/*" multiple onchange="handleContentImageUpload(this)">
               </div>
             </div>
 
@@ -1060,37 +1071,59 @@
         }
       }
 
+      let currentUploadMode = 'single';
+      function setUploadMode(mode) {
+        currentUploadMode = mode;
+      }
+
       async function handleContentImageUpload(input) {
-        const file = input.files[0];
-        if (!file) return;
+        const files = Array.from(input.files);
+        if (files.length === 0) return;
 
         const toast = document.getElementById('toast');
         toast.textContent = '正在上传图片...';
         toast.classList.remove('hidden');
 
         try {
-          const reader = new FileReader();
-          const dataUrl = await new Promise((resolve, reject) => {
-            reader.onload = e => resolve(e.target.result);
-            reader.onerror = e => reject(e);
-            reader.readAsDataURL(file);
-          });
+          let results = [];
+          for (const file of files) {
+            const reader = new FileReader();
+            const dataUrl = await new Promise((resolve, reject) => {
+              reader.onload = e => resolve(e.target.result);
+              reader.onerror = e => reject(e);
+              reader.readAsDataURL(file);
+            });
 
-          const res = await fetch('/api/upload', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              imageData: dataUrl,
-              fileName: 'content-' + Date.now() + '-' + file.name,
-              folder: 'cases'
-            })
-          });
+            const res = await fetch('/api/upload', {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                imageData: dataUrl,
+                fileName: 'content-' + Date.now() + '-' + file.name,
+                folder: 'cases'
+              })
+            });
 
-          const result = await res.json();
-          if (result.success) {
+            const result = await res.json();
+            if (result.success) {
+              results.push({ path: result.path, name: file.name });
+            }
+          }
+
+          if (results.length > 0) {
             const textarea = document.getElementById('caseContent');
-            const imageMarkdown = `\n![描述图片内容](${result.path})\n`;
+            let imageMarkdown = '';
+            
+            if (currentUploadMode === 'double' && results.length >= 2) {
+              // 插入双图语法
+              imageMarkdown = `\n!![左侧图描述](${results[0].path})!![右侧图描述](${results[1].path})\n`;
+            } else {
+              // 插入单图语法（默认模式或文件不够时）
+              results.forEach(r => {
+                imageMarkdown += `\n![图片描述](${r.path})\n`;
+              });
+            }
             
             // 插入到光标位置
             const start = textarea.selectionStart;
@@ -1098,10 +1131,8 @@
             const text = textarea.value;
             textarea.value = text.substring(0, start) + imageMarkdown + text.substring(end);
             
-            toast.textContent = '图片已插入内容中';
+            toast.textContent = results.length > 1 ? `成功插入 ${results.length} 张图片` : '图片已插入内容中';
             setTimeout(() => toast.classList.add('hidden'), 2000);
-          } else {
-            throw new Error(result.message || '上传失败');
           }
         } catch (e) {
           alert('图片插入失败: ' + e.message);
