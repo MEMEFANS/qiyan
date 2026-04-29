@@ -541,58 +541,138 @@
 
     <!-- Case Editor Modal -->
     <div id="caseModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div class="absolute inset-0 bg-black/50" onclick="closeCaseEditor()"></div>
-      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <div class="sticky top-0 bg-white border-b border-slate-100 px-8 py-6 flex items-center justify-between">
-          <h3 id="caseModalTitle" class="text-xl font-bold text-slate-900">编辑案例</h3>
-          <button onclick="closeCaseEditor()" class="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-            <i data-lucide="x" class="h-5 w-5 text-slate-500"></i>
+      <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeCaseEditor()"></div>
+      <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[92vh] overflow-hidden flex flex-col">
+        <!-- Modal Header -->
+        <div class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-white">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 bg-brand-100 rounded-xl flex items-center justify-center">
+              <i data-lucide="edit-3" class="h-5 w-5 text-brand-600"></i>
+            </div>
+            <div>
+              <h3 id="caseModalTitle" class="text-xl font-bold text-slate-900">编辑案例</h3>
+              <p class="text-xs text-slate-500">完善案例信息以展示康复成果</p>
+            </div>
+          </div>
+          <button onclick="closeCaseEditor()" class="p-2 hover:bg-slate-100 rounded-xl transition-colors">
+            <i data-lucide="x" class="h-5 w-5 text-slate-400"></i>
           </button>
         </div>
-        <form id="caseForm" class="p-8 space-y-6">
+
+        <form id="caseForm" class="flex-1 overflow-y-auto p-8">
           <input type="hidden" id="caseId">
-          <div class="grid gap-6 md:grid-cols-2">
-            <div>
-              <label class="block text-sm font-bold text-slate-700 mb-2">案例标题</label>
-              <input type="text" id="caseTitle" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="例如：张同学康复案例">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <!-- Left Side: Basic Info & Content -->
+            <div class="lg:col-span-7 space-y-6">
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                    <i data-lucide="type" class="h-4 w-4 text-brand-500"></i>
+                    案例标题
+                  </label>
+                  <input type="text" id="caseTitle" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm" placeholder="例如：言语发育迟缓干预案例">
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                    <i data-lucide="tag" class="h-4 w-4 text-brand-500"></i>
+                    分类标签
+                  </label>
+                  <select id="caseCategory" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm appearance-none bg-slate-50">
+                    <option value="语言发育迟缓">语言发育迟缓</option>
+                    <option value="社交障碍">社交障碍</option>
+                    <option value="感统失调">感统失调</option>
+                    <option value="注意力不集中">注意力不集中</option>
+                    <option value="其他">其他</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                  <i data-lucide="align-left" class="h-4 w-4 text-brand-500"></i>
+                  列表简述
+                </label>
+                <textarea id="caseDescription" rows="2" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none text-sm" placeholder="显示在列表页的简短介绍"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2 flex items-center justify-between">
+                  <span class="flex items-center gap-2">
+                    <i data-lucide="file-text" class="h-4 w-4 text-brand-500"></i>
+                    康复详述 (支持简单排版)
+                  </span>
+                  <span class="text-[10px] font-medium text-slate-400">使用 ### 标题, **粗体**, > 引用</span>
+                </label>
+                <textarea id="caseContent" rows="10" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all font-mono text-sm leading-relaxed" placeholder="输入详细的康复过程描述..."></textarea>
+              </div>
             </div>
-            <div>
-              <label class="block text-sm font-bold text-slate-700 mb-2">分类标签</label>
-              <select id="caseCategory" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all">
-                <option value="语言发育迟缓">语言发育迟缓</option>
-                <option value="社交障碍">社交障碍</option>
-                <option value="感统失调">感统失调</option>
-                <option value="注意力不集中">注意力不集中</option>
-                <option value="其他">其他</option>
-              </select>
+
+            <!-- Right Side: Image & Preview -->
+            <div class="lg:col-span-5 space-y-6">
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                  <i data-lucide="image" class="h-4 w-4 text-brand-500"></i>
+                  封面图片
+                </label>
+                <div class="relative group aspect-[16/10] rounded-2xl overflow-hidden bg-slate-50 border-2 border-dashed border-slate-200 hover:border-brand-400 transition-all cursor-pointer" onclick="document.getElementById('caseImageInput').click()">
+                  <div id="caseImagePreview" class="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                    <i data-lucide="plus-circle" class="h-10 w-10 mb-2 opacity-50 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-sm font-medium">点击上传封面</span>
+                    <span class="text-[10px] mt-1">推荐比例 16:10</span>
+                  </div>
+                  <!-- Hover Overlay -->
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div class="px-4 py-2 bg-white rounded-lg text-xs font-bold text-slate-900 shadow-xl">更换图片</div>
+                  </div>
+                </div>
+                <input type="file" id="caseImageInput" class="hidden" accept="image/*" onchange="handleCaseImageUpload(this)">
+                <input type="hidden" id="caseImagePath">
+              </div>
+
+              <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <i data-lucide="info" class="h-3.5 w-3.5"></i>
+                  排版小技巧
+                </h4>
+                <ul class="space-y-3 text-xs text-slate-600">
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">###</span>
+                    <span>开头表示小标题（如：### 训练方案）</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">**</span>
+                    <span>包裹文字表示加粗（如：**重点**）</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">></span>
+                    <span>开头表示引用（常用于家长寄语）</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">-</span>
+                    <span>开头表示列表项（自动转为圆点）</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-          <div>
-            <label class="block text-sm font-bold text-slate-700 mb-2">案例描述</label>
-            <textarea id="caseDescription" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none" placeholder="简要描述案例情况"></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-bold text-slate-700 mb-2">康复过程（富文本）</label>
-            <textarea id="caseContent" rows="12" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none font-mono text-sm" placeholder="输入详细的康复过程描述，可以使用换行分隔段落"></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-bold text-slate-700 mb-2">封面图片</label>
-            <div id="caseImagePreview" class="mx-auto w-full max-w-md h-48 rounded-xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center cursor-pointer hover:border-brand-400 transition-colors" onclick="document.getElementById('caseImageInput').click()">
-              <i data-lucide="image" class="h-10 w-10 text-slate-400 mb-2"></i>
-              <span class="text-sm text-slate-500 font-medium">点击上传封面图片</span>
-            </div>
-            <input type="file" id="caseImageInput" class="hidden" accept="image/png,image/jpeg,image/webp" onchange="handleCaseImageUpload(this)">
-            <input type="hidden" id="caseImagePath">
-          </div>
-          <div class="flex items-center gap-4 pt-4">
-            <button type="submit" class="px-8 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 transition-colors">
+        </form>
+
+        <!-- Modal Footer -->
+        <div class="px-8 py-5 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button type="submit" form="caseForm" class="px-8 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+              <i data-lucide="save" class="h-4 w-4"></i>
               保存案例
             </button>
-            <button type="button" onclick="closeCaseEditor()" class="px-8 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-colors">
+            <button type="button" onclick="closeCaseEditor()" class="px-8 py-3 bg-white text-slate-600 font-bold rounded-xl border border-slate-200 hover:bg-slate-50 transition-all">
               取消
             </button>
           </div>
-        </form>
+          <button type="button" onclick="deleteCaseInEditor()" id="deleteCaseBtn" class="px-4 py-2 text-red-500 hover:bg-red-50 rounded-xl transition-colors text-sm font-bold flex items-center gap-2">
+            <i data-lucide="trash-2" class="h-4 w-4"></i>
+            删除案例
+          </button>
+        </div>
       </div>
     </div>
 
@@ -887,12 +967,21 @@
         document.getElementById('caseDescription').value = caseData ? caseData.description : '';
         document.getElementById('caseContent').value = caseData ? caseData.content : '';
         document.getElementById('caseImagePath').value = caseData ? caseData.image : '';
+        
+        const deleteBtn = document.getElementById('deleteCaseBtn');
+        if (caseData) {
+          deleteBtn.classList.remove('hidden');
+        } else {
+          deleteBtn.classList.add('hidden');
+        }
+
         if (caseData && caseData.image) {
-          document.getElementById('caseImagePreview').innerHTML = '<img src="' + caseData.image + '" class="w-full h-full object-contain rounded-2xl">';
+          document.getElementById('caseImagePreview').innerHTML = '<img src="' + caseData.image + '" class="w-full h-full object-cover rounded-2xl">';
         } else {
           document.getElementById('caseImagePreview').innerHTML = `
-            <i data-lucide="image" class="h-10 w-10 text-slate-400 mb-2"></i>
-            <span class="text-sm text-slate-500 font-medium">点击上传封面图片</span>
+            <i data-lucide="plus-circle" class="h-10 w-10 mb-2 opacity-50 group-hover:scale-110 transition-transform"></i>
+            <span class="text-sm font-medium">点击上传封面</span>
+            <span class="text-[10px] mt-1">推荐比例 16:10</span>
           `;
         }
         document.getElementById('caseModalTitle').textContent = caseData ? '编辑案例' : '新增案例';
@@ -907,43 +996,11 @@
         document.getElementById('caseModal').classList.add('hidden');
       }
 
-      async function deleteCase() {
+      async function deleteCaseInEditor() {
         const id = document.getElementById('caseId').value;
         if (!id) return;
-        if (!confirm('确定要删除这个案例吗？')) return;
-        
-        const btn = document.querySelector('button[onclick="deleteCase()"]');
-        const originalText = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin"></i>';
-        lucide.createIcons();
-
-        try {
-          const res = await fetch(`/api/cases?id=${id}`, {
-            method: 'DELETE',
-            credentials: 'include'
-          });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const result = await res.json();
-          if (result.success) {
-            closeCaseEditor();
-            loadCases();
-            document.getElementById('toast').textContent = '删除成功';
-            document.getElementById('toast').classList.remove('hidden');
-            setTimeout(() => {
-              document.getElementById('toast').classList.add('hidden');
-              document.getElementById('toast').textContent = '保存成功！';
-            }, 2000);
-          } else {
-            throw new Error(result.message || '删除失败');
-          }
-        } catch (e) {
-          alert('删除失败: ' + e.message);
-        } finally {
-          btn.disabled = false;
-          btn.innerHTML = originalText;
-          lucide.createIcons();
-        }
+        deleteCaseInList(id);
+        closeCaseEditor();
       }
 
       async function handleCaseImageUpload(input) {
@@ -978,8 +1035,9 @@
           const result = await res.json();
           
           if (result.success) {
-            preview.innerHTML = '<img src="' + (result.path || dataUrl) + '" class="w-full h-full object-contain rounded-2xl">';
-            document.getElementById('caseImagePath').value = result.path;
+            const finalPath = result.path || dataUrl;
+            document.getElementById('caseImagePreview').innerHTML = '<img src="' + finalPath + '" class="w-full h-full object-cover rounded-2xl">';
+            document.getElementById('caseImagePath').value = finalPath;
           } else {
             throw new Error(result.message || '上传失败');
           }
