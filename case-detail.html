@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta id="metaDesc" name="description" content="康复案例详情｜启言社交训练中心" />
+    <title id="pageTitle">康复案例详情｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+      .prose blockquote {
+        border-left: 4px solid #f97316;
+        padding-left: 1.5rem;
+        font-style: italic;
+        background: #fff7ed;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        margin: 1.5rem 0;
+      }
+      .prose h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .prose p {
+        margin-bottom: 1rem;
+      }
+      .prose ul {
+        list-style: disc;
+        padding-left: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .prose li {
+        margin-bottom: 0.5rem;
+      }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <section class="bg-gradient-to-b from-brand-50 to-white">
+        <div class="mx-auto max-w-7xl px-6 py-12 md:py-14">
+          <nav class="flex items-center gap-2 text-sm font-medium text-slate-400 mb-6">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <a href="./cases.html" class="hover:text-brand-500 transition-colors">康复案例</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900" id="caseBreadcrumb">加载中...</span>
+          </nav>
+          <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-slate-900" id="displayTitle">加载中...</h1>
+          <p class="mt-3 max-w-3xl text-slate-600" id="displayDescription"></p>
+          <div id="caseHeroImage" class="mt-8 rounded-[2.5rem] overflow-hidden aspect-[21/9] bg-slate-200 hidden">
+            <img src="" alt="" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-12 md:py-14">
+        <div class="grid gap-6 lg:grid-cols-3">
+          <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card lg:col-span-2">
+            <div id="caseContentDisplay" class="prose prose-slate max-w-none text-sm leading-7 text-slate-600">
+              <div class="flex items-center justify-center py-20">
+                <i data-lucide="loader-2" class="h-8 w-8 text-brand-500 animate-spin"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card h-fit">
+              <div class="flex items-center gap-2 text-base font-bold text-slate-900">
+                <i data-lucide="calendar-check" class="h-5 w-5 text-brand-600"></i>
+                预约评估
+              </div>
+              <p class="mt-2 text-sm leading-6 text-slate-600">填写预约，我们将根据孩子起点给出建议。</p>
+              <a href="./events.html#booking" class="mt-6 inline-flex w-full justify-center rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-700 transition-all duration-300 hover:scale-105">立即预约</a>
+            </div>
+
+            <div class="rounded-2xl bg-slate-50 p-6 border border-slate-100">
+              <div class="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-2">
+                <i data-lucide="shield-check" class="h-4 w-4 text-accent-500"></i>
+                专业保障
+              </div>
+              <p class="text-xs text-slate-500 leading-5">所有案例均在获得授权后以化名形式展示。每个孩子情况不同，效果因人而异。我们严格保护学员隐私。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      async function loadCaseDetail() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        if (!id) {
+          window.location.href = './cases.html';
+          return;
+        }
+
+        try {
+          const res = await fetch('/api/cases');
+          if (!res.ok) throw new Error('Failed to fetch');
+          const cases = await res.json();
+          const caseData = cases.find(c => c.id === id);
+
+          if (!caseData) {
+            document.getElementById('caseContentDisplay').innerHTML = '<p class="text-center py-10">未找到相关案例</p>';
+            return;
+          }
+
+          // Update UI
+          document.title = `${caseData.title}｜启言社交训练中心`;
+          document.getElementById('caseBreadcrumb').textContent = caseData.title;
+          document.getElementById('displayTitle').textContent = caseData.title;
+          document.getElementById('displayDescription').textContent = caseData.description;
+          
+          if (caseData.image) {
+            const heroImgContainer = document.getElementById('caseHeroImage');
+            const heroImg = heroImgContainer.querySelector('img');
+            heroImg.src = caseData.image;
+            heroImg.alt = caseData.title;
+            heroImgContainer.classList.remove('hidden');
+          }
+          
+          // Improved Markdown-like converter for the content
+          let htmlContent = caseData.content
+            .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+            .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/^- (.*$)/gim, '<li>$1</li>');
+
+          // Wrap adjacent <li> tags in <ul>
+          htmlContent = htmlContent.replace(/(<li>.*<\/li>(\n| )*)+/g, (match) => `<ul>${match}</ul>`);
+          
+          // Split into paragraphs by double newlines, but skip sections already wrapped in tags
+          htmlContent = htmlContent.split(/\n\n+/).map(p => {
+            if (p.trim().startsWith('<h3') || p.trim().startsWith('<blockquote') || p.trim().startsWith('<ul')) {
+              return p;
+            }
+            return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+          }).join('');
+
+          document.getElementById('caseContentDisplay').innerHTML = htmlContent;
+          lucide.createIcons();
+        } catch (e) {
+          console.error('Error loading case detail:', e);
+          document.getElementById('caseContentDisplay').innerHTML = '<p class="text-center py-10">加载失败，请刷新重试</p>';
+        }
+      }
+
+      loadCaseDetail();
+    </script>
+  </body>
+</html>

@@ -15,6 +15,8 @@
       if (key.startsWith('stat')) {
         el.setAttribute('data-count', data[key]);
         el.textContent = data[key];
+      } else if (el.tagName === 'IMG') {
+        el.src = data[key];
       } else {
         // Use innerHTML to support <br> and other formatting
         // Convert newlines to <br> if it's from a textarea

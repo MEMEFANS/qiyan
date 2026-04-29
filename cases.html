@@ -166,6 +166,52 @@
     <script>
       // Initialize Lucide icons
       lucide.createIcons();
+
+      // Load Dynamic Cases
+      async function loadDynamicCases() {
+        const container = document.getElementById('dynamicCaseList');
+        if (!container) return;
+
+        try {
+          const res = await fetch('/api/cases');
+          if (!res.ok) return;
+          const cases = await res.json();
+          
+          // Only show cases that are NOT the hardcoded ones (case-001, case-002, case-003)
+          // Actually, let's just clear the hardcoded ones if we have dynamic ones?
+          // No, the user might want both. Let's just show all from the API.
+          
+          if (cases && cases.length > 0) {
+            // If we have cases from API, we can either append or replace.
+            // Let's append to the dynamic list.
+            container.innerHTML = cases.map(c => `
+              <a href="./case-detail.html?id=${c.id}" class="group flex flex-col rounded-[2.5rem] bg-white shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100 overflow-hidden">
+                <div class="aspect-[16/10] relative overflow-hidden bg-slate-200">
+                  <img src="${c.image || 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800'}" alt="${c.title}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.display='none'" />
+                  <div class="absolute top-4 left-4">
+                    <span class="px-3 py-1 bg-brand-500 text-white text-[10px] font-bold rounded-full shadow-soft">${c.category}</span>
+                  </div>
+                </div>
+                <div class="p-8">
+                  <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-500 transition-colors">${c.title}</h3>
+                  <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-2">${c.description}</p>
+                  <div class="pt-6 border-t border-slate-50 flex items-center justify-between text-xs font-bold">
+                    <span class="text-slate-400">阅读全文</span>
+                    <div class="h-8 w-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-900 group-hover:bg-brand-500 group-hover:text-white transition-all">
+                      <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            `).join('');
+            lucide.createIcons();
+          }
+        } catch (e) {
+          console.error('Failed to load dynamic cases:', e);
+        }
+      }
+
+      loadDynamicCases();
     </script>
   </body>
 </html>
