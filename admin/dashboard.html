@@ -1113,13 +1113,18 @@
 
       document.getElementById('caseForm').addEventListener('submit', async e => {
         e.preventDefault();
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '正在保存...';
+        // 修改：因为按钮可能在表单外，使用更稳妥的方式获取按钮
+        const submitBtn = document.querySelector('button[form="caseForm"]') || e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn ? submitBtn.innerHTML : '保存案例';
+        
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin mr-2"></i>正在保存...';
+          lucide.createIcons();
+        }
 
         const caseData = {
-          id: document.getElementById('caseId').value || Date.now().toString(),
+          id: document.getElementById('caseId').value || ('case-' + Date.now()),
           title: document.getElementById('caseTitle').value,
           category: document.getElementById('caseCategory').value,
           description: document.getElementById('caseDescription').value,
@@ -1127,6 +1132,9 @@
           image: document.getElementById('caseImagePath').value,
           updatedAt: new Date().toISOString()
         };
+
+        console.log('正在保存案例数据:', caseData);
+
         try {
           const res = await fetch('/api/cases', {
             method: 'POST',
@@ -1134,22 +1142,33 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(caseData)
           });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          
+          if (!res.ok) {
+            if (res.status === 401) throw new Error('登录已过期，请重新登录');
+            throw new Error(`服务器响应错误: ${res.status}`);
+          }
+          
           const result = await res.json();
           if (result.success) {
             closeCaseEditor();
-            loadCases();
-            document.getElementById('toast').classList.remove('hidden');
-            setTimeout(() => document.getElementById('toast').classList.add('hidden'), 2000);
+            await loadCases();
+            
+            const toast = document.getElementById('toast');
+            toast.textContent = '案例保存成功！';
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2000);
           } else {
             throw new Error(result.message || '保存失败');
           }
         } catch (e) {
-          console.error('案例保存失败:', e);
+          console.error('案例保存出错:', e);
           alert('保存失败: ' + e.message);
         } finally {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalText;
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+            lucide.createIcons();
+          }
         }
       });
 
