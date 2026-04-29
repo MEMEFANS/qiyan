@@ -601,9 +601,16 @@
                     <i data-lucide="file-text" class="h-4 w-4 text-brand-500"></i>
                     康复详述 (支持简单排版)
                   </span>
-                  <span class="text-[10px] font-medium text-slate-400">使用 ### 标题, **粗体**, > 引用</span>
+                  <div class="flex items-center gap-2">
+                    <button type="button" onclick="document.getElementById('contentImageInput').click()" class="text-[10px] px-2 py-1 bg-brand-50 text-brand-600 rounded-md hover:bg-brand-100 transition-colors flex items-center gap-1">
+                      <i data-lucide="image-plus" class="h-3 w-3"></i>
+                      插入图片
+                    </button>
+                    <span class="text-[10px] font-medium text-slate-400">使用 ### 标题, **粗体**, > 引用</span>
+                  </div>
                 </label>
                 <textarea id="caseContent" rows="10" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all font-mono text-sm leading-relaxed" placeholder="输入详细的康复过程描述..."></textarea>
+                <input type="file" id="contentImageInput" class="hidden" accept="image/*" onchange="handleContentImageUpload(this)">
               </div>
             </div>
 
@@ -650,6 +657,10 @@
                   <li class="flex items-start gap-2">
                     <span class="font-mono text-brand-600 font-bold">-</span>
                     <span>开头表示列表项（自动转为圆点）</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">![]()</span>
+                    <span>插入图片（建议使用“插入图片”按钮）</span>
                   </li>
                 </ul>
               </div>
@@ -1046,6 +1057,57 @@
           alert('图片上传失败: ' + e.message);
           preview.innerHTML = originalContent;
           lucide.createIcons();
+        }
+      }
+
+      async function handleContentImageUpload(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const toast = document.getElementById('toast');
+        toast.textContent = '正在上传图片...';
+        toast.classList.remove('hidden');
+
+        try {
+          const reader = new FileReader();
+          const dataUrl = await new Promise((resolve, reject) => {
+            reader.onload = e => resolve(e.target.result);
+            reader.onerror = e => reject(e);
+            reader.readAsDataURL(file);
+          });
+
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              imageData: dataUrl,
+              fileName: 'content-' + Date.now() + '-' + file.name,
+              folder: 'cases'
+            })
+          });
+
+          const result = await res.json();
+          if (result.success) {
+            const textarea = document.getElementById('caseContent');
+            const imageMarkdown = `\n![描述图片内容](${result.path})\n`;
+            
+            // 插入到光标位置
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + imageMarkdown + text.substring(end);
+            
+            toast.textContent = '图片已插入内容中';
+            setTimeout(() => toast.classList.add('hidden'), 2000);
+          } else {
+            throw new Error(result.message || '上传失败');
+          }
+        } catch (e) {
+          alert('图片插入失败: ' + e.message);
+          toast.classList.add('hidden');
+        } finally {
+          input.value = ''; // 清空选择
         }
       }
 

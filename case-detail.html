@@ -191,14 +191,15 @@
             .replace(/^### (.*$)/gim, '<h3>$1</h3>')
             .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/^- (.*$)/gim, '<li>$1</li>');
+            .replace(/^- (.*$)/gim, '<li>$1</li>')
+            .replace(/!\[(.*?)\]\((.*?)\)/g, '<div class="my-8 rounded-3xl overflow-hidden shadow-card border border-slate-100"><img src="$2" alt="$1" class="w-full h-auto object-cover"><div class="bg-slate-50 px-4 py-3 text-center text-xs text-slate-500 font-bold">$1</div></div>');
 
           // Wrap adjacent <li> tags in <ul>
           htmlContent = htmlContent.replace(/(<li>.*<\/li>(\n| )*)+/g, (match) => `<ul>${match}</ul>`);
           
           // Split into paragraphs by double newlines, but skip sections already wrapped in tags
           htmlContent = htmlContent.split(/\n\n+/).map(p => {
-            if (p.trim().startsWith('<h3') || p.trim().startsWith('<blockquote') || p.trim().startsWith('<ul')) {
+            if (p.trim().startsWith('<h3') || p.trim().startsWith('<blockquote') || p.trim().startsWith('<ul') || p.trim().startsWith('<div')) {
               return p;
             }
             return `<p>${p.replace(/\n/g, '<br>')}</p>`;
