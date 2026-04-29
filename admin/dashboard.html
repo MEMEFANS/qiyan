@@ -674,7 +674,7 @@
       async function loadAll() {
         console.log('正在从服务器加载内容...');
         try {
-          const res = await fetch('/api/content', { credentials: 'include' });
+          const res = await fetch('/api/content?t=' + Date.now(), { credentials: 'include' });
           if (!res.ok) {
             console.warn('服务器响应不正常:', res.status);
             return;
@@ -810,7 +810,7 @@
 
       async function loadCases() {
         try {
-          const res = await fetch('/api/cases', { credentials: 'include' });
+          const res = await fetch('/api/cases?t=' + Date.now(), { credentials: 'include' });
           if (!res.ok) {
             document.getElementById('casesList').innerHTML = '<p class="text-slate-500 text-center py-8">暂无案例，点击右上角添加</p>';
             return;
@@ -1178,11 +1178,15 @@
       }
 
       async function logout() {
+        localStorage.removeItem('adminLoggedIn');
+        localStorage.removeItem('adminUsername');
         await fetch('/api/logout', { method: 'POST' });
         window.location.href = '/admin/login.html';
       }
 
       loadAll();
+      // 默认也加载一次案例，防止切过去才加载
+      loadCases();
     </script>
   </body>
 </html>
