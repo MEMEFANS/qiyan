@@ -90,25 +90,54 @@
         <nav class="w-64 shrink-0">
           <div class="bg-white rounded-2xl shadow-card p-4 sticky top-24">
             <div class="space-y-1">
-              <a href="#" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="content">
-                <i data-lucide="file-text" class="h-5 w-5"></i>
-                <span class="font-medium">内容编辑</span>
+              <div class="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">网站内容</div>
+              <a href="#" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="home">
+                <i data-lucide="home" class="h-5 w-5"></i>
+                <span class="font-medium">网站首页</span>
               </a>
-              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="qrcodes">
-                <i data-lucide="qr-code" class="h-5 w-5"></i>
-                <span class="font-medium">二维码</span>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="about">
+                <i data-lucide="info" class="h-5 w-5"></i>
+                <span class="font-medium">关于我们</span>
               </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="services">
+                <i data-lucide="layers" class="h-5 w-5"></i>
+                <span class="font-medium">服务项目</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="programs">
+                <i data-lucide="activity" class="h-5 w-5"></i>
+                <span class="font-medium">康复项目</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="events">
+                <i data-lucide="star" class="h-5 w-5"></i>
+                <span class="font-medium">专项活动</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="testimonials">
+                <i data-lucide="message-square" class="h-5 w-5"></i>
+                <span class="font-medium">用户评价</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="contact">
+                <i data-lucide="phone" class="h-5 w-5"></i>
+                <span class="font-medium">联系信息</span>
+              </a>
+              
+              <div class="px-4 py-2 mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">业务管理</div>
               <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="cases">
                 <i data-lucide="heart" class="h-5 w-5"></i>
                 <span class="font-medium">康复案例</span>
               </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="bookings">
+                <i data-lucide="calendar-check" class="h-5 w-5"></i>
+                <span class="font-medium">预约列表</span>
+              </a>
+              
+              <div class="px-4 py-2 mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">资源工具</div>
               <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="images">
                 <i data-lucide="image" class="h-5 w-5"></i>
                 <span class="font-medium">图片管理</span>
               </a>
-              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="bookings">
-                <i data-lucide="calendar-check" class="h-5 w-5"></i>
-                <span class="font-medium">预约列表</span>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="qrcodes">
+                <i data-lucide="qr-code" class="h-5 w-5"></i>
+                <span class="font-medium">二维码</span>
               </a>
             </div>
           </div>
@@ -117,32 +146,40 @@
         <!-- Main Content -->
         <main class="flex-1">
           <div class="mb-6">
-            <h2 id="pageTitle" class="text-2xl font-bold text-slate-900">内容编辑</h2>
+            <h2 id="pageTitle" class="text-2xl font-bold text-slate-900">网站首页</h2>
           </div>
 
-          <!-- Content Edit Tab -->
-          <div id="tab-content" class="tab-content active">
+          <!-- Home Tab -->
+          <div id="tab-home" class="tab-content active">
             <div class="bg-white rounded-2xl shadow-card p-8">
-              <form id="contentForm" class="space-y-6">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="monitor" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">首屏展示 (Hero)</h3>
+                </div>
+                
                 <div class="grid gap-6 md:grid-cols-2">
                   <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">首页标语</label>
-                    <input type="text" data-key="hero_title" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入首页主标语">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">主标题</label>
+                    <input type="text" data-key="hero_title" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入首页主标题">
                   </div>
                   <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">首页副标语</label>
-                    <input type="text" data-key="hero_subtitle" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入首页副标语">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">副标题</label>
+                    <input type="text" data-key="hero_subtitle" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入首页副标题">
                   </div>
                 </div>
+
                 <div class="grid gap-6 md:grid-cols-2">
                   <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">首页标签</label>
-                    <input type="text" data-key="hero_tag" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入首页标签文字">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">特色标签</label>
+                    <input type="text" data-key="hero_tag" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="例如: 15年深耕 · 值得信赖">
                   </div>
                   <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">首页插画路径</label>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">首屏插画</label>
                     <div class="flex gap-2">
-                      <input type="text" data-key="hero_image" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="例如: /assets/hero-illustration.svg">
+                      <input type="text" data-key="hero_image" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm" placeholder="/assets/hero.svg">
                       <button type="button" onclick="document.getElementById('heroImageInput').click()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200 transition-colors">
                         <i data-lucide="upload" class="h-4 w-4"></i>
                       </button>
@@ -150,281 +187,368 @@
                     </div>
                   </div>
                 </div>
-                <div>
-                  <label class="block text-sm font-bold text-slate-700 mb-2">关于我们（第一段）</label>
-                  <textarea data-key="about_p1" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none" placeholder="输入关于我们第一段内容"></textarea>
+
+                <div class="flex items-center gap-3 pt-8 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-accent-100 rounded-lg flex items-center justify-center text-accent-600">
+                    <i data-lucide="bar-chart-3" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">数据统计 (Stats)</h3>
                 </div>
-                <div>
-                  <label class="block text-sm font-bold text-slate-700 mb-2">关于我们（第二段）</label>
-                  <textarea data-key="about_p2" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none" placeholder="输入关于我们第二段内容"></textarea>
-                </div>
-                <!-- 数据统计 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">案例统计值</label>
-                    <input type="text" data-key="stat1Value" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
+                    <div class="font-bold text-xs text-slate-400 uppercase tracking-wider">统计项 1</div>
+                    <input type="text" data-key="stat1Value" placeholder="数值 (如 500)" class="w-full px-4 py-2 rounded-lg border border-slate-200 mb-2">
+                    <input type="text" data-key="stat1Label" placeholder="标签 (如 康复案例)" class="w-full px-4 py-2 rounded-lg border border-slate-200">
                   </div>
-                  <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">案例统计标签</label>
-                    <input type="text" data-key="stat1Label" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
+                  <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
+                    <div class="font-bold text-xs text-slate-400 uppercase tracking-wider">统计项 2</div>
+                    <input type="text" data-key="stat2Value" placeholder="数值 (如 50)" class="w-full px-4 py-2 rounded-lg border border-slate-200 mb-2">
+                    <input type="text" data-key="stat2Label" placeholder="标签 (如 资深专家)" class="w-full px-4 py-2 rounded-lg border border-slate-200">
                   </div>
-                  <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">专家统计值</label>
-                    <input type="text" data-key="stat2Value" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">专家统计标签</label>
-                    <input type="text" data-key="stat2Label" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">服务统计值</label>
-                    <input type="text" data-key="stat4Value" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">服务统计标签</label>
-                    <input type="text" data-key="stat4Label" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
+                  <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
+                    <div class="font-bold text-xs text-slate-400 uppercase tracking-wider">统计项 3</div>
+                    <input type="text" data-key="stat4Value" placeholder="数值 (如 100)" class="w-full px-4 py-2 rounded-lg border border-slate-200 mb-2">
+                    <input type="text" data-key="stat4Label" placeholder="标签 (如 贴心服务)" class="w-full px-4 py-2 rounded-lg border border-slate-200">
                   </div>
                 </div>
 
-                <hr class="border-slate-100">
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存首页内容
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
 
-                <!-- 服务介绍 -->
+          <!-- About Tab -->
+          <div id="tab-about" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="info" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">关于我们页面</h3>
+                </div>
+
+                <div class="grid gap-6">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">页面大标题 (第一行)</label>
+                    <input type="text" data-key="aboutHeroTitle1" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="例如: 见证每一个">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">页面大标题 (第二行 - 橙色)</label>
+                    <input type="text" data-key="aboutHeroTitle2" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="例如: 生命的奇迹">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">页面描述文字</label>
+                    <textarea data-key="aboutHeroDesc" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none" placeholder="输入页面顶部的简短介绍"></textarea>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-8 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-accent-100 rounded-lg flex items-center justify-center text-accent-600">
+                    <i data-lucide="history" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">发展历程</h3>
+                </div>
+
+                <div class="grid gap-6">
+                  <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div class="flex items-center gap-4">
+                      <input type="text" data-key="historyYear1" placeholder="年份 (如 2008)" class="w-32 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                      <div class="h-px flex-1 bg-slate-200"></div>
+                    </div>
+                    <textarea data-key="historyDesc1" placeholder="该阶段的大事记描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                  <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div class="flex items-center gap-4">
+                      <input type="text" data-key="historyYear2" placeholder="年份 (如 2015)" class="w-32 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                      <div class="h-px flex-1 bg-slate-200"></div>
+                    </div>
+                    <textarea data-key="historyDesc2" placeholder="该阶段的大事记描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                  <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div class="flex items-center gap-4">
+                      <input type="text" data-key="historyYear3" placeholder="年份 (如 2023)" class="w-32 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                      <div class="h-px flex-1 bg-slate-200"></div>
+                    </div>
+                    <textarea data-key="historyDesc3" placeholder="该阶段的大事记描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存关于我们
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Services Tab -->
+          <div id="tab-services" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="layers" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">核心服务项目</h3>
+                </div>
+
+                <div class="grid gap-8">
+                  <!-- Service 1 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-full">项目一</span>
+                      <input type="text" data-key="service1Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service1Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+
+                  <!-- Service 2 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-accent-100 text-accent-700 text-[10px] font-bold rounded-full">项目二</span>
+                      <input type="text" data-key="service2Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service2Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+
+                  <!-- Service 3 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full">项目三</span>
+                      <input type="text" data-key="service3Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service3Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+
+                  <!-- Service 4 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold rounded-full">项目四</span>
+                      <input type="text" data-key="service4Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service4Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+
+                  <!-- Service 5 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full">项目五</span>
+                      <input type="text" data-key="service5Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service5Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存服务项目
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Programs Tab -->
+          <div id="tab-programs" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="activity" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">康复项目页面设置</h3>
+                </div>
+
+                <div class="grid gap-6">
+                  <input type="text" data-key="programsHeroTitle1" placeholder="页面标题 1" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="programsHeroTitle2" placeholder="页面标题 2 (橙色)" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <textarea data-key="programsHeroSubtitle" placeholder="页面副标题" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                </div>
+
                 <div class="space-y-6">
-                  <h4 class="font-bold text-slate-900">服务介绍 1 (言语治疗)</h4>
-                  <div class="grid grid-cols-1 gap-4">
-                    <input type="text" data-key="service1Title" placeholder="标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                    <textarea data-key="service1Desc" placeholder="描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
+                  <div class="p-6 bg-slate-50 rounded-2xl space-y-4">
+                    <h5 class="font-bold text-slate-700">项目一</h5>
+                    <input type="text" data-key="program1Title" placeholder="项目名称" class="w-full px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    <textarea data-key="program1Desc" placeholder="项目详细介绍" class="w-full px-4 py-2 rounded-lg border border-slate-200 resize-none" rows="2"></textarea>
                   </div>
-                  
-                  <h4 class="font-bold text-slate-900">服务介绍 2 (社交康复)</h4>
-                  <div class="grid grid-cols-1 gap-4">
-                    <input type="text" data-key="service2Title" placeholder="标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                    <textarea data-key="service2Desc" placeholder="描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                  </div>
-
-                  <h4 class="font-bold text-slate-900">服务介绍 3 (启智康复)</h4>
-                  <div class="grid grid-cols-1 gap-4">
-                    <input type="text" data-key="service3Title" placeholder="标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                    <textarea data-key="service3Desc" placeholder="描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                  </div>
-
-                  <h4 class="font-bold text-slate-900">服务介绍 4 (幼儿园融合)</h4>
-                  <div class="grid grid-cols-1 gap-4">
-                    <input type="text" data-key="service4Title" placeholder="标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                    <textarea data-key="service4Desc" placeholder="描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                  </div>
-
-                  <h4 class="font-bold text-slate-900">服务介绍 5 (职能治疗)</h4>
-                  <div class="grid grid-cols-1 gap-4">
-                    <input type="text" data-key="service5Title" placeholder="标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                    <textarea data-key="service5Desc" placeholder="描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
+                  <div class="p-6 bg-slate-50 rounded-2xl space-y-4">
+                    <h5 class="font-bold text-slate-700">项目二</h5>
+                    <input type="text" data-key="program2Title" placeholder="项目名称" class="w-full px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    <textarea data-key="program2Desc" placeholder="项目详细介绍" class="w-full px-4 py-2 rounded-lg border border-slate-200 resize-none" rows="2"></textarea>
                   </div>
                 </div>
 
-                <hr class="border-slate-100">
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存康复项目
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
 
-                <hr class="border-slate-100">
-
-                  <!-- 关于我们页面 -->
-                  <div class="space-y-6">
-                    <h4 class="font-bold text-slate-900">关于我们页面设置</h4>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="aboutHeroTitle1" placeholder="关于页标题 1" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <input type="text" data-key="aboutHeroTitle2" placeholder="关于页标题 2 (橙色)" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <textarea data-key="aboutHeroDesc" placeholder="关于页描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="3"></textarea>
-                    </div>
+          <!-- Events Tab -->
+          <div id="tab-events" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="star" class="h-4 w-4"></i>
                   </div>
+                  <h3 class="text-lg font-bold text-slate-900">专项活动页面设置</h3>
+                </div>
 
-                  <hr class="border-slate-100">
+                <div class="grid gap-6">
+                  <input type="text" data-key="eventsHeroTitle1" placeholder="页面标题 1" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="eventsHeroTitle2" placeholder="页面标题 2 (橙色)" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <textarea data-key="eventsHeroSubtitle" placeholder="页面副标题" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                </div>
 
-                  <hr class="border-slate-100">
-
-                  <!-- 发展历程 -->
-                  <div class="space-y-6">
-                    <h4 class="font-bold text-slate-900">发展历程</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <input type="text" data-key="historyYear1" placeholder="年份 1" class="w-full rounded-xl border-slate-200 mb-2">
-                        <textarea data-key="historyDesc1" placeholder="描述 1" class="w-full rounded-xl border-slate-200" rows="2"></textarea>
-                      </div>
-                      <div>
-                        <input type="text" data-key="historyYear2" placeholder="年份 2" class="w-full rounded-xl border-slate-200 mb-2">
-                        <textarea data-key="historyDesc2" placeholder="描述 2" class="w-full rounded-xl border-slate-200" rows="2"></textarea>
-                      </div>
-                      <div>
-                        <input type="text" data-key="historyYear3" placeholder="年份 3" class="w-full rounded-xl border-slate-200 mb-2">
-                        <textarea data-key="historyDesc3" placeholder="描述 3" class="w-full rounded-xl border-slate-200" rows="2"></textarea>
-                      </div>
-                    </div>
+                <div class="grid gap-6 md:grid-cols-2">
+                  <div class="p-6 bg-slate-50 rounded-2xl space-y-4">
+                    <input type="text" data-key="event1Title" placeholder="活动一标题" class="w-full px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    <textarea data-key="event1Desc" placeholder="活动一详情描述" class="w-full px-4 py-2 rounded-lg border border-slate-200 resize-none" rows="3"></textarea>
                   </div>
-
-                  <hr class="border-slate-100">
-
-                  <hr class="border-slate-100">
-
-                  <!-- 专项活动 -->
-                  <div class="space-y-6">
-                    <h4 class="font-bold text-slate-900">专项活动页面设置</h4>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="eventsHeroTitle1" placeholder="页面标题 1" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <input type="text" data-key="eventsHeroTitle2" placeholder="页面标题 2 (橙色)" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <textarea data-key="eventsHeroSubtitle" placeholder="页面副标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                    </div>
-                    <div class="grid grid-cols-1 gap-4">
-                      <div>
-                        <input type="text" data-key="event1Title" placeholder="活动 1 标题" class="w-full rounded-xl border-slate-200 mb-2">
-                        <textarea data-key="event1Desc" placeholder="活动 1 描述" class="w-full rounded-xl border-slate-200" rows="2"></textarea>
-                      </div>
-                      <div>
-                        <input type="text" data-key="event2Title" placeholder="活动 2 标题" class="w-full rounded-xl border-slate-200 mb-2">
-                        <textarea data-key="event2Desc" placeholder="活动 2 描述" class="w-full rounded-xl border-slate-200" rows="2"></textarea>
-                      </div>
-                    </div>
+                  <div class="p-6 bg-slate-50 rounded-2xl space-y-4">
+                    <input type="text" data-key="event2Title" placeholder="活动二标题" class="w-full px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    <textarea data-key="event2Desc" placeholder="活动二详情描述" class="w-full px-4 py-2 rounded-lg border border-slate-200 resize-none" rows="3"></textarea>
                   </div>
+                </div>
 
-                  <hr class="border-slate-100">
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存专项活动
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
 
-                  <!-- 康复项目页面 -->
-                  <div class="space-y-6">
-                    <h4 class="font-bold text-slate-900">康复项目页面设置</h4>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="programsHeroTitle1" placeholder="页面标题 1" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <input type="text" data-key="programsHeroTitle2" placeholder="页面标题 2 (橙色)" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <textarea data-key="programsHeroSubtitle" placeholder="页面副标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                    </div>
-                    <h5 class="font-semibold text-slate-700">项目 1 (言语治疗)</h5>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="program1Title" placeholder="项目 1 标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <textarea data-key="program1Desc" placeholder="项目 1 描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                    </div>
-                    <h5 class="font-semibold text-slate-700">项目 2 (社交康复)</h5>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="program2Title" placeholder="项目 2 标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <textarea data-key="program2Desc" placeholder="项目 2 描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                    </div>
-                    <h5 class="font-semibold text-slate-700">项目 3 (启智康复)</h5>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="program3Title" placeholder="项目 3 标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <textarea data-key="program3Desc" placeholder="项目 3 描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                    </div>
-                    <h5 class="font-semibold text-slate-700">项目 4 (幼儿园融合)</h5>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="program4Title" placeholder="项目 4 标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <textarea data-key="program4Desc" placeholder="项目 4 描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                    </div>
-                    <h5 class="font-semibold text-slate-700">项目 5 (职能治疗)</h5>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="program5Title" placeholder="项目 5 标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <textarea data-key="program5Desc" placeholder="项目 5 描述" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                    </div>
+          <!-- Testimonials Tab -->
+          <div id="tab-testimonials" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="message-square" class="h-4 w-4"></i>
                   </div>
+                  <h3 class="text-lg font-bold text-slate-900">家长真实评价</h3>
+                </div>
 
-                  <hr class="border-slate-100">
-
-                  <!-- 联系页面 -->
-                  <div class="space-y-6">
-                    <h4 class="font-bold text-slate-900">联系页面设置</h4>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="contactHeroTitle1" placeholder="页面标题 1" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <input type="text" data-key="contactHeroTitle2" placeholder="页面标题 2 (橙色)" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <textarea data-key="contactHeroSubtitle" placeholder="页面副标题" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">咨询热线</label>
-                        <input type="text" data-key="contactHotline" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" placeholder="电话号码">
+                <div class="space-y-8">
+                  <!-- Testimonial 1 -->
+                  <div class="p-6 rounded-3xl border border-slate-100 bg-slate-50/50 relative">
+                    <div class="absolute -top-3 left-6 px-4 py-1 bg-white border border-slate-100 rounded-full text-[10px] font-extrabold text-slate-400">评价一</div>
+                    <textarea data-key="testimonial1Content" rows="3" class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none mb-4" placeholder="评价内容..."></textarea>
+                    <div class="grid gap-4 md:grid-cols-3">
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">家长称呼</label>
+                        <input type="text" data-key="testimonial1Name" placeholder="如: 小明妈妈" class="w-full px-4 py-2 rounded-xl border border-slate-200">
                       </div>
-                      <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">热线工作时间</label>
-                        <input type="text" data-key="contactHotlineTime" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" placeholder="工作时间">
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">评价标签</label>
+                        <input type="text" data-key="testimonial1Label" placeholder="如: 言语迟缓训练" class="w-full px-4 py-2 rounded-xl border border-slate-200">
                       </div>
-                    </div>
-                    <div class="grid grid-cols-1 gap-4">
-                      <input type="text" data-key="contactEmail" placeholder="电子邮箱" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <input type="text" data-key="contactEmailNote" placeholder="邮箱说明" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                    </div>
-                    <div class="grid grid-cols-1 gap-4">
-                      <textarea data-key="contactAddress" placeholder="中心地址" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500" rows="2"></textarea>
-                      <input type="text" data-key="contactBusInfo" placeholder="公交信息" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                      <input type="text" data-key="contactCenterName" placeholder="中心名称" class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-brand-500">
-                    </div>
-                  </div>
-
-                  <hr class="border-slate-100">
-
-                  <!-- 其他顶级页面 -->
-                  <div class="space-y-6">
-                    <h4 class="font-bold text-slate-900">专家/案例/融合/资讯页面设置</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <!-- 专家团队 -->
-                      <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
-                        <h5 class="font-semibold text-slate-700">专家团队页面</h5>
-                        <input type="text" data-key="expertsHeroTitle1" placeholder="标题 1" class="w-full rounded-xl border-slate-200">
-                        <input type="text" data-key="expertsHeroTitle2" placeholder="标题 2 (橙色)" class="w-full rounded-xl border-slate-200">
-                        <textarea data-key="expertsHeroSubtitle" placeholder="副标题" class="w-full rounded-xl border-slate-200" rows="2"></textarea>
-                      </div>
-                      <!-- 康复案例 -->
-                      <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
-                        <h5 class="font-semibold text-slate-700">康复案例页面</h5>
-                        <input type="text" data-key="casesHeroTitle1" placeholder="标题 1" class="w-full rounded-xl border-slate-200">
-                        <input type="text" data-key="casesHeroTitle2" placeholder="标题 2 (橙色)" class="w-full rounded-xl border-slate-200">
-                        <textarea data-key="casesHeroSubtitle" placeholder="副标题" class="w-full rounded-xl border-slate-200" rows="2"></textarea>
-                      </div>
-                      <!-- 幼康融合 -->
-                      <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
-                        <h5 class="font-semibold text-slate-700">幼康融合页面</h5>
-                        <input type="text" data-key="integrationHeroTitle1" placeholder="标题 1" class="w-full rounded-xl border-slate-200">
-                        <input type="text" data-key="integrationHeroTitle2" placeholder="标题 2 (橙色)" class="w-full rounded-xl border-slate-200">
-                        <textarea data-key="integrationHeroSubtitle" placeholder="副标题" class="w-full rounded-xl border-slate-200" rows="2"></textarea>
-                      </div>
-                      <!-- 资讯动态 -->
-                      <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
-                        <h5 class="font-semibold text-slate-700">资讯动态页面</h5>
-                        <input type="text" data-key="newsHeroTitle1" placeholder="标题 1" class="w-full rounded-xl border-slate-200">
-                        <input type="text" data-key="newsHeroTitle2" placeholder="标题 2 (橙色)" class="w-full rounded-xl border-slate-200">
-                        <textarea data-key="newsHeroSubtitle" placeholder="副标题" class="w-full rounded-xl border-slate-200" rows="2"></textarea>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">头像文字</label>
+                        <input type="text" data-key="testimonial1Avatar" placeholder="如: 小" class="w-full px-4 py-2 rounded-xl border border-slate-200">
                       </div>
                     </div>
                   </div>
 
-                  <hr class="border-slate-100">
+                  <!-- Testimonial 2 -->
+                  <div class="p-6 rounded-3xl border border-slate-100 bg-slate-50/50 relative">
+                    <div class="absolute -top-3 left-6 px-4 py-1 bg-white border border-slate-100 rounded-full text-[10px] font-extrabold text-slate-400">评价二</div>
+                    <textarea data-key="testimonial2Content" rows="3" class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none mb-4" placeholder="评价内容..."></textarea>
+                    <div class="grid gap-4 md:grid-cols-3">
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">家长称呼</label>
+                        <input type="text" data-key="testimonial2Name" placeholder="如: 华华爸爸" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">评价标签</label>
+                        <input type="text" data-key="testimonial2Label" placeholder="如: 社交沟通训练" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">头像文字</label>
+                        <input type="text" data-key="testimonial2Avatar" placeholder="如: 华" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                    </div>
+                  </div>
 
-                  <!-- 其他设置 -->
-                  <hr class="border-slate-200 my-6">
-                  <h3 class="text-lg font-bold text-slate-900 mb-4">用户评价</h3>
-                <div class="space-y-4">
-                  <div class="p-4 bg-slate-50 rounded-xl">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">评价1内容</label>
-                    <textarea data-key="testimonial1Content" rows="2" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none" placeholder="评价内容"></textarea>
-                    <div class="grid gap-4 md:grid-cols-3 mt-3">
-                      <input type="text" data-key="testimonial1Name" class="px-4 py-2 rounded-lg border border-slate-200" placeholder="姓名">
-                      <input type="text" data-key="testimonial1Label" class="px-4 py-2 rounded-lg border border-slate-200" placeholder="标签">
-                      <input type="text" data-key="testimonial1Avatar" class="px-4 py-2 rounded-lg border border-slate-200" placeholder="头像首字">
-                    </div>
-                  </div>
-                  <div class="p-4 bg-slate-50 rounded-xl">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">评价2内容</label>
-                    <textarea data-key="testimonial2Content" rows="2" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none" placeholder="评价内容"></textarea>
-                    <div class="grid gap-4 md:grid-cols-3 mt-3">
-                      <input type="text" data-key="testimonial2Name" class="px-4 py-2 rounded-lg border border-slate-200" placeholder="姓名">
-                      <input type="text" data-key="testimonial2Label" class="px-4 py-2 rounded-lg border border-slate-200" placeholder="标签">
-                      <input type="text" data-key="testimonial2Avatar" class="px-4 py-2 rounded-lg border border-slate-200" placeholder="头像首字">
-                    </div>
-                  </div>
-                  <div class="p-4 bg-slate-50 rounded-xl">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">评价3内容</label>
-                    <textarea data-key="testimonial3Content" rows="2" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none" placeholder="评价内容"></textarea>
-                    <div class="grid gap-4 md:grid-cols-3 mt-3">
-                      <input type="text" data-key="testimonial3Name" class="px-4 py-2 rounded-lg border border-slate-200" placeholder="姓名">
-                      <input type="text" data-key="testimonial3Label" class="px-4 py-2 rounded-lg border border-slate-200" placeholder="标签">
-                      <input type="text" data-key="testimonial3Avatar" class="px-4 py-2 rounded-lg border border-slate-200" placeholder="头像首字">
+                  <!-- Testimonial 3 -->
+                  <div class="p-6 rounded-3xl border border-slate-100 bg-slate-50/50 relative">
+                    <div class="absolute -top-3 left-6 px-4 py-1 bg-white border border-slate-100 rounded-full text-[10px] font-extrabold text-slate-400">评价三</div>
+                    <textarea data-key="testimonial3Content" rows="3" class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none mb-4" placeholder="评价内容..."></textarea>
+                    <div class="grid gap-4 md:grid-cols-3">
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">家长称呼</label>
+                        <input type="text" data-key="testimonial3Name" placeholder="如: 莉莉妈妈" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">评价标签</label>
+                        <input type="text" data-key="testimonial3Label" placeholder="如: 综合康复方案" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">头像文字</label>
+                        <input type="text" data-key="testimonial3Avatar" placeholder="如: 莉" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="pt-4">
-                  <button type="submit" class="px-8 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 transition-colors shadow-soft">
-                    <i data-lucide="save" class="h-4 w-4 inline mr-2"></i>
-                    保存内容
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存用户评价
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Contact Tab -->
+          <div id="tab-contact" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="phone" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">联系方式与地址</h3>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                  <div class="space-y-4">
+                    <label class="block text-sm font-bold text-slate-700">基本联系信息</label>
+                    <input type="text" data-key="contactHotline" placeholder="咨询热线" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                    <input type="text" data-key="contactHotlineTime" placeholder="热线工作时间" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                    <input type="text" data-key="contactEmail" placeholder="电子邮箱" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  </div>
+                  <div class="space-y-4">
+                    <label class="block text-sm font-bold text-slate-700">地址与交通</label>
+                    <textarea data-key="contactAddress" placeholder="中心详细地址" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                    <input type="text" data-key="contactBusInfo" placeholder="公交路线说明" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                    <input type="text" data-key="contactCenterName" placeholder="中心全称" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  </div>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存联系信息
                   </button>
                 </div>
               </form>
@@ -709,20 +833,77 @@
       let currentQRData = { qrOfficial: null, qrService: null };
       let casesData = [];
 
+      // Tab Switching Logic
       document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', e => {
           e.preventDefault();
           const id = link.dataset.tab;
+          
+          // Update active link
           document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
           link.classList.add('active');
+          
+          // Update active content
           document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-          document.getElementById('tab-' + id).classList.add('active');
-          document.getElementById('pageTitle').textContent = link.textContent.trim();
+          const targetTab = document.getElementById('tab-' + id);
+          if (targetTab) targetTab.classList.add('active');
+          
+          // Update page title
+          document.getElementById('pageTitle').textContent = link.querySelector('span').textContent;
+          
+          // Specific loading
           if (id === 'bookings') loadBookings();
           if (id === 'cases') loadCases();
           if (id === 'images') loadImages();
         });
       });
+
+      async function saveContent(btn) {
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin mr-2"></i>正在保存...';
+        lucide.createIcons();
+
+        const data = {};
+        document.querySelectorAll('[data-key]').forEach(el => {
+          data[el.dataset.key] = el.value.trim();
+        });
+
+        try {
+          const res = await fetch('/api/content', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          
+          if (!res.ok) {
+            if (res.status === 401) throw new Error('登录已过期，请重新登录');
+            throw new Error(`服务器响应错误: ${res.status}`);
+          }
+
+          const result = await res.json();
+          if (result.success) {
+            const toast = document.getElementById('toast');
+            toast.textContent = '保存成功！';
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2000);
+          } else {
+            throw new Error(result.message || '保存失败');
+          }
+        } catch (e) {
+          console.error('保存失败:', e);
+          alert('保存失败: ' + e.message);
+          if (e.message.includes('登录已过期')) {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.href = '/admin/login.html';
+          }
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+          lucide.createIcons();
+        }
+      }
 
       async function handleQuickUpload(input, key) {
         const file = input.files[0];
@@ -791,65 +972,6 @@
           console.warn('无法连接到服务器加载内容:', e);
         }
       }
-
-      document.getElementById('contentForm').addEventListener('submit', async e => {
-        e.preventDefault();
-        console.log('提交按钮已点击，开始准备数据...');
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        
-        // 禁用按钮防止重复点击
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 inline mr-2 animate-spin"></i> 正在保存...';
-        lucide.createIcons();
-
-        const data = {};
-        document.querySelectorAll('[data-key]').forEach(el => {
-          const k = el.dataset.key;
-          const v = el.value.trim();
-          data[k] = v; // 即使是空字符串也保存，以支持清空内容
-        });
-
-        console.log('准备保存的数据:', data);
-
-        try {
-          const res = await fetch('/api/content', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-          
-          console.log('服务器返回状态:', res.status);
-          
-          if (!res.ok) {
-            if (res.status === 401) {
-              throw new Error('登录已过期，请重新登录');
-            }
-            throw new Error(`服务器响应错误: ${res.status}`);
-          }
-
-          const result = await res.json();
-          console.log('保存结果:', result);
-          if (result.success) {
-            document.getElementById('toast').classList.remove('hidden');
-            setTimeout(() => document.getElementById('toast').classList.add('hidden'), 2000);
-          } else {
-            throw new Error(result.message || '保存失败');
-          }
-        } catch (e) {
-          console.error('保存过程中出错:', e);
-          alert('保存失败: ' + e.message);
-          if (e.message.includes('登录已过期')) {
-            localStorage.removeItem('adminLoggedIn');
-            window.location.href = '/admin/login.html';
-          }
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalText;
-          lucide.createIcons();
-        }
-      });
 
       function handleQRUpload(input, type) {
         const file = input.files[0];
