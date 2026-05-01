@@ -143,6 +143,10 @@
                 <i data-lucide="qr-code" class="h-5 w-5"></i>
                 <span class="font-medium">二维码</span>
               </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="security">
+                <i data-lucide="shield-check" class="h-5 w-5"></i>
+                <span class="font-medium">安全设置</span>
+              </a>
             </div>
           </div>
         </nav>
@@ -686,6 +690,44 @@
               </div>
             </div>
           </div>
+          <!-- Security Tab -->
+          <div id="tab-security" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form onsubmit="updateAdminConfig(event)" class="space-y-8 max-w-md">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-red-100 rounded-lg flex items-center justify-center text-red-600">
+                    <i data-lucide="lock" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">修改登录凭据</h3>
+                </div>
+
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">新用户名</label>
+                    <input type="text" id="newAdminUsername" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="输入新的登录账号">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">新密码</label>
+                    <input type="password" id="newAdminPassword" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="输入新的登录密码">
+                  </div>
+                  <div class="p-4 bg-amber-50 rounded-xl border border-amber-100 flex gap-3">
+                    <i data-lucide="alert-triangle" class="h-5 w-5 text-amber-500 shrink-0"></i>
+                    <p class="text-xs text-amber-700 leading-relaxed">
+                      请务必牢记您的新用户名和密码。修改成功后，您需要使用新的凭据重新登录。
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pt-6">
+                  <button type="submit" class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-brand-500 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                    <i data-lucide="shield-check" class="h-5 w-5"></i>
+                    确认修改并重新登录
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
         </main>
       </div>
     </div>
@@ -1118,6 +1160,33 @@
       }
 
       // --- End Experts Management ---
+
+      async function updateAdminConfig(e) {
+        e.preventDefault();
+        const username = document.getElementById('newAdminUsername').value.trim();
+        const password = document.getElementById('newAdminPassword').value.trim();
+        
+        if (!confirm('确定要修改登录账号和密码吗？修改后将立即退出并需要重新登录。')) return;
+
+        try {
+          const res = await fetch('/api/admin/config', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+
+          if (res.ok) {
+            alert('修改成功！请使用新凭据重新登录。');
+            logout(); // 调用现有的退出登录函数
+          } else {
+            const result = await res.json();
+            throw new Error(result.message || '修改失败');
+          }
+        } catch (e) {
+          alert('操作失败: ' + e.message);
+        }
+      }
 
       async function saveContent(btn) {
         const originalText = btn.innerHTML;

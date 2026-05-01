@@ -12,10 +12,25 @@ const DATA_FILE = path.join(DATA_DIR, "data.json");
 const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
 const CASES_FILE = path.join(DATA_DIR, "cases.json");
 const EXPERTS_FILE = path.join(DATA_DIR, "experts.json");
+const ADMIN_FILE = path.join(DATA_DIR, "admin.json");
 
 // 安全配置
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+let ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
+let ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+
+// 加载持久化管理员配置
+const loadAdminConfig = () => {
+  try {
+    if (fs.existsSync(ADMIN_FILE)) {
+      const config = JSON.parse(fs.readFileSync(ADMIN_FILE, "utf-8"));
+      if (config.username) ADMIN_USERNAME = config.username;
+      if (config.password) ADMIN_PASSWORD = config.password;
+    }
+  } catch (e) {
+    console.error("Failed to load admin config:", e);
+  }
+};
+loadAdminConfig();
 
 // 初始化数据文件
 if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, "{}");
@@ -97,6 +112,30 @@ const serverHandler = (req, res) => {
           }
         } catch (e) {
           sendJsonResponse(400, { success: false, message: "Invalid JSON" }, requestOrigin);
+        }
+      });
+      return;
+    }
+
+    // 1.1. 修改管理员密码 API
+    if (urlPath === "/api/admin/config" && req.method === "POST") {
+      const cookies = req.headers.cookie || "";
+      if (!cookies.includes("admin_session=authenticated")) {
+        return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+      }
+      let body = "";
+      req.on("data", chunk => { body += chunk.toString(); });
+      req.on("end", () => {
+        try {
+          const config = JSON.parse(body);
+          if (!config.username || !config.password) {
+            return sendJsonResponse(400, { success: false, message: "Username and password are required" }, requestOrigin);
+          }
+          fs.writeFileSync(ADMIN_FILE, JSON.stringify(config, null, 2));
+          loadAdminConfig(); // 重新加载到内存
+          sendJsonResponse(200, { success: true }, requestOrigin);
+        } catch (e) {
+          sendJsonResponse(400, { success: false, message: "Invalid Request" }, requestOrigin);
         }
       });
       return;
