@@ -143,21 +143,10 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-100 py-12">
-      <div class="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-slate-400 text-xs font-bold">
-        <div class="flex items-center gap-2">
-          <i data-lucide="sparkles" class="h-4 w-4"></i>
-          <span>启言儿童健康咨询中心 · 专业康复</span>
-        </div>
-        <div class="flex gap-8">
-          <a href="#" class="hover:text-brand-500 transition-colors">免责声明</a>
-          <a href="#" class="hover:text-brand-500 transition-colors">隐私政策</a>
-          <a href="#" class="hover:text-brand-500 transition-colors">法律条款</a>
-        </div>
-      </div>
-    </footer>
+    <div id="siteFooter"></div>
 
     <script src="./admin/content-loader.js"></script>
+    <script src="./layout.js"></script>
     <script>
       async function loadExpertDetail() {
         const params = new URLSearchParams(window.location.search);
