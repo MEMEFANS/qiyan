@@ -17,6 +17,13 @@
         el.textContent = data[key];
       } else if (el.tagName === 'IMG') {
         el.src = data[key];
+      } else if (el.tagName === 'A' && (el.getAttribute('href') || '').startsWith('tel:')) {
+        el.setAttribute('href', 'tel:' + data[key].trim());
+        // If the element has a specific format like "电话咨询: xxx", we try to preserve it
+        // but if data-content is used, it usually means the whole content should be replaced.
+        // To be safe, if the original text contains "电话", we might want to keep it?
+        // Actually, the most predictable behavior is replacing the whole text.
+        el.innerHTML = data[key].toString().replace(/\n/g, '<br>');
       } else {
         // Use innerHTML to support <br> and other formatting
         // Convert newlines to <br> if it's from a textarea
