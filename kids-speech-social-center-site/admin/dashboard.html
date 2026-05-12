@@ -8,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
     <script>
-            tailwind.config = {
+      tailwind.config = {
         theme: {
           extend: {
             colors: {
@@ -50,52 +51,329 @@
           }
         }
       };
+    </script>
+    <style>
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+      .tab-content { display: none; }
+      .tab-content.active { display: block; }
+      .nav-link.active { background: rgba(249, 115, 22, 0.1); color: #ea580c; }
+    </style>
+  </head>
+  <body class="bg-slate-100 min-h-screen">
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed top-6 right-6 z-50 px-6 py-4 bg-green-500 text-white rounded-xl shadow-lg font-bold">
+      保存成功！
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="h-10 w-10 bg-brand-500 rounded-xl flex items-center justify-center">
+            <i data-lucide="shield-check" class="h-6 w-6 text-white"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold text-slate-900">启言后台管理</h1>
+            <p class="text-sm text-slate-500">qiyan.com 内容管理系统</p>
+          </div>
+        </div>
+        <button onclick="logout()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
+          <i data-lucide="log-out" class="h-4 w-4 inline mr-1"></i>
+          退出登录
+        </button>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="flex gap-8">
+        <!-- Sidebar Navigation -->
+        <nav class="w-64 shrink-0">
+          <div class="bg-white rounded-2xl shadow-card p-4 sticky top-24">
+            <div class="space-y-1">
+              <a href="#" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="content">
+                <i data-lucide="file-text" class="h-5 w-5"></i>
+                <span class="font-medium">内容编辑</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="qrcodes">
+                <i data-lucide="qr-code" class="h-5 w-5"></i>
+                <span class="font-medium">二维码</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="cases">
+                <i data-lucide="heart" class="h-5 w-5"></i>
+                <span class="font-medium">康复案例</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="images">
+                <i data-lucide="image" class="h-5 w-5"></i>
+                <span class="font-medium">图片管理</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="bookings">
+                <i data-lucide="calendar-check" class="h-5 w-5"></i>
+                <span class="font-medium">预约列表</span>
+              </a>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1">
+          <div class="mb-6">
+            <h2 id="pageTitle" class="text-2xl font-bold text-slate-900">内容编辑</h2>
+          </div>
+
+          <!-- Content Edit Tab -->
+          <div id="tab-content" class="tab-content active">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form id="contentForm" class="space-y-6">
+                <div class="grid gap-6 md:grid-cols-2">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">首页标语</label>
+                    <input type="text" data-key="hero_title" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入首页主标语">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">首页副标语</label>
+                    <input type="text" data-key="hero_subtitle" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入首页副标语">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2">关于我们（第一段）</label>
+                  <textarea data-key="about_p1" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none" placeholder="输入关于我们第一段内容"></textarea>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2">关于我们（第二段）</label>
+                  <textarea data-key="about_p2" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none" placeholder="输入关于我们第二段内容"></textarea>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2">联系我们 - 地址</label>
+                  <input type="text" data-key="contact_address" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入地址">
+                </div>
+                <div class="grid gap-6 md:grid-cols-2">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">咨询热线</label>
+                    <input type="text" data-key="contact_phone" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入电话号码">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">电子邮箱</label>
+                    <input type="email" data-key="contact_email" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入邮箱地址">
+                  </div>
+                </div>
+                <div class="pt-4">
+                  <button type="submit" class="px-8 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 transition-colors shadow-soft">
+                    <i data-lucide="save" class="h-4 w-4 inline mr-2"></i>
+                    保存内容
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- QR Codes Tab -->
+          <div id="tab-qrcodes" class="tab-content">
+            <div class="grid gap-8 md:grid-cols-2">
+              <!-- Official QR -->
+              <div class="bg-white rounded-2xl shadow-card p-8">
+                <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+                  <i data-lucide="qr-code" class="h-5 w-5 text-brand-500"></i>
+                  官方公众号二维码
+                </h3>
+                <div class="text-center">
+                  <div id="qrOfficialPreview" class="mx-auto w-64 h-64 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center cursor-pointer hover:border-brand-400 transition-colors" onclick="document.getElementById('qrOfficialInput').click()">
+                    <i data-lucide="upload" class="h-12 w-12 text-slate-400 mb-3"></i>
+                    <span class="text-sm text-slate-500 font-medium">点击上传图片</span>
+                    <span class="text-xs text-slate-400 mt-1">PNG、JPG、WebP</span>
+                  </div>
+                  <input type="file" id="qrOfficialInput" class="hidden" accept="image/png,image/jpeg,image/webp" onchange="handleQRUpload(this, 'qrOfficial')">
+                  <p id="qrOfficialStatus" class="mt-4 text-sm text-slate-500"></p>
+                  <button id="qrOfficialSaveBtn" onclick="saveQR('qrOfficial')" class="mt-4 px-6 py-2 bg-brand-500 text-white font-bold rounded-lg hover:bg-brand-600 transition-colors hidden">
+                    保存公众号二维码
+                  </button>
+                </div>
+              </div>
+              <!-- Service QR -->
+              <div class="bg-white rounded-2xl shadow-card p-8">
+                <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+                  <i data-lucide="message-square-text" class="h-5 w-5 text-accent-500"></i>
+                  在线客服二维码
+                </h3>
+                <div class="text-center">
+                  <div id="qrServicePreview" class="mx-auto w-64 h-64 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center cursor-pointer hover:border-accent-400 transition-colors" onclick="document.getElementById('qrServiceInput').click()">
+                    <i data-lucide="upload" class="h-12 w-12 text-slate-400 mb-3"></i>
+                    <span class="text-sm text-slate-500 font-medium">点击上传图片</span>
+                    <span class="text-xs text-slate-400 mt-1">PNG、JPG、WebP</span>
+                  </div>
+                  <input type="file" id="qrServiceInput" class="hidden" accept="image/png,image/jpeg,image/webp" onchange="handleQRUpload(this, 'qrService')">
+                  <p id="qrServiceStatus" class="mt-4 text-sm text-slate-500"></p>
+                  <button id="qrServiceSaveBtn" onclick="saveQR('qrService')" class="mt-4 px-6 py-2 bg-accent-500 text-white font-bold rounded-lg hover:bg-accent-600 transition-colors hidden">
+                    保存客服二维码
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cases Tab -->
+          <div id="tab-cases" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-slate-900">康复案例列表</h3>
+                <button onclick="showCaseEditor()" class="px-5 py-2 bg-brand-500 text-white font-bold rounded-lg hover:bg-brand-600 transition-colors">
+                  <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+                  新增案例
+                </button>
+              </div>
+              <div id="casesList" class="space-y-4">
+                <p class="text-slate-500 text-center py-8">正在加载案例...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Images Tab -->
+          <div id="tab-images" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-slate-900">图片库</h3>
+                <button onclick="document.getElementById('generalImageInput').click()" class="px-5 py-2 bg-brand-500 text-white font-bold rounded-lg hover:bg-brand-600 transition-colors">
+                  <i data-lucide="upload" class="h-4 w-4 inline mr-1"></i>
+                  上传图片
+                </button>
+                <input type="file" id="generalImageInput" class="hidden" accept="image/png,image/jpeg,image/webp,image/gif" multiple onchange="handleGeneralUpload(this)">
+              </div>
+              <div id="imagesGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <p class="text-slate-500 text-center py-8 col-span-full">正在加载图片...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bookings Tab -->
+          <div id="tab-bookings" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+              <div class="p-6 border-b border-slate-100">
+                <h3 class="text-lg font-bold text-slate-900">预约评估列表</h3>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-slate-50">
+                    <tr>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">提交时间</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">家长姓名</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">孩子年龄</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">联系电话</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">需求</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">备注</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bookingsList" class="divide-y divide-slate-100">
+                    <tr>
+                      <td colspan="6" class="px-8 py-12 text-center text-slate-400">点击左侧"预约列表"标签加载数据</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Case Editor Modal -->
+    <div id="caseModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/50" onclick="closeCaseEditor()"></div>
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="sticky top-0 bg-white border-b border-slate-100 px-8 py-6 flex items-center justify-between">
+          <h3 id="caseModalTitle" class="text-xl font-bold text-slate-900">编辑案例</h3>
+          <button onclick="closeCaseEditor()" class="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+            <i data-lucide="x" class="h-5 w-5 text-slate-500"></i>
+          </button>
+        </div>
+        <form id="caseForm" class="p-8 space-y-6">
+          <input type="hidden" id="caseId">
+          <div class="grid gap-6 md:grid-cols-2">
+            <div>
+              <label class="block text-sm font-bold text-slate-700 mb-2">案例标题</label>
+              <input type="text" id="caseTitle" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="例如：张同学康复案例">
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-slate-700 mb-2">分类标签</label>
+              <select id="caseCategory" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all">
+                <option value="语言发育迟缓">语言发育迟缓</option>
+                <option value="社交障碍">社交障碍</option>
+                <option value="感统失调">感统失调</option>
+                <option value="注意力不集中">注意力不集中</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">案例描述</label>
+            <textarea id="caseDescription" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none" placeholder="简要描述案例情况"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">康复过程（富文本）</label>
+            <textarea id="caseContent" rows="12" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none font-mono text-sm" placeholder="输入详细的康复过程描述，可以使用换行分隔段落"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">封面图片</label>
+            <div id="caseImagePreview" class="mx-auto w-full max-w-md h-48 rounded-xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center cursor-pointer hover:border-brand-400 transition-colors" onclick="document.getElementById('caseImageInput').click()">
+              <i data-lucide="image" class="h-10 w-10 text-slate-400 mb-2"></i>
+              <span class="text-sm text-slate-500 font-medium">点击上传封面图片</span>
+            </div>
+            <input type="file" id="caseImageInput" class="hidden" accept="image/png,image/jpeg,image/webp" onchange="handleCaseImageUpload(this)">
+            <input type="hidden" id="caseImagePath">
+          </div>
+          <div class="flex items-center gap-4 pt-4">
+            <button type="submit" class="px-8 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 transition-colors">
+              保存案例
+            </button>
+            <button type="button" onclick="closeCaseEditor()" class="px-8 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-colors">
+              取消
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      let currentQRData = { qrOfficial: null, qrService: null };
+      let casesData = [];
+
       document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', e => {
           e.preventDefault();
           const id = link.dataset.tab;
-          document.querySelectorAll('.nav-link').forEach(l => {
-            l.classList.remove('active', 'bg-brand-600/10', 'text-brand-400');
-            l.classList.add('text-slate-400');
-          });
-          link.classList.add('active', 'bg-brand-600/10', 'text-brand-400');
-          link.classList.remove('text-slate-400');
-          document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-          document.getElementById('tab-' + id).classList.remove('hidden');
+          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          document.getElementById('tab-' + id).classList.add('active');
           document.getElementById('pageTitle').textContent = link.textContent.trim();
           if (id === 'bookings') loadBookings();
+          if (id === 'cases') loadCases();
+          if (id === 'images') loadImages();
         });
       });
 
-      // Universal load / save using data-key attributes
       async function loadAll() {
         try {
           const res = await fetch('/api/content');
           if (!res.ok) return;
-          
-          const contentType = res.headers.get("content-type");
-          if (contentType && contentType.includes("application/json")) {
-            const data = await res.json();
-            document.querySelectorAll('[data-key]').forEach(el => {
-              const k = el.dataset.key;
-              if (data[k] != null) {
-                if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') el.value = data[k];
-              }
-            });
-          }
+          const data = await res.json();
+          document.querySelectorAll('[data-key]').forEach(el => {
+            const k = el.dataset.key;
+            if (data[k] != null) el.value = data[k];
+          });
         } catch (e) {
-          console.warn('CMS: 无法从服务器加载内容，请确保 node server.js 已运�?);
+          console.warn('无法加载内容');
         }
       }
 
-      async function saveAll() {
+      document.getElementById('contentForm').addEventListener('submit', async e => {
+        e.preventDefault();
         const data = {};
         document.querySelectorAll('[data-key]').forEach(el => {
           const k = el.dataset.key;
           const v = el.value.trim();
           if (v) data[k] = v;
         });
-
         try {
           const res = await fetch('/api/content', {
             method: 'POST',
@@ -104,15 +382,207 @@
           });
           const result = await res.json();
           if (result.success) {
-            const t = document.getElementById('toast');
-            t.classList.remove('hidden');
-            setTimeout(() => t.classList.add('hidden'), 2000);
-          } else {
-            alert('保存失败: ' + result.message);
+            document.getElementById('toast').classList.remove('hidden');
+            setTimeout(() => document.getElementById('toast').classList.add('hidden'), 2000);
           }
         } catch (e) {
-          alert('请求失败，请检查网�?);
+          alert('保存失败');
         }
+      });
+
+      function handleQRUpload(input, type) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          currentQRData[type] = e.target.result;
+          const preview = document.getElementById(type + 'Preview');
+          preview.innerHTML = '<img src="' + e.target.result + '" class="w-full h-full object-contain rounded-2xl">';
+          document.getElementById(type + 'SaveBtn').classList.remove('hidden');
+          document.getElementById(type + 'Status').textContent = '已选择: ' + file.name;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      async function saveQR(type) {
+        if (!currentQRData[type]) return;
+        const folder = type === 'qrOfficial' ? 'qrcodes' : 'service';
+        const fileName = type === 'qrOfficial' ? 'qr-official.png' : 'qr-service.png';
+        try {
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              imageData: currentQRData[type],
+              fileName: fileName,
+              folder: folder
+            })
+          });
+          const result = await res.json();
+          if (result.success) {
+            document.getElementById('toast').classList.remove('hidden');
+            setTimeout(() => document.getElementById('toast').classList.add('hidden'), 2000);
+            document.getElementById(type + 'SaveBtn').classList.add('hidden');
+          }
+        } catch (e) {
+          alert('上传失败');
+        }
+      }
+
+      async function loadCases() {
+        try {
+          const res = await fetch('/api/cases');
+          if (!res.ok) {
+            document.getElementById('casesList').innerHTML = '<p class="text-slate-500 text-center py-8">暂无案例，点击右上角添加</p>';
+            return;
+          }
+          casesData = await res.json();
+          renderCases();
+        } catch (e) {
+          document.getElementById('casesList').innerHTML = '<p class="text-slate-500 text-center py-8">加载失败</p>';
+        }
+      }
+
+      function renderCases() {
+        if (!casesData.length) {
+          document.getElementById('casesList').innerHTML = '<p class="text-slate-500 text-center py-8">暂无案例，点击右上角添加</p>';
+          return;
+        }
+        document.getElementById('casesList').innerHTML = casesData.map((c, i) => `
+          <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+            <div class="w-16 h-16 bg-brand-100 rounded-xl flex items-center justify-center shrink-0">
+              <i data-lucide="heart" class="h-6 w-6 text-brand-500"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h4 class="font-bold text-slate-900 truncate">${c.title}</h4>
+              <p class="text-sm text-slate-500 truncate">${c.description}</p>
+            </div>
+            <span class="px-3 py-1 bg-brand-100 text-brand-700 text-xs font-bold rounded-lg shrink-0">${c.category}</span>
+            <button onclick="editCase(${i})" class="p-2 hover:bg-white rounded-lg transition-colors">
+              <i data-lucide="edit-2" class="h-4 w-4 text-slate-400"></i>
+            </button>
+          </div>
+        `).join('');
+        lucide.createIcons();
+      }
+
+      function showCaseEditor(caseData = null) {
+        document.getElementById('caseModal').classList.remove('hidden');
+        document.getElementById('caseId').value = caseData ? caseData.id : '';
+        document.getElementById('caseTitle').value = caseData ? caseData.title : '';
+        document.getElementById('caseCategory').value = caseData ? caseData.category : '语言发育迟缓';
+        document.getElementById('caseDescription').value = caseData ? caseData.description : '';
+        document.getElementById('caseContent').value = caseData ? caseData.content : '';
+        document.getElementById('caseImagePath').value = caseData ? caseData.image : '';
+        if (caseData && caseData.image) {
+          document.getElementById('caseImagePreview').innerHTML = '<img src="' + caseData.image + '" class="w-full h-full object-contain rounded-2xl">';
+        }
+        document.getElementById('caseModalTitle').textContent = caseData ? '编辑案例' : '新增案例';
+        lucide.createIcons();
+      }
+
+      function editCase(index) {
+        showCaseEditor(casesData[index]);
+      }
+
+      function closeCaseEditor() {
+        document.getElementById('caseModal').classList.add('hidden');
+      }
+
+      function handleCaseImageUpload(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById('caseImagePreview').innerHTML = '<img src="' + e.target.result + '" class="w-full h-full object-contain rounded-2xl">';
+          document.getElementById('caseImagePath').value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      document.getElementById('caseForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        const caseData = {
+          id: document.getElementById('caseId').value || Date.now().toString(),
+          title: document.getElementById('caseTitle').value,
+          category: document.getElementById('caseCategory').value,
+          description: document.getElementById('caseDescription').value,
+          content: document.getElementById('caseContent').value,
+          image: document.getElementById('caseImagePath').value,
+          updatedAt: new Date().toISOString()
+        };
+        try {
+          const res = await fetch('/api/cases', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(caseData)
+          });
+          if (res.ok) {
+            closeCaseEditor();
+            loadCases();
+            document.getElementById('toast').classList.remove('hidden');
+            setTimeout(() => document.getElementById('toast').classList.add('hidden'), 2000);
+          }
+        } catch (e) {
+          alert('保存失败');
+        }
+      });
+
+      async function loadImages() {
+        try {
+          const res = await fetch('/api/files', {
+            headers: { 'folder': 'uploads' }
+          });
+          const files = await res.json();
+          if (!files.length) {
+            document.getElementById('imagesGrid').innerHTML = '<p class="text-slate-500 text-center py-8 col-span-full">暂无图片，点击右上角上传</p>';
+            return;
+          }
+          document.getElementById('imagesGrid').innerHTML = files.map(f => `
+            <div class="relative group aspect-square rounded-xl overflow-hidden bg-slate-100">
+              <img src="${f.path}" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <button onclick="copyImagePath('${f.path}')" class="px-3 py-1 bg-white text-slate-900 text-xs font-bold rounded-lg">复制路径</button>
+              </div>
+            </div>
+          `).join('');
+        } catch (e) {
+          document.getElementById('imagesGrid').innerHTML = '<p class="text-slate-500 text-center py-8 col-span-full">加载失败</p>';
+        }
+      }
+
+      function copyImagePath(path) {
+        navigator.clipboard.writeText(path);
+        document.getElementById('toast').textContent = '路径已复制';
+        document.getElementById('toast').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('toast').classList.add('hidden');
+          document.getElementById('toast').textContent = '保存成功！';
+        }, 2000);
+      }
+
+      async function handleGeneralUpload(input) {
+        const files = Array.from(input.files);
+        for (const file of files) {
+          const reader = new FileReader();
+          reader.onload = async e => {
+            try {
+              await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  imageData: e.target.result,
+                  fileName: file.name,
+                  folder: 'uploads'
+                })
+              });
+            } catch (e) {
+              console.error('上传失败', file.name);
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+        setTimeout(loadImages, 500);
       }
 
       async function loadBookings() {
@@ -120,9 +590,13 @@
           const res = await fetch('/api/bookings');
           const data = await res.json();
           const list = document.getElementById('bookingsList');
+          if (!data.length) {
+            list.innerHTML = '<tr><td colspan="6" class="px-8 py-12 text-center text-slate-400">暂无预约记录</td></tr>';
+            return;
+          }
           list.innerHTML = data.map(b => `
             <tr class="hover:bg-slate-50 transition-colors">
-              <td class="px-8 py-5 text-slate-400 font-medium">${new Date(b.timestamp).toLocaleString()}</td>
+              <td class="px-8 py-5 text-slate-400 font-medium">${new Date(b.timestamp || b.createdAt).toLocaleString()}</td>
               <td class="px-8 py-5 font-bold text-slate-900">${b.parentName}</td>
               <td class="px-8 py-5"><span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold">${b.childAge}</span></td>
               <td class="px-8 py-5 font-medium text-brand-600">${b.phone}</td>
@@ -131,18 +605,16 @@
             </tr>
           `).join('');
         } catch (e) {
-          console.error('Failed to load bookings');
+          document.getElementById('bookingsList').innerHTML = '<tr><td colspan="6" class="px-8 py-12 text-center text-slate-400">加载失败</td></tr>';
         }
+      }
+
+      async function logout() {
+        await fetch('/api/logout', { method: 'POST' });
+        window.location.href = '/admin/login.html';
       }
 
       loadAll();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
-    <script>
-      // Initialize Lucide icons
-      lucide.createIcons();
-    </script>
   </body>
 </html>
-
-

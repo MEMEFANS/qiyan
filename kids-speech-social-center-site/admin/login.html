@@ -53,12 +53,12 @@
 
         <form id="loginForm" class="space-y-4">
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">用户�?/label>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">用户名</label>
             <input type="text" id="username" class="w-full rounded-xl border border-slate-200 px-4 py-3 text-slate-900 outline-none focus:border-brand-400 focus:ring-4 focus:ring-brand-100" placeholder="请输入用户名" required />
           </div>
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-2">密码</label>
-            <input type="password" id="password" class="w-full rounded-xl border border-slate-200 px-4 py-3 text-slate-900 outline-none focus:border-brand-400 focus:ring-4 focus:ring-brand-100" placeholder="请输入密�? required />
+            <input type="password" id="password" class="w-full rounded-xl border border-slate-200 px-4 py-3 text-slate-900 outline-none focus:border-brand-400 focus:ring-4 focus:ring-brand-100" placeholder="请输入密码" required />
           </div>
           <div id="error" class="hidden rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600"></div>
           <button type="submit" class="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:bg-brand-700 transition-all duration-300">
@@ -88,9 +88,19 @@
         try {
           const res = await fetch('/api/login', {
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
           });
+          
+          const contentType = res.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            const text = await res.text();
+            console.error('Non-JSON response:', text);
+            // 只显示前 100 个字符，防止错误信息太长
+            throw new Error('服务器返回了非JSON格式响应: ' + text.substring(0, 100));
+          }
+
           const data = await res.json();
 
           if (data.success) {
@@ -102,7 +112,8 @@
             errorDiv.classList.remove('hidden');
           }
         } catch (err) {
-          errorDiv.textContent = '登录请求失败，请稍后再试';
+          console.error('Login error:', err);
+          errorDiv.textContent = '登录请求失败: ' + (err.message || '请检查网络连接');
           errorDiv.classList.remove('hidden');
         }
       });

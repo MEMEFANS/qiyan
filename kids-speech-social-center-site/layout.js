@@ -40,51 +40,51 @@
 
   const initNavActive = () => {
     const setActive = () => {
-      const current = location.pathname.split("/").pop() || "index.html";
+      const current = "/" + (location.pathname.split("/").pop() || "index.html");
       const aboutSubPages = new Set([
-        "about-overview.html",
-        "about-story.html",
-        "about-public.html",
-        "about-locations.html",
-        "about-center.html"
+        "/about-overview.html",
+        "/about-story.html",
+        "/about-public.html",
+        "/about-locations.html",
+        "/about-center.html"
       ]);
       const programsSubPages = new Set([
-        "program-kindergarten.html",
-        "program-slt.html",
-        "program-cognitive.html",
-        "program-ot.html",
-        "program-social.html"
+        "/program-kindergarten.html",
+        "/program-slt.html",
+        "/program-cognitive.html",
+        "/program-ot.html",
+        "/program-social.html"
       ]);
-      const integrationSubPages = new Set(["integration.html", "integration-social.html"]);
+      const integrationSubPages = new Set(["/integration-social.html"]);
       const newsSubPages = new Set([
-        "news-topic.html",
-        "news-qa.html",
-        "news-knowledge.html",
-        "news-info.html"
+        "/news-info.html",
+        "/news-knowledge.html",
+        "/news-qa.html",
+        "/news-topic.html"
       ]);
-      const contactSubPages = new Set(["contact-join.html"]);
-      const eventsSubPages = new Set(["events-lighthouse.html", "events-spark.html"]);
-      const isExpertDetail = /^expert-\d+\.html$/i.test(current);
-      const isCaseDetail = /^case-\d+\.html$/i.test(current);
-      const isNewsArticleDetail = /^news-article-\d+\.html$/i.test(current);
+      const contactSubPages = new Set(["/contact-join.html"]);
+      const eventsSubPages = new Set(["/events-lighthouse.html", "/events-spark.html"]);
+      const isExpertDetail = /^\/expert-\d+\.html$/i.test(current);
+      const isCaseDetail = /^\/case-\d+\.html$/i.test(current);
+      const isNewsArticleDetail = /^\/news-article-\d+\.html$/i.test(current);
       const currentForNav = aboutSubPages.has(current)
-        ? "about.html"
+        ? "/about.html"
         : programsSubPages.has(current)
-          ? "programs.html"
+          ? "/programs.html"
           : integrationSubPages.has(current)
-            ? "integration.html"
+            ? "/integration.html"
             : newsSubPages.has(current)
-              ? "news.html"
+              ? "/news.html"
               : isNewsArticleDetail
-                ? "news.html"
+                ? "/news.html"
               : contactSubPages.has(current)
-                ? "contact.html"
+                ? "/contact.html"
                 : eventsSubPages.has(current)
-                  ? "events.html"
+                  ? "/events.html"
                   : isExpertDetail
-                    ? "experts.html"
+                    ? "/experts.html"
                     : isCaseDetail
-                      ? "cases.html"
+                      ? "/cases.html"
           : current;
       const links = Array.from(document.querySelectorAll("a[data-nav][data-page]"));
 
