@@ -604,18 +604,18 @@
               <div class="bg-white rounded-2xl shadow-card p-8">
                 <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
                   <i data-lucide="qr-code" class="h-5 w-5 text-brand-500"></i>
-                  官方公众号二维码
+                  官方微信二维码
                 </h3>
                 <div class="text-center">
                   <div id="qrOfficialPreview" class="mx-auto w-64 h-64 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center cursor-pointer hover:border-brand-400 transition-colors" onclick="document.getElementById('qrOfficialInput').click()">
                     <i data-lucide="upload" class="h-12 w-12 text-slate-400 mb-3"></i>
-                    <span class="text-sm text-slate-500 font-medium">点击上传图片</span>
+                    <span class="text-sm text-slate-500 font-medium">点击上传官方微信二维码</span>
                     <span class="text-xs text-slate-400 mt-1">PNG、JPG、WebP</span>
                   </div>
                   <input type="file" id="qrOfficialInput" class="hidden" accept="image/png,image/jpeg,image/webp" onchange="handleQRUpload(this, 'qrOfficial')">
                   <p id="qrOfficialStatus" class="mt-4 text-sm text-slate-500"></p>
                   <button id="qrOfficialSaveBtn" onclick="saveQR('qrOfficial')" class="mt-4 px-6 py-2 bg-brand-500 text-white font-bold rounded-lg hover:bg-brand-600 transition-colors hidden">
-                    保存公众号二维码
+                    保存微信二维码
                   </button>
                 </div>
               </div>
