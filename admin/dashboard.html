@@ -1,0 +1,1841 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>后台管理 - 启言社交训练中心</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.12)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.06)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.15)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '3rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+      .tab-content { display: none; }
+      .tab-content.active { display: block; }
+      .nav-link.active { background: rgba(249, 115, 22, 0.1); color: #ea580c; }
+    </style>
+  </head>
+  <body class="bg-slate-100 min-h-screen">
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed top-6 right-6 z-50 px-6 py-4 bg-green-500 text-white rounded-xl shadow-lg font-bold">
+      保存成功！
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="h-10 w-10 bg-brand-500 rounded-xl flex items-center justify-center">
+            <i data-lucide="shield-check" class="h-6 w-6 text-white"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold text-slate-900">启言后台管理</h1>
+            <p class="text-sm text-slate-500">qiyan.com 内容管理系统</p>
+          </div>
+        </div>
+        <button onclick="logout()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
+          <i data-lucide="log-out" class="h-4 w-4 inline mr-1"></i>
+          退出登录
+        </button>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="flex gap-8">
+        <!-- Sidebar Navigation -->
+        <nav class="w-64 shrink-0">
+          <div class="bg-white rounded-2xl shadow-card p-4 sticky top-24">
+            <div class="space-y-1">
+              <div class="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">网站内容</div>
+              <a href="#" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="home">
+                <i data-lucide="home" class="h-5 w-5"></i>
+                <span class="font-medium">网站首页</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="about">
+                <i data-lucide="info" class="h-5 w-5"></i>
+                <span class="font-medium">关于我们</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="services">
+                <i data-lucide="layers" class="h-5 w-5"></i>
+                <span class="font-medium">服务项目</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="programs">
+                <i data-lucide="activity" class="h-5 w-5"></i>
+                <span class="font-medium">康复项目</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="events">
+                <i data-lucide="star" class="h-5 w-5"></i>
+                <span class="font-medium">专项活动</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="testimonials">
+                <i data-lucide="message-square" class="h-5 w-5"></i>
+                <span class="font-medium">用户评价</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="contact">
+                <i data-lucide="phone" class="h-5 w-5"></i>
+                <span class="font-medium">联系信息</span>
+              </a>
+              
+              <div class="px-4 py-2 mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">业务管理</div>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="cases">
+                <i data-lucide="heart" class="h-5 w-5"></i>
+                <span class="font-medium">康复案例</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="experts">
+                <i data-lucide="users" class="h-5 w-5"></i>
+                <span class="font-medium">专家团队</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="bookings">
+                <i data-lucide="calendar-check" class="h-5 w-5"></i>
+                <span class="font-medium">预约列表</span>
+              </a>
+              
+              <div class="px-4 py-2 mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">资源工具</div>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="images">
+                <i data-lucide="image" class="h-5 w-5"></i>
+                <span class="font-medium">图片管理</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="qrcodes">
+                <i data-lucide="qr-code" class="h-5 w-5"></i>
+                <span class="font-medium">二维码</span>
+              </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="security">
+                <i data-lucide="shield-check" class="h-5 w-5"></i>
+                <span class="font-medium">安全设置</span>
+              </a>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1">
+          <div class="mb-6">
+            <h2 id="pageTitle" class="text-2xl font-bold text-slate-900">网站首页</h2>
+          </div>
+
+          <!-- Home Tab -->
+          <div id="tab-home" class="tab-content active">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="monitor" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">首屏展示 (Hero)</h3>
+                </div>
+                
+                <div class="grid gap-6 md:grid-cols-2">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">主标题</label>
+                    <input type="text" data-key="hero_title" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入首页主标题">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">副标题</label>
+                    <input type="text" data-key="hero_subtitle" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="输入首页副标题">
+                  </div>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">特色标签</label>
+                    <input type="text" data-key="hero_tag" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all" placeholder="例如: 15年深耕 · 值得信赖">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">首屏插画</label>
+                    <div class="flex gap-2">
+                      <input type="text" data-key="hero_image" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm" placeholder="/assets/hero.svg">
+                      <button type="button" onclick="document.getElementById('heroImageInput').click()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200 transition-colors">
+                        <i data-lucide="upload" class="h-4 w-4"></i>
+                      </button>
+                      <input type="file" id="heroImageInput" class="hidden" accept="image/*" onchange="handleQuickUpload(this, 'hero_image')">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-8 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-accent-100 rounded-lg flex items-center justify-center text-accent-600">
+                    <i data-lucide="bar-chart-3" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">数据统计 (Stats)</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
+                    <div class="font-bold text-xs text-slate-400 uppercase tracking-wider">统计项 1</div>
+                    <input type="text" data-key="stat1Value" placeholder="数值 (如 500)" class="w-full px-4 py-2 rounded-lg border border-slate-200 mb-2">
+                    <input type="text" data-key="stat1Label" placeholder="标签 (如 康复案例)" class="w-full px-4 py-2 rounded-lg border border-slate-200">
+                  </div>
+                  <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
+                    <div class="font-bold text-xs text-slate-400 uppercase tracking-wider">统计项 2</div>
+                    <input type="text" data-key="stat2Value" placeholder="数值 (如 50)" class="w-full px-4 py-2 rounded-lg border border-slate-200 mb-2">
+                    <input type="text" data-key="stat2Label" placeholder="标签 (如 资深专家)" class="w-full px-4 py-2 rounded-lg border border-slate-200">
+                  </div>
+                  <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
+                    <div class="font-bold text-xs text-slate-400 uppercase tracking-wider">统计项 3</div>
+                    <input type="text" data-key="stat4Value" placeholder="数值 (如 100)" class="w-full px-4 py-2 rounded-lg border border-slate-200 mb-2">
+                    <input type="text" data-key="stat4Label" placeholder="标签 (如 贴心服务)" class="w-full px-4 py-2 rounded-lg border border-slate-200">
+                  </div>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存首页内容
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- About Tab -->
+          <div id="tab-about" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="info" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">关于我们页面</h3>
+                </div>
+
+                <div class="grid gap-6">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">页面大标题 (第一行)</label>
+                    <input type="text" data-key="aboutHeroTitle1" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="例如: 见证每一个">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">页面大标题 (第二行 - 橙色)</label>
+                    <input type="text" data-key="aboutHeroTitle2" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="例如: 生命的奇迹">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">页面描述文字</label>
+                    <textarea data-key="aboutHeroDesc" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none" placeholder="输入页面顶部的简短介绍"></textarea>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-8 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-accent-100 rounded-lg flex items-center justify-center text-accent-600">
+                    <i data-lucide="history" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">发展历程</h3>
+                </div>
+
+                <div class="grid gap-6">
+                  <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div class="flex items-center gap-4">
+                      <input type="text" data-key="historyYear1" placeholder="年份 (如 2008)" class="w-32 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                      <div class="h-px flex-1 bg-slate-200"></div>
+                    </div>
+                    <textarea data-key="historyDesc1" placeholder="该阶段的大事记描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                  <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div class="flex items-center gap-4">
+                      <input type="text" data-key="historyYear2" placeholder="年份 (如 2015)" class="w-32 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                      <div class="h-px flex-1 bg-slate-200"></div>
+                    </div>
+                    <textarea data-key="historyDesc2" placeholder="该阶段的大事记描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                  <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div class="flex items-center gap-4">
+                      <input type="text" data-key="historyYear3" placeholder="年份 (如 2023)" class="w-32 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                      <div class="h-px flex-1 bg-slate-200"></div>
+                    </div>
+                    <textarea data-key="historyDesc3" placeholder="该阶段的大事记描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-8 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="map-pin" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">中心分布 (Locations)</h3>
+                </div>
+
+                <div class="grid gap-6">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">页面主标题</label>
+                    <input type="text" data-key="locationsHeroTitle" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="例如: 启言分布">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">页面描述文字</label>
+                    <textarea data-key="locationsHeroDesc" rows="2" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none" placeholder="输入分布页面的简短介绍"></textarea>
+                  </div>
+                  <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div class="font-bold text-xs text-slate-400 uppercase tracking-wider">主要中心信息</div>
+                    <input type="text" data-key="location1Name" placeholder="中心名称" class="w-full px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    <textarea data-key="location1Desc" placeholder="中心特色描述" class="w-full px-4 py-2 rounded-lg border border-slate-200 resize-none" rows="2"></textarea>
+                    <div class="grid gap-4 md:grid-cols-2">
+                      <input type="text" data-key="location1Phone" placeholder="联系电话" class="px-4 py-2 rounded-lg border border-slate-200">
+                      <input type="text" data-key="location1Address" placeholder="详细地址" class="px-4 py-2 rounded-lg border border-slate-200">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存关于我们
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Services Tab -->
+          <div id="tab-services" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="layers" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">核心服务项目</h3>
+                </div>
+
+                <div class="grid gap-8">
+                  <!-- Service 1 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-full">项目一</span>
+                      <input type="text" data-key="service1Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service1Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+
+                  <!-- Service 2 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-accent-100 text-accent-700 text-[10px] font-bold rounded-full">项目二</span>
+                      <input type="text" data-key="service2Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service2Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+
+                  <!-- Service 3 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full">项目三</span>
+                      <input type="text" data-key="service3Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service3Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+
+                  <!-- Service 4 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold rounded-full">项目四</span>
+                      <input type="text" data-key="service4Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service4Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+
+                  <!-- Service 5 -->
+                  <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-4">
+                    <div class="flex items-center justify-between">
+                      <span class="px-3 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full">项目五</span>
+                      <input type="text" data-key="service5Title" placeholder="项目标题" class="flex-1 ml-4 px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    </div>
+                    <textarea data-key="service5Desc" placeholder="项目详细描述" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存服务项目
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Programs Tab -->
+          <div id="tab-programs" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="activity" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">康复项目页面设置</h3>
+                </div>
+
+                <div class="grid gap-6">
+                  <input type="text" data-key="programsHeroTitle1" placeholder="页面标题 1" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="programsHeroTitle2" placeholder="页面标题 2 (橙色)" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <textarea data-key="programsHeroSubtitle" placeholder="页面副标题" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                </div>
+
+                <div class="space-y-6">
+                  <div class="p-6 bg-slate-50 rounded-2xl space-y-4">
+                    <h5 class="font-bold text-slate-700">项目一</h5>
+                    <input type="text" data-key="program1Title" placeholder="项目名称" class="w-full px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    <textarea data-key="program1Desc" placeholder="项目详细介绍" class="w-full px-4 py-2 rounded-lg border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                  <div class="p-6 bg-slate-50 rounded-2xl space-y-4">
+                    <h5 class="font-bold text-slate-700">项目二</h5>
+                    <input type="text" data-key="program2Title" placeholder="项目名称" class="w-full px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    <textarea data-key="program2Desc" placeholder="项目详细介绍" class="w-full px-4 py-2 rounded-lg border border-slate-200 resize-none" rows="2"></textarea>
+                  </div>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存康复项目
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Events Tab -->
+          <div id="tab-events" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="star" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">专项活动页面设置</h3>
+                </div>
+
+                <div class="grid gap-6">
+                  <input type="text" data-key="eventsHeroTitle1" placeholder="页面标题 1" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="eventsHeroTitle2" placeholder="页面标题 2 (橙色)" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <textarea data-key="eventsHeroSubtitle" placeholder="页面副标题" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                  <div class="p-6 bg-slate-50 rounded-2xl space-y-4">
+                    <input type="text" data-key="event1Title" placeholder="活动一标题" class="w-full px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    <textarea data-key="event1Desc" placeholder="活动一详情描述" class="w-full px-4 py-2 rounded-lg border border-slate-200 resize-none" rows="3"></textarea>
+                  </div>
+                  <div class="p-6 bg-slate-50 rounded-2xl space-y-4">
+                    <input type="text" data-key="event2Title" placeholder="活动二标题" class="w-full px-4 py-2 rounded-lg border border-slate-200 font-bold">
+                    <textarea data-key="event2Desc" placeholder="活动二详情描述" class="w-full px-4 py-2 rounded-lg border border-slate-200 resize-none" rows="3"></textarea>
+                  </div>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存专项活动
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Testimonials Tab -->
+          <div id="tab-testimonials" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="message-square" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">家长真实评价</h3>
+                </div>
+
+                <div class="space-y-8">
+                  <!-- Testimonial 1 -->
+                  <div class="p-6 rounded-3xl border border-slate-100 bg-slate-50/50 relative">
+                    <div class="absolute -top-3 left-6 px-4 py-1 bg-white border border-slate-100 rounded-full text-[10px] font-extrabold text-slate-400">评价一</div>
+                    <textarea data-key="testimonial1Content" rows="3" class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none mb-4" placeholder="评价内容..."></textarea>
+                    <div class="grid gap-4 md:grid-cols-3">
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">家长称呼</label>
+                        <input type="text" data-key="testimonial1Name" placeholder="如: 小明妈妈" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">评价标签</label>
+                        <input type="text" data-key="testimonial1Label" placeholder="如: 言语迟缓训练" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">头像文字</label>
+                        <input type="text" data-key="testimonial1Avatar" placeholder="如: 小" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Testimonial 2 -->
+                  <div class="p-6 rounded-3xl border border-slate-100 bg-slate-50/50 relative">
+                    <div class="absolute -top-3 left-6 px-4 py-1 bg-white border border-slate-100 rounded-full text-[10px] font-extrabold text-slate-400">评价二</div>
+                    <textarea data-key="testimonial2Content" rows="3" class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none mb-4" placeholder="评价内容..."></textarea>
+                    <div class="grid gap-4 md:grid-cols-3">
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">家长称呼</label>
+                        <input type="text" data-key="testimonial2Name" placeholder="如: 华华爸爸" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">评价标签</label>
+                        <input type="text" data-key="testimonial2Label" placeholder="如: 社交沟通训练" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">头像文字</label>
+                        <input type="text" data-key="testimonial2Avatar" placeholder="如: 华" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Testimonial 3 -->
+                  <div class="p-6 rounded-3xl border border-slate-100 bg-slate-50/50 relative">
+                    <div class="absolute -top-3 left-6 px-4 py-1 bg-white border border-slate-100 rounded-full text-[10px] font-extrabold text-slate-400">评价三</div>
+                    <textarea data-key="testimonial3Content" rows="3" class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none mb-4" placeholder="评价内容..."></textarea>
+                    <div class="grid gap-4 md:grid-cols-3">
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">家长称呼</label>
+                        <input type="text" data-key="testimonial3Name" placeholder="如: 莉莉妈妈" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">评价标签</label>
+                        <input type="text" data-key="testimonial3Label" placeholder="如: 综合康复方案" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 ml-1">头像文字</label>
+                        <input type="text" data-key="testimonial3Avatar" placeholder="如: 莉" class="w-full px-4 py-2 rounded-xl border border-slate-200">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存用户评价
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Contact Tab -->
+          <div id="tab-contact" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form class="content-form space-y-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="phone" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">联系方式与地址</h3>
+                </div>
+
+                <div class="grid gap-6">
+                  <input type="text" data-key="contactHeroTitle1" placeholder="联系页标题 1" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactHeroTitle2" placeholder="联系页标题 2 (橙色)" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <textarea data-key="contactHeroSubtitle" placeholder="联系页副标题" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                <div class="space-y-4">
+                  <label class="block text-sm font-bold text-slate-700">基本联系信息</label>
+                  <input type="text" data-key="contactHotline" placeholder="咨询热线" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactHotlineTime" placeholder="热线工作时间" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactEmail" placeholder="电子邮箱" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactEmailNote" placeholder="邮箱说明" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                </div>
+                <div class="space-y-4">
+                  <label class="block text-sm font-bold text-slate-700">地址与交通</label>
+                  <textarea data-key="contactAddress" placeholder="中心详细地址" class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none" rows="2"></textarea>
+                  <input type="text" data-key="contactBusInfo" placeholder="公交路线说明" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                  <input type="text" data-key="contactCenterName" placeholder="中心全称" class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                </div>
+              </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="button" onclick="saveContent(this)" class="px-10 py-4 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+                    <i data-lucide="save" class="h-5 w-5"></i>
+                    保存联系信息
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- QR Codes Tab -->
+          <div id="tab-qrcodes" class="tab-content">
+            <div class="grid gap-8 md:grid-cols-2">
+              <!-- Official QR -->
+              <div class="bg-white rounded-2xl shadow-card p-8">
+                <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+                  <i data-lucide="qr-code" class="h-5 w-5 text-brand-500"></i>
+                  官方微信二维码
+                </h3>
+                <div class="text-center">
+                  <div id="qrOfficialPreview" class="mx-auto w-64 h-64 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center cursor-pointer hover:border-brand-400 transition-colors" onclick="document.getElementById('qrOfficialInput').click()">
+                    <i data-lucide="upload" class="h-12 w-12 text-slate-400 mb-3"></i>
+                    <span class="text-sm text-slate-500 font-medium">点击上传官方微信二维码</span>
+                    <span class="text-xs text-slate-400 mt-1">PNG、JPG、WebP</span>
+                  </div>
+                  <input type="file" id="qrOfficialInput" class="hidden" accept="image/png,image/jpeg,image/webp" onchange="handleQRUpload(this, 'qrOfficial')">
+                  <p id="qrOfficialStatus" class="mt-4 text-sm text-slate-500"></p>
+                  <button id="qrOfficialSaveBtn" onclick="saveQR('qrOfficial')" class="mt-4 px-6 py-2 bg-brand-500 text-white font-bold rounded-lg hover:bg-brand-600 transition-colors hidden">
+                    保存微信二维码
+                  </button>
+                </div>
+              </div>
+              <!-- Service QR -->
+              <div class="bg-white rounded-2xl shadow-card p-8">
+                <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+                  <i data-lucide="message-square-text" class="h-5 w-5 text-accent-500"></i>
+                  在线客服二维码
+                </h3>
+                <div class="text-center">
+                  <div id="qrServicePreview" class="mx-auto w-64 h-64 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center cursor-pointer hover:border-accent-400 transition-colors" onclick="document.getElementById('qrServiceInput').click()">
+                    <i data-lucide="upload" class="h-12 w-12 text-slate-400 mb-3"></i>
+                    <span class="text-sm text-slate-500 font-medium">点击上传图片</span>
+                    <span class="text-xs text-slate-400 mt-1">PNG、JPG、WebP</span>
+                  </div>
+                  <input type="file" id="qrServiceInput" class="hidden" accept="image/png,image/jpeg,image/webp" onchange="handleQRUpload(this, 'qrService')">
+                  <p id="qrServiceStatus" class="mt-4 text-sm text-slate-500"></p>
+                  <button id="qrServiceSaveBtn" onclick="saveQR('qrService')" class="mt-4 px-6 py-2 bg-accent-500 text-white font-bold rounded-lg hover:bg-accent-600 transition-colors hidden">
+                    保存客服二维码
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cases Tab -->
+          <div id="tab-cases" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-slate-900">康复案例列表</h3>
+                <button onclick="showCaseEditor()" class="px-5 py-2 bg-brand-500 text-white font-bold rounded-lg hover:bg-brand-600 transition-colors">
+                  <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+                  新增案例
+                </button>
+              </div>
+              <div id="casesList" class="space-y-4">
+                <p class="text-slate-500 text-center py-8">正在加载案例...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experts Tab -->
+          <div id="tab-experts" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-slate-900">专家团队列表</h3>
+                <button onclick="showExpertEditor()" class="px-5 py-2 bg-brand-500 text-white font-bold rounded-lg hover:bg-brand-600 transition-colors">
+                  <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+                  新增专家
+                </button>
+              </div>
+              <div id="expertsList" class="grid gap-4 md:grid-cols-2">
+                <p class="text-slate-500 text-center py-8 col-span-full">正在加载专家列表...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Images Tab -->
+          <div id="tab-images" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-slate-900">图片库</h3>
+                <button onclick="document.getElementById('generalImageInput').click()" class="px-5 py-2 bg-brand-500 text-white font-bold rounded-lg hover:bg-brand-600 transition-colors">
+                  <i data-lucide="upload" class="h-4 w-4 inline mr-1"></i>
+                  上传图片
+                </button>
+                <input type="file" id="generalImageInput" class="hidden" accept="image/png,image/jpeg,image/webp,image/gif" multiple onchange="handleGeneralUpload(this)">
+              </div>
+              <div id="imagesGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <p class="text-slate-500 text-center py-8 col-span-full">正在加载图片...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bookings Tab -->
+          <div id="tab-bookings" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+              <div class="p-6 border-b border-slate-100">
+                <h3 class="text-lg font-bold text-slate-900">预约评估列表</h3>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-slate-50">
+                    <tr>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">提交时间</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">家长姓名</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">孩子年龄</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">联系电话</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">需求</th>
+                      <th class="px-8 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">备注</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bookingsList" class="divide-y divide-slate-100">
+                    <tr>
+                      <td colspan="6" class="px-8 py-12 text-center text-slate-400">点击左侧"预约列表"标签加载数据</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Security Tab -->
+          <div id="tab-security" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-card p-8">
+              <form onsubmit="updateAdminConfig(event)" class="space-y-8 max-w-md">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-red-100 rounded-lg flex items-center justify-center text-red-600">
+                    <i data-lucide="lock" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">修改登录凭据</h3>
+                </div>
+
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">新用户名</label>
+                    <input type="text" id="newAdminUsername" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="输入新的登录账号">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">新密码</label>
+                    <input type="password" id="newAdminPassword" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="输入新的登录密码">
+                  </div>
+                  <div class="p-4 bg-amber-50 rounded-xl border border-amber-100 flex gap-3">
+                    <i data-lucide="alert-triangle" class="h-5 w-5 text-amber-500 shrink-0"></i>
+                    <p class="text-xs text-amber-700 leading-relaxed">
+                      请务必牢记您的新用户名和密码。修改成功后，您需要使用新的凭据重新登录。
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pt-6">
+                  <button type="submit" class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-brand-500 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                    <i data-lucide="shield-check" class="h-5 w-5"></i>
+                    确认修改并重新登录
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </div>
+
+    <!-- Expert Editor Modal -->
+    <div id="expertModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeExpertEditor()"></div>
+      <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[92vh] overflow-hidden flex flex-col">
+        <div class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-white">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 bg-brand-100 rounded-xl flex items-center justify-center">
+              <i data-lucide="user-plus" class="h-5 w-5 text-brand-600"></i>
+            </div>
+            <div>
+              <h3 id="expertModalTitle" class="text-xl font-bold text-slate-900">编辑专家信息</h3>
+              <p class="text-xs text-slate-500">完善专家资料以展示专业团队</p>
+            </div>
+          </div>
+          <button onclick="closeExpertEditor()" class="p-2 hover:bg-slate-100 rounded-xl transition-colors">
+            <i data-lucide="x" class="h-5 w-5 text-slate-400"></i>
+          </button>
+        </div>
+
+        <form id="expertForm" class="flex-1 overflow-y-auto p-8">
+          <input type="hidden" id="expertId">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <div class="md:col-span-4">
+              <label class="block text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                <i data-lucide="image" class="h-4 w-4 text-brand-500"></i>
+                专家头像
+              </label>
+              <div class="relative group aspect-[3/4] rounded-2xl overflow-hidden bg-slate-50 border-2 border-dashed border-slate-200 hover:border-brand-400 transition-all cursor-pointer" onclick="document.getElementById('expertImageInput').click()">
+                <div id="expertImagePreview" class="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                  <i data-lucide="user" class="h-10 w-10 mb-2 opacity-50 group-hover:scale-110 transition-transform"></i>
+                  <span class="text-sm font-medium">上传头像</span>
+                  <span class="text-[10px] mt-1">推荐比例 3:4</span>
+                </div>
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div class="px-4 py-2 bg-white rounded-lg text-xs font-bold text-slate-900 shadow-xl">更换头像</div>
+                </div>
+              </div>
+              <input type="file" id="expertImageInput" class="hidden" accept="image/*" onchange="handleExpertImageUpload(this)">
+              <input type="hidden" id="expertImagePath">
+            </div>
+
+            <div class="md:col-span-8 space-y-6">
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2">姓名</label>
+                  <input type="text" id="expertName" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all text-sm" placeholder="如: 张三">
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2">职称/职位</label>
+                  <input type="text" id="expertTitle" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all text-sm" placeholder="如: 资深言语治疗师">
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">核心专长</label>
+                <input type="text" id="expertSpecialty" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all text-sm" placeholder="如: 构音障碍、自闭症社交训练">
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">个人简介</label>
+                <textarea id="expertBio" rows="6" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-none text-sm leading-relaxed" placeholder="输入专家的专业背景、从业经历和学术成果..."></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="px-8 py-5 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button type="submit" form="expertForm" class="px-8 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 transition-all shadow-soft flex items-center gap-2">
+              <i data-lucide="save" class="h-4 w-4"></i>
+              保存专家资料
+            </button>
+            <button type="button" onclick="closeExpertEditor()" class="px-8 py-3 bg-white text-slate-600 font-bold rounded-xl border border-slate-200 hover:bg-slate-50 transition-all">
+              取消
+            </button>
+          </div>
+          <button type="button" id="deleteExpertBtn" onclick="deleteExpertInEditor()" class="px-4 py-2 text-red-500 hover:bg-red-50 rounded-xl transition-colors text-sm font-bold flex items-center gap-2">
+            <i data-lucide="trash-2" class="h-4 w-4"></i>
+            删除专家
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case Editor Modal -->
+    <div id="caseModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeCaseEditor()"></div>
+      <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[92vh] overflow-hidden flex flex-col">
+        <!-- Modal Header -->
+        <div class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-white">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 bg-brand-100 rounded-xl flex items-center justify-center">
+              <i data-lucide="edit-3" class="h-5 w-5 text-brand-600"></i>
+            </div>
+            <div>
+              <h3 id="caseModalTitle" class="text-xl font-bold text-slate-900">编辑案例</h3>
+              <p class="text-xs text-slate-500">完善案例信息以展示康复成果</p>
+            </div>
+          </div>
+          <button onclick="closeCaseEditor()" class="p-2 hover:bg-slate-100 rounded-xl transition-colors">
+            <i data-lucide="x" class="h-5 w-5 text-slate-400"></i>
+          </button>
+        </div>
+
+        <form id="caseForm" class="flex-1 overflow-y-auto p-8">
+          <input type="hidden" id="caseId">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <!-- Left Side: Basic Info & Content -->
+            <div class="lg:col-span-7 space-y-6">
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                    <i data-lucide="type" class="h-4 w-4 text-brand-500"></i>
+                    案例标题
+                  </label>
+                  <input type="text" id="caseTitle" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm" placeholder="例如：言语发育迟缓干预案例">
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                    <i data-lucide="tag" class="h-4 w-4 text-brand-500"></i>
+                    分类标签
+                  </label>
+                  <select id="caseCategory" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm appearance-none bg-slate-50">
+                    <option value="语言发育迟缓">语言发育迟缓</option>
+                    <option value="社交障碍">社交障碍</option>
+                    <option value="感统失调">感统失调</option>
+                    <option value="注意力不集中">注意力不集中</option>
+                    <option value="其他">其他</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                  <i data-lucide="align-left" class="h-4 w-4 text-brand-500"></i>
+                  列表简述
+                </label>
+                <textarea id="caseDescription" rows="2" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all resize-none text-sm" placeholder="显示在列表页的简短介绍"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2 flex items-center justify-between">
+                  <span class="flex items-center gap-2">
+                    <i data-lucide="file-text" class="h-4 w-4 text-brand-500"></i>
+                    康复详述 (支持简单排版)
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="relative group/menu">
+                      <button type="button" class="text-[10px] px-2 py-1 bg-brand-50 text-brand-600 rounded-md hover:bg-brand-100 transition-colors flex items-center gap-1">
+                        <i data-lucide="image-plus" class="h-3 w-3"></i>
+                        插入图片
+                        <i data-lucide="chevron-down" class="h-2 w-2"></i>
+                      </button>
+                      <div class="absolute right-0 top-full mt-1 hidden group-hover/menu:block bg-white shadow-xl rounded-lg border border-slate-100 p-1 z-10 w-32">
+                        <button type="button" onclick="setUploadMode('single'); document.getElementById('contentImageInput').click()" class="w-full text-left px-3 py-2 text-[10px] font-bold text-slate-600 hover:bg-slate-50 rounded-md flex items-center gap-2">
+                          <i data-lucide="image" class="h-3 w-3"></i> 单张大图
+                        </button>
+                        <button type="button" onclick="setUploadMode('double'); document.getElementById('contentImageInput').click()" class="w-full text-left px-3 py-2 text-[10px] font-bold text-slate-600 hover:bg-slate-50 rounded-md flex items-center gap-2 border-t border-slate-50">
+                          <i data-lucide="layout-grid" class="h-3 w-3"></i> 双图并排
+                        </button>
+                      </div>
+                    </div>
+                    <span class="text-[10px] font-medium text-slate-400">使用 ### 标题, **粗体**, > 引用</span>
+                  </div>
+                </label>
+                <textarea id="caseContent" rows="10" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all font-mono text-sm leading-relaxed" placeholder="输入详细的康复过程描述..."></textarea>
+                <input type="file" id="contentImageInput" class="hidden" accept="image/*" multiple onchange="handleContentImageUpload(this)">
+              </div>
+            </div>
+
+            <!-- Right Side: Image & Preview -->
+            <div class="lg:col-span-5 space-y-6">
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                  <i data-lucide="image" class="h-4 w-4 text-brand-500"></i>
+                  封面图片
+                </label>
+                <div class="relative group aspect-[16/10] rounded-2xl overflow-hidden bg-slate-50 border-2 border-dashed border-slate-200 hover:border-brand-400 transition-all cursor-pointer" onclick="document.getElementById('caseImageInput').click()">
+                  <div id="caseImagePreview" class="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                    <i data-lucide="plus-circle" class="h-10 w-10 mb-2 opacity-50 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-sm font-medium">点击上传封面</span>
+                    <span class="text-[10px] mt-1">推荐比例 16:10</span>
+                  </div>
+                  <!-- Hover Overlay -->
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div class="px-4 py-2 bg-white rounded-lg text-xs font-bold text-slate-900 shadow-xl">更换图片</div>
+                  </div>
+                </div>
+                <input type="file" id="caseImageInput" class="hidden" accept="image/*" onchange="handleCaseImageUpload(this)">
+                <input type="hidden" id="caseImagePath">
+              </div>
+
+              <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <i data-lucide="info" class="h-3.5 w-3.5"></i>
+                  排版小技巧
+                </h4>
+                <ul class="space-y-3 text-xs text-slate-600">
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">###</span>
+                    <span>开头表示小标题（如：### 训练方案）</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">**</span>
+                    <span>包裹文字表示加粗（如：**重点**）</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">></span>
+                    <span>开头表示引用（常用于家长寄语）</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">-</span>
+                    <span>开头表示列表项（自动转为圆点）</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="font-mono text-brand-600 font-bold">![]()</span>
+                    <span>插入图片（建议使用“插入图片”按钮）</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Modal Footer -->
+        <div class="px-8 py-5 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button type="submit" form="caseForm" class="px-8 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 transition-all shadow-soft active:scale-95 flex items-center gap-2">
+              <i data-lucide="save" class="h-4 w-4"></i>
+              保存案例
+            </button>
+            <button type="button" onclick="closeCaseEditor()" class="px-8 py-3 bg-white text-slate-600 font-bold rounded-xl border border-slate-200 hover:bg-slate-50 transition-all">
+              取消
+            </button>
+          </div>
+          <button type="button" onclick="deleteCaseInEditor()" id="deleteCaseBtn" class="px-4 py-2 text-red-500 hover:bg-red-50 rounded-xl transition-colors text-sm font-bold flex items-center gap-2">
+            <i data-lucide="trash-2" class="h-4 w-4"></i>
+            删除案例
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 检查登录状态
+      if (localStorage.getItem('adminLoggedIn') !== 'true') {
+        window.location.href = '/admin/login.html';
+      }
+
+      lucide.createIcons();
+
+      let currentQRData = { qrOfficial: null, qrService: null };
+      let casesData = [];
+      let expertsData = [];
+
+      // Tab Switching Logic
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const id = link.dataset.tab;
+          
+          // Update active link
+          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          
+          // Update active content
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          const targetTab = document.getElementById('tab-' + id);
+          if (targetTab) targetTab.classList.add('active');
+          
+          // Update page title
+          document.getElementById('pageTitle').textContent = link.querySelector('span').textContent;
+          
+          // Specific loading
+          if (id === 'bookings') loadBookings();
+          if (id === 'cases') loadCases();
+          if (id === 'experts') loadExperts();
+          if (id === 'images') loadImages();
+        });
+      });
+
+      // --- Experts Management ---
+      async function loadExperts() {
+        try {
+          const res = await fetch('/api/experts?t=' + Date.now(), { credentials: 'include' });
+          if (!res.ok) {
+            document.getElementById('expertsList').innerHTML = '<p class="text-slate-500 text-center py-8">暂无专家信息</p>';
+            return;
+          }
+          expertsData = await res.json();
+          renderExperts();
+        } catch (e) {
+          console.error('加载专家失败:', e);
+          document.getElementById('expertsList').innerHTML = '<p class="text-slate-500 text-center py-8 text-red-500">加载失败</p>';
+        }
+      }
+
+      function renderExperts() {
+        if (!expertsData.length) {
+          document.getElementById('expertsList').innerHTML = '<p class="text-slate-500 text-center py-8 col-span-full">暂无专家，点击右上角添加</p>';
+          return;
+        }
+        document.getElementById('expertsList').innerHTML = expertsData.map((e, i) => `
+          <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+            <div class="w-16 h-16 bg-slate-200 rounded-lg overflow-hidden shrink-0 border border-slate-200">
+              ${e.image ? `<img src="${e.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center"><i data-lucide="user" class="h-6 w-6 text-slate-400"></i></div>`}
+            </div>
+            <div class="flex-1 min-w-0">
+              <h4 class="font-bold text-slate-900 truncate">${e.name}</h4>
+              <p class="text-xs text-brand-600 font-bold mb-1">${e.title}</p>
+              <p class="text-[10px] text-slate-500 truncate">${e.specialty}</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="editExpert(${i})" class="p-2 bg-white hover:bg-brand-50 rounded-lg transition-colors border border-slate-100 text-brand-600">
+                <i data-lucide="edit-2" class="h-4 w-4"></i>
+              </button>
+              <button onclick="deleteExpertInList('${e.id}')" class="p-2 bg-white hover:bg-red-50 rounded-lg transition-colors border border-slate-100 text-red-500">
+                <i data-lucide="trash-2" class="h-4 w-4"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+        lucide.createIcons();
+      }
+
+      function showExpertEditor(data = null) {
+        document.getElementById('expertModal').classList.remove('hidden');
+        document.getElementById('expertId').value = data ? data.id : '';
+        document.getElementById('expertName').value = data ? data.name : '';
+        document.getElementById('expertTitle').value = data ? data.title : '';
+        document.getElementById('expertSpecialty').value = data ? data.specialty : '';
+        document.getElementById('expertBio').value = data ? data.bio : '';
+        document.getElementById('expertImagePath').value = data ? data.image : '';
+        
+        const deleteBtn = document.getElementById('deleteExpertBtn');
+        if (data) deleteBtn.classList.remove('hidden');
+        else deleteBtn.classList.add('hidden');
+
+        if (data && data.image) {
+          document.getElementById('expertImagePreview').innerHTML = `<img src="${data.image}" class="w-full h-full object-cover">`;
+        } else {
+          document.getElementById('expertImagePreview').innerHTML = `
+            <i data-lucide="user" class="h-10 w-10 mb-2 opacity-50"></i>
+            <span class="text-sm font-medium">上传头像</span>
+          `;
+        }
+        document.getElementById('expertModalTitle').textContent = data ? '编辑专家资料' : '新增专家';
+        lucide.createIcons();
+      }
+
+      function editExpert(index) {
+        showExpertEditor(expertsData[index]);
+      }
+
+      function closeExpertEditor() {
+        document.getElementById('expertModal').classList.add('hidden');
+      }
+
+      async function handleExpertImageUpload(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        const dataUrl = await new Promise((resolve) => {
+          reader.onload = e => resolve(e.target.result);
+          reader.readAsDataURL(file);
+        });
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageData: dataUrl, fileName: 'expert-' + Date.now() + '-' + file.name, folder: 'experts' })
+        });
+        const result = await res.json();
+        if (result.success) {
+          document.getElementById('expertImagePreview').innerHTML = `<img src="${result.path}" class="w-full h-full object-cover">`;
+          document.getElementById('expertImagePath').value = result.path;
+        }
+      }
+
+      document.getElementById('expertForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin mr-2"></i>保存中...';
+        lucide.createIcons();
+
+        const data = {
+          id: document.getElementById('expertId').value || ('expert-' + Date.now()),
+          name: document.getElementById('expertName').value,
+          title: document.getElementById('expertTitle').value,
+          specialty: document.getElementById('expertSpecialty').value,
+          bio: document.getElementById('expertBio').value,
+          image: document.getElementById('expertImagePath').value
+        };
+
+        try {
+          const res = await fetch('/api/experts', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          if (res.ok) {
+            closeExpertEditor();
+            loadExperts();
+            const toast = document.getElementById('toast');
+            toast.textContent = '保存成功';
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2000);
+          }
+        } catch (e) { alert('保存失败'); }
+        finally { btn.disabled = false; btn.innerHTML = originalText; lucide.createIcons(); }
+      });
+
+      async function deleteExpertInList(id) {
+        if (!confirm('确定要删除这位专家吗？')) return;
+        try {
+          const res = await fetch(`/api/experts?id=${id}`, { method: 'DELETE', credentials: 'include' });
+          if (res.ok) loadExperts();
+        } catch (e) { alert('删除失败'); }
+      }
+
+      function deleteExpertInEditor() {
+        const id = document.getElementById('expertId').value;
+        if (id) deleteExpertInList(id);
+        closeExpertEditor();
+      }
+
+      // --- End Experts Management ---
+
+      async function updateAdminConfig(e) {
+        e.preventDefault();
+        const username = document.getElementById('newAdminUsername').value.trim();
+        const password = document.getElementById('newAdminPassword').value.trim();
+        
+        if (!confirm('确定要修改登录账号和密码吗？修改后将立即退出并需要重新登录。')) return;
+
+        try {
+          const res = await fetch('/api/admin/config', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+
+          if (res.ok) {
+            alert('修改成功！请使用新凭据重新登录。');
+            logout(); // 调用现有的退出登录函数
+          } else {
+            const result = await res.json();
+            throw new Error(result.message || '修改失败');
+          }
+        } catch (e) {
+          alert('操作失败: ' + e.message);
+        }
+      }
+
+      async function saveContent(btn) {
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin mr-2"></i>正在保存...';
+        lucide.createIcons();
+
+        const data = {};
+        document.querySelectorAll('[data-key]').forEach(el => {
+          data[el.dataset.key] = el.value.trim();
+        });
+
+        try {
+          const res = await fetch('/api/content', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          
+          if (!res.ok) {
+            if (res.status === 401) throw new Error('登录已过期，请重新登录');
+            throw new Error(`服务器响应错误: ${res.status}`);
+          }
+
+          const result = await res.json();
+          if (result.success) {
+            const toast = document.getElementById('toast');
+            toast.textContent = '保存成功！';
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2000);
+          } else {
+            throw new Error(result.message || '保存失败');
+          }
+        } catch (e) {
+          console.error('保存失败:', e);
+          alert('保存失败: ' + e.message);
+          if (e.message.includes('登录已过期')) {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.href = '/admin/login.html';
+          }
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+          lucide.createIcons();
+        }
+      }
+
+      async function handleQuickUpload(input, key) {
+        const file = input.files[0];
+        if (!file) return;
+        
+        const originalText = input.previousElementSibling.innerHTML;
+        input.previousElementSibling.disabled = true;
+        input.previousElementSibling.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin"></i>';
+        lucide.createIcons();
+
+        try {
+          const reader = new FileReader();
+          const dataUrl = await new Promise((resolve, reject) => {
+            reader.onload = e => resolve(e.target.result);
+            reader.onerror = e => reject(e);
+            reader.readAsDataURL(file);
+          });
+
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              imageData: dataUrl,
+              fileName: 'quick-' + Date.now() + '-' + file.name,
+              folder: 'uploads'
+            })
+          });
+
+          const result = await res.json();
+          if (result.success) {
+            document.querySelector(`[data-key="${key}"]`).value = result.path;
+            document.getElementById('toast').textContent = '图片上传成功';
+            document.getElementById('toast').classList.remove('hidden');
+            setTimeout(() => {
+              document.getElementById('toast').classList.add('hidden');
+              document.getElementById('toast').textContent = '保存成功！';
+            }, 2000);
+          } else {
+            throw new Error(result.message || '上传失败');
+          }
+        } catch (e) {
+          alert('上传失败: ' + e.message);
+        } finally {
+          input.previousElementSibling.disabled = false;
+          input.previousElementSibling.innerHTML = '<i data-lucide="upload" class="h-4 w-4"></i>';
+          lucide.createIcons();
+        }
+      }
+
+      async function loadAll() {
+        console.log('正在从服务器加载内容...');
+        try {
+          const res = await fetch('/api/content?t=' + Date.now(), { credentials: 'include' });
+          if (!res.ok) {
+            console.warn('服务器响应不正常:', res.status);
+            return;
+          }
+          const data = await res.json();
+          console.log('内容加载成功:', Object.keys(data).length, '个字段');
+          document.querySelectorAll('[data-key]').forEach(el => {
+            const k = el.dataset.key;
+            if (data[k] != null) el.value = data[k];
+          });
+        } catch (e) {
+          console.warn('无法连接到服务器加载内容:', e);
+        }
+      }
+
+      function handleQRUpload(input, type) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          currentQRData[type] = e.target.result;
+          const preview = document.getElementById(type + 'Preview');
+          preview.innerHTML = '<img src="' + e.target.result + '" class="w-full h-full object-contain rounded-2xl">';
+          document.getElementById(type + 'SaveBtn').classList.remove('hidden');
+          document.getElementById(type + 'Status').textContent = '已选择: ' + file.name;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      async function saveQR(type) {
+        if (!currentQRData[type]) {
+          alert('请先选择图片');
+          return;
+        }
+        const folder = 'qrcodes';
+        const fileName = type === 'qrOfficial' ? 'qr-official.png' : 'qr-service.png';
+        const btn = document.getElementById(type + 'SaveBtn');
+        const originalText = btn.innerHTML;
+        
+        btn.disabled = true;
+        btn.innerHTML = '正在上传...';
+
+        try {
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              imageData: currentQRData[type],
+              fileName: fileName,
+              folder: folder
+            })
+          });
+          
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          
+          const result = await res.json();
+          if (result.success) {
+            document.getElementById('toast').classList.remove('hidden');
+            setTimeout(() => document.getElementById('toast').classList.add('hidden'), 2000);
+            btn.classList.add('hidden');
+            currentQRData[type] = null;
+          } else {
+            throw new Error(result.message || '上传失败');
+          }
+        } catch (e) {
+          console.error('QR上传失败:', e);
+          alert('上传失败: ' + e.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+      }
+
+      async function loadCases() {
+        try {
+          const res = await fetch('/api/cases?t=' + Date.now(), { credentials: 'include' });
+          if (!res.ok) {
+            document.getElementById('casesList').innerHTML = '<p class="text-slate-500 text-center py-8">暂无案例，点击右上角添加</p>';
+            return;
+          }
+          casesData = await res.json();
+          renderCases();
+        } catch (e) {
+          console.error('加载案例失败:', e);
+          document.getElementById('casesList').innerHTML = '<p class="text-slate-500 text-center py-8">加载失败</p>';
+        }
+      }
+
+      function renderCases() {
+        if (!casesData.length) {
+          document.getElementById('casesList').innerHTML = '<p class="text-slate-500 text-center py-8">暂无案例，点击右上角添加</p>';
+          return;
+        }
+        document.getElementById('casesList').innerHTML = casesData.map((c, i) => `
+          <div class="flex items-start gap-4 p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+            <div class="w-24 h-24 bg-slate-200 rounded-xl overflow-hidden shrink-0 border border-slate-200">
+              ${c.image ? `<img src="${c.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center"><i data-lucide="image" class="h-8 w-8 text-slate-400"></i></div>`}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-md">${c.category}</span>
+                <h4 class="font-bold text-slate-900 truncate">${c.title}</h4>
+              </div>
+              <p class="text-sm text-slate-600 font-medium mb-1 line-clamp-1">${c.description}</p>
+              <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">${c.content ? c.content.replace(/[#*`]/g, '').substring(0, 100) + '...' : '暂无详细内容'}</p>
+            </div>
+            <div class="flex flex-col gap-2">
+              <button onclick="editCase(${i})" class="p-2 bg-white hover:bg-brand-50 rounded-lg transition-colors border border-slate-100 text-brand-600" title="编辑">
+                <i data-lucide="edit-2" class="h-4 w-4"></i>
+              </button>
+              <button onclick="deleteCaseInList('${c.id}')" class="p-2 bg-white hover:bg-red-50 rounded-lg transition-colors border border-slate-100 text-red-500" title="删除">
+                <i data-lucide="trash-2" class="h-4 w-4"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+        lucide.createIcons();
+      }
+
+      async function deleteCaseInList(id) {
+        if (!confirm('确定要删除这个案例吗？')) return;
+        try {
+          const res = await fetch(`/api/cases?id=${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const result = await res.json();
+          if (result.success) {
+            loadCases();
+            document.getElementById('toast').textContent = '删除成功';
+            document.getElementById('toast').classList.remove('hidden');
+            setTimeout(() => {
+              document.getElementById('toast').classList.add('hidden');
+              document.getElementById('toast').textContent = '保存成功！';
+            }, 2000);
+          } else {
+            throw new Error(result.message || '删除失败');
+          }
+        } catch (e) {
+          alert('删除失败: ' + e.message);
+        }
+      }
+
+      function showCaseEditor(caseData = null) {
+        document.getElementById('caseModal').classList.remove('hidden');
+        document.getElementById('caseId').value = caseData ? caseData.id : '';
+        document.getElementById('caseTitle').value = caseData ? caseData.title : '';
+        document.getElementById('caseCategory').value = caseData ? caseData.category : '语言发育迟缓';
+        document.getElementById('caseDescription').value = caseData ? caseData.description : '';
+        document.getElementById('caseContent').value = caseData ? caseData.content : '';
+        document.getElementById('caseImagePath').value = caseData ? caseData.image : '';
+        
+        const deleteBtn = document.getElementById('deleteCaseBtn');
+        if (caseData) {
+          deleteBtn.classList.remove('hidden');
+        } else {
+          deleteBtn.classList.add('hidden');
+        }
+
+        if (caseData && caseData.image) {
+          document.getElementById('caseImagePreview').innerHTML = '<img src="' + caseData.image + '" class="w-full h-full object-cover rounded-2xl">';
+        } else {
+          document.getElementById('caseImagePreview').innerHTML = `
+            <i data-lucide="plus-circle" class="h-10 w-10 mb-2 opacity-50 group-hover:scale-110 transition-transform"></i>
+            <span class="text-sm font-medium">点击上传封面</span>
+            <span class="text-[10px] mt-1">推荐比例 16:10</span>
+          `;
+        }
+        document.getElementById('caseModalTitle').textContent = caseData ? '编辑案例' : '新增案例';
+        lucide.createIcons();
+      }
+
+      function editCase(index) {
+        showCaseEditor(casesData[index]);
+      }
+
+      function closeCaseEditor() {
+        document.getElementById('caseModal').classList.add('hidden');
+      }
+
+      async function deleteCaseInEditor() {
+        const id = document.getElementById('caseId').value;
+        if (!id) return;
+        deleteCaseInList(id);
+        closeCaseEditor();
+      }
+
+      async function handleCaseImageUpload(input) {
+        const file = input.files[0];
+        if (!file) return;
+        
+        const preview = document.getElementById('caseImagePreview');
+        const originalContent = preview.innerHTML;
+        preview.innerHTML = '<div class="flex flex-col items-center"><i data-lucide="loader-2" class="h-8 w-8 text-brand-500 animate-spin mb-2"></i><span class="text-xs text-slate-500">正在上传...</span></div>';
+        lucide.createIcons();
+
+        try {
+          const reader = new FileReader();
+          const dataUrl = await new Promise((resolve, reject) => {
+            reader.onload = e => resolve(e.target.result);
+            reader.onerror = e => reject(e);
+            reader.readAsDataURL(file);
+          });
+
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              imageData: dataUrl,
+              fileName: 'case-' + Date.now() + '-' + file.name,
+              folder: 'cases'
+            })
+          });
+
+          if (!res.ok) throw new Error(`上传失败: ${res.status}`);
+          const result = await res.json();
+          
+          if (result.success) {
+            const finalPath = result.path || dataUrl;
+            document.getElementById('caseImagePreview').innerHTML = '<img src="' + finalPath + '" class="w-full h-full object-cover rounded-2xl">';
+            document.getElementById('caseImagePath').value = finalPath;
+          } else {
+            throw new Error(result.message || '上传失败');
+          }
+        } catch (e) {
+          console.error('案例图片上传失败:', e);
+          alert('图片上传失败: ' + e.message);
+          preview.innerHTML = originalContent;
+          lucide.createIcons();
+        }
+      }
+
+      let currentUploadMode = 'single';
+      function setUploadMode(mode) {
+        currentUploadMode = mode;
+      }
+
+      async function handleContentImageUpload(input) {
+        const files = Array.from(input.files);
+        if (files.length === 0) return;
+
+        const toast = document.getElementById('toast');
+        toast.textContent = '正在上传图片...';
+        toast.classList.remove('hidden');
+
+        try {
+          let results = [];
+          for (const file of files) {
+            const reader = new FileReader();
+            const dataUrl = await new Promise((resolve, reject) => {
+              reader.onload = e => resolve(e.target.result);
+              reader.onerror = e => reject(e);
+              reader.readAsDataURL(file);
+            });
+
+            const res = await fetch('/api/upload', {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                imageData: dataUrl,
+                fileName: 'content-' + Date.now() + '-' + file.name,
+                folder: 'cases'
+              })
+            });
+
+            const result = await res.json();
+            if (result.success) {
+              results.push({ path: result.path, name: file.name });
+            }
+          }
+
+          if (results.length > 0) {
+            const textarea = document.getElementById('caseContent');
+            let imageMarkdown = '';
+            
+            if (currentUploadMode === 'double' && results.length >= 2) {
+              // 插入双图语法
+              imageMarkdown = `\n!![左侧图描述](${results[0].path})!![右侧图描述](${results[1].path})\n`;
+            } else {
+              // 插入单图语法（默认模式或文件不够时）
+              results.forEach(r => {
+                imageMarkdown += `\n![图片描述](${r.path})\n`;
+              });
+            }
+            
+            // 插入到光标位置
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + imageMarkdown + text.substring(end);
+            
+            toast.textContent = results.length > 1 ? `成功插入 ${results.length} 张图片` : '图片已插入内容中';
+            setTimeout(() => toast.classList.add('hidden'), 2000);
+          }
+        } catch (e) {
+          alert('图片插入失败: ' + e.message);
+          toast.classList.add('hidden');
+        } finally {
+          input.value = ''; // 清空选择
+        }
+      }
+
+      document.getElementById('caseForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        // 修改：因为按钮可能在表单外，使用更稳妥的方式获取按钮
+        const submitBtn = document.querySelector('button[form="caseForm"]') || e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn ? submitBtn.innerHTML : '保存案例';
+        
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin mr-2"></i>正在保存...';
+          lucide.createIcons();
+        }
+
+        const caseData = {
+          id: document.getElementById('caseId').value || ('case-' + Date.now()),
+          title: document.getElementById('caseTitle').value,
+          category: document.getElementById('caseCategory').value,
+          description: document.getElementById('caseDescription').value,
+          content: document.getElementById('caseContent').value,
+          image: document.getElementById('caseImagePath').value,
+          updatedAt: new Date().toISOString()
+        };
+
+        console.log('正在保存案例数据:', caseData);
+
+        try {
+          const res = await fetch('/api/cases', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(caseData)
+          });
+          
+          if (!res.ok) {
+            if (res.status === 401) throw new Error('登录已过期，请重新登录');
+            throw new Error(`服务器响应错误: ${res.status}`);
+          }
+          
+          const result = await res.json();
+          if (result.success) {
+            closeCaseEditor();
+            await loadCases();
+            
+            const toast = document.getElementById('toast');
+            toast.textContent = '案例保存成功！';
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2000);
+          } else {
+            throw new Error(result.message || '保存失败');
+          }
+        } catch (e) {
+          console.error('案例保存出错:', e);
+          alert('保存失败: ' + e.message);
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+            lucide.createIcons();
+          }
+        }
+      });
+
+      async function loadImages() {
+        try {
+          const res = await fetch('/api/files', {
+            credentials: 'include',
+            headers: { 'folder': 'uploads' }
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const files = await res.json();
+          if (!files.length) {
+            document.getElementById('imagesGrid').innerHTML = '<p class="text-slate-500 text-center py-8 col-span-full">暂无图片，点击右上角上传</p>';
+            return;
+          }
+          document.getElementById('imagesGrid').innerHTML = files.map(f => `
+            <div class="relative group aspect-square rounded-xl overflow-hidden bg-slate-100">
+              <img src="${f.path}" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                <button onclick="copyImagePath('${f.path}')" class="px-3 py-1 bg-white text-slate-900 text-xs font-bold rounded-lg hover:bg-slate-50 transition-colors">复制路径</button>
+                <button onclick="deleteImage('${f.path}')" class="p-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+              </div>
+            </div>
+          `).join('');
+          lucide.createIcons();
+        } catch (e) {
+          console.error('加载图片失败:', e);
+          document.getElementById('imagesGrid').innerHTML = '<p class="text-slate-500 text-center py-8 col-span-full">加载失败</p>';
+        }
+      }
+
+      function copyImagePath(path) {
+        navigator.clipboard.writeText(path);
+        document.getElementById('toast').textContent = '路径已复制';
+        document.getElementById('toast').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('toast').classList.add('hidden');
+          document.getElementById('toast').textContent = '保存成功！';
+        }, 2000);
+      }
+
+      async function deleteImage(path) {
+        if (!confirm('确定要删除这张图片吗？')) return;
+        try {
+          const res = await fetch(`/api/files?path=${encodeURIComponent(path)}`, { 
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          const result = await res.json();
+          if (result.success) {
+            loadImages();
+          } else {
+            alert('删除失败: ' + result.message);
+          }
+        } catch (e) {
+          alert('请求失败');
+        }
+      }
+
+      async function handleGeneralUpload(input) {
+        const files = Array.from(input.files);
+        if (files.length === 0) return;
+
+        const toast = document.getElementById('toast');
+        const originalToastText = toast.textContent;
+        toast.textContent = '正在上传...';
+        toast.classList.remove('hidden');
+
+        try {
+          let successCount = 0;
+          for (const file of files) {
+            const dataUrl = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = e => resolve(e.target.result);
+              reader.onerror = e => reject(e);
+              reader.readAsDataURL(file);
+            });
+
+            const res = await fetch('/api/upload', {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                imageData: dataUrl,
+                fileName: 'img-' + Date.now() + '-' + file.name,
+                folder: 'uploads'
+              })
+            });
+
+            if (!res.ok) {
+              if (res.status === 401) throw new Error('登录已过期，请重新登录');
+              throw new Error(`上传 ${file.name} 失败: ${res.status}`);
+            }
+            
+            const result = await res.json();
+            if (result.success) successCount++;
+            else throw new Error(result.message || `上传 ${file.name} 失败`);
+          }
+          
+          toast.textContent = `成功上传 ${successCount} 张图片！`;
+          setTimeout(() => toast.classList.add('hidden'), 2000);
+          loadImages();
+        } catch (e) {
+          console.error('上传出错:', e);
+          alert('部分或全部图片上传失败: ' + e.message);
+          toast.classList.add('hidden');
+        } finally {
+          setTimeout(() => {
+            toast.textContent = originalToastText;
+          }, 2500);
+          input.value = ''; // 清空选择
+        }
+      }
+
+      async function loadBookings() {
+        try {
+          const res = await fetch('/api/bookings', { credentials: 'include' });
+          if (!res.ok) {
+            if (res.status === 401) throw new Error('登录已过期');
+            throw new Error(`HTTP ${res.status}`);
+          }
+          const data = await res.json();
+          const list = document.getElementById('bookingsList');
+          if (!data || !data.length) {
+            list.innerHTML = '<tr><td colspan="6" class="px-8 py-12 text-center text-slate-400">暂无预约记录</td></tr>';
+            return;
+          }
+          list.innerHTML = data.reverse().map(b => `
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="px-8 py-5 text-slate-400 font-medium">${new Date(b.timestamp || b.createdAt).toLocaleString()}</td>
+              <td class="px-8 py-5 font-bold text-slate-900">${b.parentName || b.name}</td>
+              <td class="px-8 py-5"><span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold">${b.childAge || b.age}</span></td>
+              <td class="px-8 py-5 font-medium text-brand-600">${b.phone}</td>
+              <td class="px-8 py-5 text-slate-600">${b.needs || (b.concerns ? b.concerns.join(', ') : '-')}</td>
+              <td class="px-8 py-5 text-slate-400 italic text-xs">${b.notes || '-'}</td>
+            </tr>
+          `).join('');
+        } catch (e) {
+          console.error('加载预约失败:', e);
+          if (e.message === '登录已过期') {
+            window.location.href = '/admin/login.html';
+            return;
+          }
+          document.getElementById('bookingsList').innerHTML = '<tr><td colspan="6" class="px-8 py-12 text-center text-slate-400">加载失败</td></tr>';
+        }
+      }
+
+      async function logout() {
+        localStorage.removeItem('adminLoggedIn');
+        localStorage.removeItem('adminUsername');
+        await fetch('/api/logout', { method: 'POST' });
+        window.location.href = '/admin/login.html';
+      }
+
+      loadAll();
+      // 默认也加载一次案例，防止切过去才加载
+      loadCases();
+    </script>
+  </body>
+</html>

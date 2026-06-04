@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="专项活动｜启言社交训练中心" />
+    <title>专项活动｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+      
+      .input-error {
+        border-color: #ef4444 !important;
+      }
+      
+      .error-message {
+        color: #ef4444;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+      }
+      
+      .input-success {
+        border-color: #22c55e !important;
+      }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">
+      跳到正文
+    </a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative text-center">
+          <nav class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mb-6">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">专项活动</span>
+          </nav>
+          <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            <span data-content="eventsHeroTitle1">多元活动，</span><span class="text-brand-500" data-content="eventsHeroTitle2">开启成长可能</span>
+          </h1>
+          <p data-content="eventsHeroSubtitle" class="mt-8 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
+            通过丰富的专项活动与工作坊，我们为家长提供专业指导，为孩子创造更多社交与实践的机会。
+          </p>
+        </div>
+      </section>
+
+      <section class="py-24 bg-slate-50 relative">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
+            <!-- Event 1 -->
+            <a href="./events-lighthouse.html" class="group relative rounded-3xl bg-white p-8 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100">
+              <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+                <i data-lucide="lightbulb" class="h-7 w-7"></i>
+              </div>
+              <h3 data-content="event1Title" class="text-2xl font-bold text-slate-900 mb-3">灯塔计划</h3>
+              <p data-content="event1Desc" class="text-slate-600 text-sm leading-relaxed mb-6">针对早期语言干预的公益家长课堂，为新手家长提供科学的引导方案与心理支持。</p>
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-brand-500 transition-colors">
+                了解活动详情 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </div>
+            </a>
+
+            <!-- Event 2 -->
+            <a href="./events-spark.html" class="group relative rounded-3xl bg-white p-8 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-hover border border-slate-100">
+              <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 transition-colors group-hover:bg-accent-500 group-hover:text-white">
+                <i data-lucide="sparkles" class="h-7 w-7"></i>
+              </div>
+              <h3 data-content="event2Title" class="text-2xl font-bold text-slate-900 mb-3">火种行动</h3>
+              <p data-content="event2Desc" class="text-slate-600 text-sm leading-relaxed mb-6">周末户外社交实践营，在真实的社会环境中提升孩子的互动能力与应变技巧。</p>
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-accent-500 transition-colors">
+                了解活动详情 <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </div>
+            </a>
+          </div>
+        
+        <!-- Dynamic Event List -->
+        <div id="dynamicEventList" class="mt-8 grid gap-4 md:grid-cols-2"></div>
+      </section>
+
+      <section id="booking" class="mt-10 rounded-[2rem] bg-gradient-to-b from-white to-brand-50 p-6 md:p-8">
+        <div class="grid gap-8 md:grid-cols-2 md:items-start">
+          <div>
+            <h2 class="text-2xl font-extrabold tracking-tight">预约咨询</h2>
+            <p class="mt-2 text-slate-600">填写信息后我们会在工作时间内联系您</p>
+          </div>
+          <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card">
+            <form id="bookingForm" class="grid gap-4">
+              <div>
+                <label class="text-sm font-semibold" for="parentName">家长称呼</label>
+                <input id="parentName" name="parentName" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-brand-400 focus:ring-4 focus:ring-brand-100" placeholder="例如：王女士" required />
+                <div class="error-message hidden" id="parentNameError">请输入家长称呼</div>
+              </div>
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="text-sm font-semibold" for="childAge">孩子年龄</label>
+                  <input id="childAge" name="childAge" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-brand-400 focus:ring-4 focus:ring-brand-100" placeholder="例如：4岁" required />
+                  <div class="error-message hidden" id="childAgeError">请输入孩子年龄（2-12岁）</div>
+                </div>
+                <div>
+                  <label class="text-sm font-semibold" for="phone">联系电话</label>
+                  <input id="phone" name="phone" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-brand-400 focus:ring-4 focus:ring-brand-100" placeholder="手机/座机" required />
+                  <div class="error-message hidden" id="phoneError">请输入有效的电话号码</div>
+                </div>
+              </div>
+              <div>
+                <label class="text-sm font-semibold" for="needs">主要需求</label>
+                <select id="needs" name="needs" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-400 focus:ring-4 focus:ring-brand-100" required>
+                  <option value="" disabled selected>请选择</option>
+                  <option>语言迟缓 / 表达困难</option>
+                  <option>发音不清 / 构音问题</option>
+                  <option>不回话 / 沟通意图弱</option>
+                  <option>社交互动困难 / 不合群</option>
+                  <option>情绪行为问题影响学习</option>
+                  <option>其他（请在备注中说明）</option>
+                </select>
+                <div class="error-message hidden" id="needsError">请选择主要需求</div>
+              </div>
+              <div>
+                <label class="text-sm font-semibold" for="note">备注（可选）</label>
+                <textarea id="note" name="note" rows="4" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-brand-400 focus:ring-4 focus:ring-brand-100" placeholder="例如：孩子在幼儿园不合群、不会主动说话等"></textarea>
+              </div>
+              <button type="submit" class="rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-700">提交预约</button>
+              <p id="formMsg" class="hidden rounded-xl bg-slate-50 px-3 py-2 text-sm text-slate-700"></p>
+              <div class="text-xs text-slate-500">提示：当前表单为前端演示，默认不会真正发送到后台。</div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script>
+      // Form validation
+      const form = document.getElementById('bookingForm');
+      const parentNameInput = document.getElementById('parentName');
+      const childAgeInput = document.getElementById('childAge');
+      const phoneInput = document.getElementById('phone');
+      const needsInput = document.getElementById('needs');
+      const formMsg = document.getElementById('formMsg');
+
+      const showError = (inputId, message) => {
+        const input = document.getElementById(inputId);
+        const errorDiv = document.getElementById(inputId + 'Error');
+        input.classList.add('input-error');
+        input.classList.remove('input-success');
+        errorDiv.classList.remove('hidden');
+        errorDiv.textContent = message;
+      };
+
+      const showSuccess = (inputId) => {
+        const input = document.getElementById(inputId);
+        const errorDiv = document.getElementById(inputId + 'Error');
+        input.classList.remove('input-error');
+        input.classList.add('input-success');
+        errorDiv.classList.add('hidden');
+      };
+
+      const clearValidation = (inputId) => {
+        const input = document.getElementById(inputId);
+        const errorDiv = document.getElementById(inputId + 'Error');
+        input.classList.remove('input-error', 'input-success');
+        errorDiv.classList.add('hidden');
+      };
+
+      const validatePhone = (phone) => {
+        const phoneRegex = /^1[3-9]\d{9}$|^0\d{2,3}-?\d{7,8}$/;
+        return phoneRegex.test(phone);
+      };
+
+      const validateAge = (age) => {
+        const ageNum = parseInt(age.replace(/[^0-9]/g, ''));
+        return ageNum >= 2 && ageNum <= 12;
+      };
+
+      if (form) {
+        // Real-time validation
+        parentNameInput.addEventListener('input', () => {
+          if (parentNameInput.value.trim().length >= 2) {
+            showSuccess('parentName');
+          } else {
+            clearValidation('parentName');
+          }
+        });
+
+        childAgeInput.addEventListener('input', () => {
+          if (validateAge(childAgeInput.value)) {
+            showSuccess('childAge');
+          } else {
+            clearValidation('childAge');
+          }
+        });
+
+        phoneInput.addEventListener('input', () => {
+          if (validatePhone(phoneInput.value)) {
+            showSuccess('phone');
+          } else {
+            clearValidation('phone');
+          }
+        });
+
+        needsInput.addEventListener('change', () => {
+          if (needsInput.value) {
+            showSuccess('needs');
+          } else {
+            clearValidation('needs');
+          }
+        });
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          let isValid = true;
+
+          // Validate parent name
+          if (parentNameInput.value.trim().length < 2) {
+            showError('parentName', '请输入家长称呼（至少2个字符）');
+            isValid = false;
+          } else {
+            showSuccess('parentName');
+          }
+
+          // Validate child age
+          if (!validateAge(childAgeInput.value)) {
+            showError('childAge', '请输入孩子年龄（2-12岁）');
+            isValid = false;
+          } else {
+            showSuccess('childAge');
+          }
+
+          // Validate phone
+          if (!validatePhone(phoneInput.value)) {
+            showError('phone', '请输入有效的电话号码');
+            isValid = false;
+          } else {
+            showSuccess('phone');
+          }
+
+          // Validate needs
+          if (!needsInput.value) {
+            showError('needs', '请选择主要需求');
+            isValid = false;
+          } else {
+            showSuccess('needs');
+          }
+
+          if (isValid) {
+            const data = {
+              parentName: parentNameInput.value.trim(),
+              childAge: childAgeInput.value.trim(),
+              phone: phoneInput.value.trim(),
+              needs: needsInput.value,
+              note: document.getElementById('note').value.trim()
+            };
+
+            try {
+              const res = await fetch('/api/book', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+              });
+              const result = await res.json();
+
+              if (result.success) {
+                // Show success message
+                formMsg.classList.remove('hidden');
+                formMsg.classList.add('bg-green-50', 'text-green-700');
+                formMsg.textContent = '预约提交成功！我们会尽快联系您。';
+                form.reset();
+                
+                // Clear validation states
+                ['parentName', 'childAge', 'phone', 'needs'].forEach(clearValidation);
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                  formMsg.classList.add('hidden');
+                  formMsg.classList.remove('bg-green-50', 'text-green-700');
+                }, 5000);
+              } else {
+                alert('提交失败，请稍后再试');
+              }
+            } catch (err) {
+              alert('网络请求失败');
+            }
+          }
+        });
+      }
+    </script>
+    <script src="./layout.js"></script>
+    <script src="./admin/content-loader.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+
+
+

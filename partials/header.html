@@ -1,0 +1,125 @@
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+    <a href="/index.html" class="flex shrink-0 items-center gap-3 group">
+      <div class="relative">
+        <img src="/assets/logo.png" alt="启言" class="h-10 w-auto transition-transform group-hover:scale-105" />
+      </div>
+      <div class="flex flex-col">
+        <span class="text-lg font-bold tracking-tight text-slate-900 leading-none mb-1">启言儿童健康咨询中心</span>
+        <span class="text-[10px] font-semibold uppercase tracking-widest text-slate-400 leading-none">Speech & Health Center</span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden flex-1 items-center justify-center gap-1 lg:flex">
+      <a href="/index.html" class="px-5 py-2 text-sm font-bold text-slate-700 hover:text-brand-500 transition-colors">网站首页</a>
+      
+      <div class="relative group">
+        <button class="flex items-center gap-1 px-5 py-2 text-sm font-bold text-slate-700 hover:text-brand-500 transition-colors">
+          关于启言
+          <i data-lucide="chevron-down" class="h-4 w-4 transition-transform group-hover:rotate-180"></i>
+        </button>
+        <div class="invisible absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 group-hover:visible group-hover:opacity-100 transition-all">
+          <div class="w-48 rounded-2xl border border-slate-100 bg-white p-2 shadow-xl">
+            <a href="/about.html" class="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600">品牌概况</a>
+            <a href="/about-story.html" class="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600">文化故事</a>
+            <a href="/about-locations.html" class="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600">中心分布</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative group">
+        <button class="flex items-center gap-1 px-5 py-2 text-sm font-bold text-slate-700 hover:text-brand-500 transition-colors">
+          康复项目
+          <i data-lucide="chevron-down" class="h-4 w-4 transition-transform group-hover:rotate-180"></i>
+        </button>
+        <div class="invisible absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 group-hover:visible group-hover:opacity-100 transition-all">
+          <div class="w-56 rounded-2xl border border-slate-100 bg-white p-2 shadow-xl">
+            <a href="/program-slt.html" class="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600">言语治疗 (SLT)</a>
+            <a href="/program-social.html" class="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600">社交康复训练</a>
+            <a href="/program-cognitive.html" class="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600">启智康复</a>
+            <a href="/integration.html" class="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600">幼康融合</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="/experts.html" class="px-5 py-2 text-sm font-bold text-slate-700 hover:text-brand-500 transition-colors">专家团队</a>
+      <a href="/cases.html" class="px-5 py-2 text-sm font-bold text-slate-700 hover:text-brand-500 transition-colors">康复案例</a>
+      <a href="/contact.html" class="px-5 py-2 text-sm font-bold text-slate-700 hover:text-brand-500 transition-colors">联系启言</a>
+      <a href="/news.html" class="px-5 py-2 text-sm font-bold text-slate-700 hover:text-brand-500 transition-colors">资讯动态</a>
+    </nav>
+
+    <!-- Action Buttons -->
+    <div class="hidden items-center gap-4 lg:flex">
+      <a href="/events.html#booking" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-7 py-2.5 text-sm font-bold text-white shadow-soft transition-all hover:bg-brand-600 hover:shadow-hover active:scale-95">
+        立即预约评估
+      </a>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button id="menuBtn" class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500 text-white lg:hidden active:scale-90 transition-all shadow-md">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu (Simplified) -->
+  <div id="mobileMenu" class="hidden border-t border-slate-100 bg-slate-50 lg:hidden shadow-inner">
+    <div class="p-6 space-y-2">
+      <a href="/index.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-base font-bold text-slate-700 hover:bg-white hover:text-brand-500 transition-all shadow-sm border border-transparent hover:border-slate-100">
+        <i data-lucide="home" class="h-5 w-5 opacity-50"></i>
+        网站首页
+      </a>
+      <a href="/about.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-base font-bold text-slate-700 hover:bg-white hover:text-brand-500 transition-all shadow-sm border border-transparent hover:border-slate-100">
+        <i data-lucide="info" class="h-5 w-5 opacity-50"></i>
+        关于启言
+      </a>
+      <a href="/programs.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-base font-bold text-slate-700 hover:bg-white hover:text-brand-500 transition-all shadow-sm border border-transparent hover:border-slate-100">
+        <i data-lucide="layout-grid" class="h-5 w-5 opacity-50"></i>
+        康复项目
+      </a>
+      <a href="/experts.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-base font-bold text-slate-700 hover:bg-white hover:text-brand-500 transition-all shadow-sm border border-transparent hover:border-slate-100">
+        <i data-lucide="users" class="h-5 w-5 opacity-50"></i>
+        专家团队
+      </a>
+      <a href="/cases.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-base font-bold text-slate-700 hover:bg-white hover:text-brand-500 transition-all shadow-sm border border-transparent hover:border-slate-100">
+        <i data-lucide="heart" class="h-5 w-5 opacity-50"></i>
+        康复案例
+      </a>
+      <a href="/contact.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-base font-bold text-slate-700 hover:bg-white hover:text-brand-500 transition-all shadow-sm border border-transparent hover:border-slate-100">
+        <i data-lucide="phone" class="h-5 w-5 opacity-50"></i>
+        联系启言
+      </a>
+      <a href="/news.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-base font-bold text-slate-700 hover:bg-white hover:text-brand-500 transition-all shadow-sm border border-transparent hover:border-slate-100">
+        <i data-lucide="newspaper" class="h-5 w-5 opacity-50"></i>
+        资讯动态
+      </a>
+      <div class="pt-4">
+        <a href="/events.html#booking" class="flex items-center justify-center gap-2 w-full rounded-full bg-brand-500 py-4 text-base font-bold text-white shadow-soft hover:bg-brand-600 transition-all">
+          <i data-lucide="calendar" class="h-5 w-5"></i>
+          立即预约评估
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Simple mobile menu toggle
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const icon = menuBtn.querySelector('i');
+      if (icon) {
+        if (mobileMenu.classList.contains('hidden')) {
+          icon.setAttribute('data-lucide', 'menu');
+        } else {
+          icon.setAttribute('data-lucide', 'x');
+        }
+        if (window.lucide) window.lucide.createIcons();
+      }
+    });
+  }
+</script>

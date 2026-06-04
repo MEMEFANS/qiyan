@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="问题解答｜启言社交训练中心" />
+    <title>问题解答｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '3rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+      
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      
+      .accordion-content.open {
+        max-height: 500px;
+      }
+      
+      .accordion-icon {
+        transition: transform 0.3s ease;
+      }
+      
+      .accordion-icon.open {
+        transform: rotate(180deg);
+      }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">跳到正文</a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <section class="bg-gradient-to-b from-brand-50 to-white">
+        <div class="mx-auto max-w-7xl px-6 py-12 md:py-14">
+          <nav class="flex items-center gap-2 text-sm text-slate-600" aria-label="面包屑">
+            <a class="hover:text-brand-600 transition-colors" href="./index.html">网站首页</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-slate-400"></i>
+            <a class="hover:text-brand-600 transition-colors" href="./news.html">启言新闻</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-slate-400"></i>
+            <span class="font-medium text-slate-900">问题解答</span>
+          </nav>
+          <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-slate-900">问题解答</h1>
+          <p class="mt-3 max-w-3xl text-slate-600 leading-relaxed">针对家长在育儿过程中遇到的常见疑惑，提供专业、科学的解答与建议。</p>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-12 md:py-14">
+        <div class="space-y-4">
+          <!-- FAQ Item 1 -->
+          <div class="accordion-item rounded-3xl border border-slate-200 bg-white shadow-card overflow-hidden">
+            <button class="accordion-trigger w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors">
+              <span class="text-base font-bold text-slate-900">孩子不回应，是不是不理解？</span>
+              <i data-lucide="chevron-down" class="accordion-icon h-5 w-5 text-slate-500"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="px-6 pb-6 text-sm leading-6 text-slate-600">
+                孩子不回应可能有多种原因，包括注意力不集中、理解能力不足、或社交意愿低。建议先进行专业评估，了解孩子的具体情况，然后制定针对性的训练计划。
+              </div>
+            </div>
+          </div>
+          
+          <!-- FAQ Item 2 -->
+          <div class="accordion-item rounded-3xl border border-slate-200 bg-white shadow-card overflow-hidden">
+            <button class="accordion-trigger w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors">
+              <span class="text-base font-bold text-slate-900">家庭练习每天要多久？</span>
+              <i data-lucide="chevron-down" class="accordion-icon h-5 w-5 text-slate-500"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="px-6 pb-6 text-sm leading-6 text-slate-600">
+                每天安排15-30分钟的家庭练习时间。关键在于坚持和规律性，而不是单次练习时长。可以将练习融入日常生活，如吃饭、洗澡、游戏等场景。
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 3 -->
+          <div class="accordion-item rounded-3xl border border-slate-200 bg-white shadow-card overflow-hidden">
+            <button class="accordion-trigger w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors">
+              <span class="text-base font-bold text-slate-900">几岁开始训练效果最好？</span>
+              <i data-lucide="chevron-down" class="accordion-icon h-5 w-5 text-slate-500"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="px-6 pb-6 text-sm leading-6 text-slate-600">
+                早期干预非常重要。2-6岁是语言和社交发展的关键期。但无论孩子多大，开始训练都比不开始好。我们会根据孩子的年龄和发展水平制定个性化的训练方案。
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 4 -->
+          <div class="accordion-item rounded-3xl border border-slate-200 bg-white shadow-card overflow-hidden">
+            <button class="accordion-trigger w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors">
+              <span class="text-base font-bold text-slate-900">训练多久能看到效果？</span>
+              <i data-lucide="chevron-down" class="accordion-icon h-5 w-5 text-slate-500"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="px-6 pb-6 text-sm leading-6 text-slate-600">
+                每个孩子的情况不同，见效时间也会有所差异。一般来说，坚持训练3-6个月可以看到明显进步。我们会定期评估孩子的进展，并向家长反馈。
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 5 -->
+          <div class="accordion-item rounded-3xl border border-slate-200 bg-white shadow-card overflow-hidden">
+            <button class="accordion-trigger w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors">
+              <span class="text-base font-bold text-slate-900">家长需要参与训练吗？</span>
+              <i data-lucide="chevron-down" class="accordion-icon h-5 w-5 text-slate-500"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="px-6 pb-6 text-sm leading-6 text-slate-600">
+                家长的参与非常重要。我们会提供家庭训练指导，教家长如何在日常生活中延续和强化训练效果。家庭配合可以显著提升训练效果。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 text-center">
+          <p class="text-slate-600 mb-6">还有其他疑问？欢迎直接咨询我们的专业老师。</p>
+          <a href="./contact.html" class="inline-flex items-center gap-2 rounded-full bg-brand-600 px-8 py-4 text-lg font-bold text-white shadow-soft hover:bg-brand-700 transition-all hover:scale-105">
+            <i data-lucide="message-circle" class="h-5 w-5"></i>
+            在线咨询
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+      
+      // FAQ Accordion functionality
+      document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+        trigger.addEventListener('click', function() {
+          const content = this.nextElementSibling;
+          const icon = this.querySelector('.accordion-icon');
+          
+          // Toggle current accordion
+          const isOpen = content.classList.contains('open');
+          
+          // Close all accordions
+          document.querySelectorAll('.accordion-content').forEach(item => {
+            item.classList.remove('open');
+          });
+          document.querySelectorAll('.accordion-icon').forEach(item => {
+            item.classList.remove('open');
+          });
+          
+          // If it wasn't open, open it
+          if (!isOpen) {
+            content.classList.add('open');
+            icon.classList.add('open');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

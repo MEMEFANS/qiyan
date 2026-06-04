@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="联系启言｜启言社交训练中心" />
+    <title>联系启言｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <!-- Removed complex Amap JS API for simple iframe -->
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+      #map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">
+      跳到正文
+    </a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <!-- Hero Section -->
+      <section class="relative bg-gradient-to-b from-brand-50 to-white pt-20 pb-16 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative text-center">
+          <nav class="flex items-center justify-center gap-2 text-sm font-medium text-slate-500 mb-6">
+            <a href="/index.html" class="hover:text-brand-600 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-slate-400"></i>
+            <span class="text-slate-900">联系启言</span>
+          </nav>
+          <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            <span data-content="contactHeroTitle1">与我们联系，</span><span class="text-brand-500" data-content="contactHeroTitle2">开启专业支持</span>
+          </h1>
+          <p data-content="contactHeroSubtitle" class="mt-6 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
+            无论是预约评估、课程咨询还是寻求专业支持，我们的团队都将竭诚为您服务。
+          </p>
+        </div>
+      </section>
+
+      <!-- Contact Content -->
+      <section class="py-16 bg-white">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-8 lg:grid-cols-12 items-start">
+            
+            <!-- Main Contact Info (Left 8 Columns) -->
+            <div class="lg:col-span-8 space-y-8">
+              
+              <!-- Top Cards: Hotline & Email -->
+              <div class="grid gap-6 sm:grid-cols-2">
+                <!-- Hotline -->
+                <div class="group rounded-3xl border border-slate-100 bg-white p-8 shadow-card transition-all hover:shadow-hover hover:border-brand-100">
+                  <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 group-hover:scale-110 transition-transform">
+                    <i data-lucide="phone-call" class="h-7 w-7"></i>
+                  </div>
+                  <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">咨询热线</h3>
+                  <p data-content="contactHotline" class="text-2xl font-bold text-slate-900">400-888-9999</p>
+                  <p data-content="contactHotlineTime" class="mt-2 text-sm text-slate-500">周二至周日 09:00 - 18:00</p>
+                </div>
+
+                <!-- Email -->
+                <div class="group rounded-3xl border border-slate-100 bg-white p-8 shadow-card transition-all hover:shadow-hover hover:border-accent-100">
+                  <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 group-hover:scale-110 transition-transform">
+                    <i data-lucide="mail" class="h-7 w-7"></i>
+                  </div>
+                  <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">邮件投递</h3>
+                  <p data-content="contactEmail" class="text-2xl font-bold text-slate-900">contact@qiyan.com</p>
+                  <p data-content="contactEmailNote" class="mt-2 text-sm text-slate-500">欢迎各类业务咨询与合作</p>
+                </div>
+              </div>
+
+              <!-- Address & Map Section (Full Width) -->
+              <div class="group rounded-[2.5rem] border border-slate-100 bg-white shadow-card overflow-hidden transition-all hover:shadow-hover">
+                <div class="grid md:grid-cols-5 items-stretch">
+                  <!-- Address Info (2/5) -->
+                  <div class="md:col-span-2 p-10 flex flex-col justify-center">
+                    <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 text-slate-600 group-hover:scale-110 transition-transform">
+                      <i data-lucide="map-pin" class="h-7 w-7"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">中心地址</h3>
+                    <p data-content="contactAddress" class="text-2xl font-bold text-slate-900 leading-tight mb-4">
+                      贵州省六盘水市<br/>六枝特区九龙路<br/>特区社保局公交站对面
+                    </p>
+                    <div class="space-y-3">
+                      <div class="flex items-center gap-2 text-sm text-slate-500">
+                        <i data-lucide="bus" class="h-4 w-4"></i>
+                        <span data-content="contactBusInfo">特区社保局公交站下车即到</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-sm text-slate-500">
+                        <i data-lucide="navigation" class="h-4 w-4"></i>
+                        <span data-content="contactCenterName">六枝特区启言儿童健康咨询中心</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Map Container (3/5) -->
+                  <div class="md:col-span-3 bg-slate-50 min-h-[400px] relative overflow-hidden group/map" id="map-container">
+                    <!-- Ultra-Stable CSS Placeholder (No external images/scripts needed for visibility) -->
+                    <a href="https://surl.amap.com/dumaYsqX9is" target="_blank" class="block w-full h-full relative group/link bg-slate-100">
+                      <!-- Map Pattern Background -->
+                      <div class="absolute inset-0 opacity-[0.1] bg-[url('https://www.transparenttextures.com/patterns/shattered.png')]"></div>
+                      
+                      <!-- Visual Elements -->
+                      <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+                        <div class="mb-6 relative">
+                          <!-- Pulse Effect -->
+                          <div class="absolute inset-0 scale-150 animate-ping bg-brand-500/20 rounded-full"></div>
+                          <div class="relative h-20 w-20 bg-brand-500 rounded-3xl shadow-soft flex items-center justify-center transform group-hover/link:rotate-12 transition-transform duration-500">
+                            <i data-lucide="map-pinned" class="h-10 w-10 text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">点击查看实时地图</h4>
+                        <p class="text-sm text-slate-500 mb-8 max-w-xs mx-auto">
+                          六枝特区九龙路与矿业路交叉口东105米<br/>(特区社保局公交站对面)
+                        </p>
+                        
+                        <div class="inline-flex items-center gap-2 px-8 py-3 bg-brand-500 text-white rounded-2xl font-bold shadow-hover hover:bg-brand-600 transition-all transform group-hover/link:scale-105">
+                          <i data-lucide="navigation" class="h-5 w-5"></i>
+                          开启地图导航
+                        </div>
+                      </div>
+
+                      <!-- Decorative Map Grid -->
+                      <div class="absolute inset-0 pointer-events-none border-[1px] border-slate-200/50 grid grid-cols-6 grid-rows-4">
+                        <div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div>
+                        <div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div>
+                        <div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div>
+                        <div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div><div class="border-[0.5px] border-slate-200/30"></div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Complaints (Bottom Full Width) -->
+              <div class="group rounded-3xl border-2 border-dashed border-red-100 bg-red-50/20 p-8 transition-all hover:bg-red-50/30 hover:border-red-200">
+                <div class="flex flex-col md:flex-row md:items-center gap-6">
+                  <div class="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-red-50 text-red-600 group-hover:scale-110 transition-transform">
+                    <i data-lucide="shield-alert" class="h-7 w-7"></i>
+                  </div>
+                  <div class="flex-1">
+                    <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-1">监督与投诉</h3>
+                    <p class="text-xl font-bold text-slate-900">15761414697</p>
+                    <p class="mt-1 text-sm text-red-500/70 font-medium">您的每一份建议都是我们进步的动力，我们将于 24 小时内受理反馈</p>
+                  </div>
+                  <a href="mailto:jubao@qiyan.com" class="px-6 py-2 rounded-xl bg-white border border-red-100 text-red-600 text-sm font-bold hover:bg-red-600 hover:text-white transition-all">
+                    在线投诉
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Side Content (Right 4 Columns) -->
+            <div class="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
+              <!-- QR Codes -->
+              <div class="rounded-[2.5rem] bg-slate-50 p-8 border border-slate-100">
+                <h3 class="text-lg font-bold text-slate-900 mb-8 text-center flex items-center justify-center gap-2">
+                  <i data-lucide="qr-code" class="h-5 w-5 text-brand-500"></i>
+                  扫码关注我们
+                </h3>
+                
+                <div class="grid gap-10">
+                  <!-- QR Code 1 -->
+                  <div class="text-center group/qr">
+                    <div class="mx-auto w-44 aspect-square rounded-[2rem] bg-white p-4 shadow-card border border-slate-100 transition-all group-hover/qr:border-brand-300 group-hover/qr:shadow-hover relative overflow-hidden">
+                      <div class="absolute inset-0 flex flex-col items-center justify-center bg-slate-50/80 text-slate-300 transition-opacity group-hover/qr:opacity-0">
+                        <i data-lucide="qr-code" class="h-12 w-12 mb-2"></i>
+                        <span class="text-[10px] font-bold">官方微信</span>
+                      </div>
+                      <div class="absolute inset-0 flex items-center justify-center bg-brand-50 opacity-0 group-hover/qr:opacity-100 transition-opacity">
+                         <span class="text-xs font-bold text-brand-600">请上传官方微信二维码</span>
+                      </div>
+                      <img src="/assets/qrcodes/qr-official.png" alt="官方微信" class="w-full h-full relative z-10" onerror="this.style.display='none'" onload="this.style.display='block'" />
+                    </div>
+                    <div class="mt-4">
+                      <p class="font-bold text-slate-900">官方微信</p>
+                      <p class="text-xs text-slate-500 mt-1">获取最新康复资讯与中心动态</p>
+                    </div>
+                  </div>
+
+                  <!-- QR Code 2 -->
+                  <div class="text-center group/qr">
+                    <div class="mx-auto w-44 aspect-square rounded-[2rem] bg-white p-4 shadow-card border border-slate-100 transition-all group-hover/qr:border-accent-300 group-hover/qr:shadow-hover relative overflow-hidden">
+                      <div class="absolute inset-0 flex flex-col items-center justify-center bg-slate-50/80 text-slate-300 transition-opacity group-hover/qr:opacity-0">
+                        <i data-lucide="message-square-text" class="h-12 w-12 mb-2"></i>
+                        <span class="text-[10px] font-bold">在线客服</span>
+                      </div>
+                      <div class="absolute inset-0 flex items-center justify-center bg-accent-50 opacity-0 group-hover/qr:opacity-100 transition-opacity">
+                         <span class="text-xs font-bold text-accent-600">请上传客服二维码</span>
+                      </div>
+                      <img src="/assets/qrcodes/qr-service.png" alt="在线客服" class="w-full h-full relative z-10" onerror="this.style.display='none'" onload="this.style.display='block'" />
+                    </div>
+                    <div class="mt-4">
+                      <p class="font-bold text-slate-900">在线客服微信</p>
+                      <p class="text-xs text-slate-500 mt-1">一对一专业咨询与预约服务</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Visit Guide Card -->
+              <div class="rounded-3xl bg-brand-500 p-8 text-white shadow-soft overflow-hidden relative group">
+                <i data-lucide="info" class="absolute -right-4 -top-4 h-24 w-24 text-white/10 rotate-12 transition-transform group-hover:scale-110"></i>
+                <div class="relative z-10">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="h-8 w-8 rounded-lg bg-white/20 flex items-center justify-center">
+                      <i data-lucide="calendar-check" class="h-5 w-5"></i>
+                    </div>
+                    <h4 class="font-bold">温馨提示</h4>
+                  </div>
+                  <p class="text-sm text-brand-50/90 leading-relaxed">
+                    为了能为您提供最专业的服务，建议您到访前至少提前 24 小时预约。
+                  </p>
+                  <a href="/events.html#booking" class="mt-6 inline-flex items-center gap-2 text-sm font-bold bg-white text-brand-600 px-5 py-2.5 rounded-xl hover:bg-brand-50 transition-colors">
+                    立即预约
+                    <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./admin/content-loader.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+
+
+

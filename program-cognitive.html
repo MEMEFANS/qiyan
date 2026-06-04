@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="启智康复｜启言社交训练中心 - 提升注意力、记忆力与逻辑思维，为学习打下坚实基础。" />
+    <title>启智康复 - 启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-900">
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <!-- Hero Section -->
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative">
+          <nav class="flex items-center gap-2 text-sm font-medium text-slate-400 mb-6">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <a href="./programs.html" class="hover:text-brand-500 transition-colors">康复项目</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">启智康复</span>
+          </nav>
+          <div class="max-w-3xl">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl" data-content="service3Title">
+              启智康复
+            </h1>
+            <p class="mt-6 text-lg leading-relaxed text-slate-600" data-content="service3Desc">
+              启智康复旨在提升儿童的核心认知能力，包括注意力、记忆力、逻辑推理及问题解决能力。我们结合趣味性教学与科学干预，为孩子的学前准备和未来学习生活打下坚实基础。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content Section -->
+      <section class="py-24 bg-slate-50">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-12 lg:grid-cols-3">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-12">
+              <!-- Key Training Areas -->
+              <div class="bg-white rounded-3xl p-8 shadow-card">
+                <h2 class="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-3">
+                  <span class="w-1.5 h-8 bg-brand-500 rounded-full"></span>
+                  训练重点
+                </h2>
+                <div class="grid gap-6 md:grid-cols-2">
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <h3 class="font-bold text-slate-900 mb-2">注意力与执行功能</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">训练视觉、听觉注意力的稳定性、广度和分配能力，提升孩子的课堂表现。</p>
+                  </div>
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <h3 class="font-bold text-slate-900 mb-2">逻辑思维与推理</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">通过分类、排序、因果关系推断等活动，建立基本的数学逻辑和问题解决思路。</p>
+                  </div>
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <h3 class="font-bold text-slate-900 mb-2">记忆策略与提取</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">学习科学的记忆方法，提升对视觉信息和听觉指令的长短期记忆与准确提取。</p>
+                  </div>
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <h3 class="font-bold text-slate-900 mb-2">空间感知与操作</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">增强对形状、位置、方位等空间关系的理解，提升手眼协调与建构能力。</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Course Flow -->
+              <div class="bg-white rounded-3xl p-8 shadow-card">
+                <h2 class="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-3">
+                  <span class="w-1.5 h-8 bg-accent-500 rounded-full"></span>
+                  科学训练流程
+                </h2>
+                <div class="space-y-6">
+                  <div class="flex gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-xl">1</div>
+                    <div>
+                      <h3 class="font-bold text-slate-900 mb-2 text-lg">认知功能测评</h3>
+                      <p class="text-slate-600 leading-relaxed">使用标准化量表和观察性测评，明确孩子当前的认知发育水平及优弱势项。</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-xl">2</div>
+                    <div>
+                      <h3 class="font-bold text-slate-900 mb-2 text-lg">个性化IEP制定</h3>
+                      <p class="text-slate-600 leading-relaxed">根据评估结果，量身定制短期和中长期训练目标，确保干预的针对性。</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-xl">3</div>
+                    <div>
+                      <h3 class="font-bold text-slate-900 mb-2 text-lg">系统训练与动态调整</h3>
+                      <p class="text-slate-600 leading-relaxed">通过 1 对 1 或小组课形式开展训练，并根据孩子的进步速度实时优化干预方案。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-8">
+              <div class="sticky top-24">
+                <div class="bg-slate-900 rounded-3xl p-8 text-white shadow-xl overflow-hidden relative">
+                  <div class="absolute -right-8 -top-8 w-32 h-32 bg-brand-500 rounded-full blur-3xl opacity-20"></div>
+                  <h3 class="text-2xl font-bold mb-4 relative z-10">预约评估</h3>
+                  <p class="text-slate-400 mb-8 relative z-10">精准的认知测评能帮助家长更好地了解孩子的潜能。填写预约，开启科学康复之路。</p>
+                  
+                  <div class="space-y-4 relative z-10">
+                    <a href="./events.html#booking" class="flex items-center justify-center w-full py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20">
+                      立即预约测评
+                    </a>
+                    <a href="tel:4001234567" data-content="contactHotline" class="flex items-center justify-center w-full py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl transition-all backdrop-blur-sm border border-white/10">
+                      电话咨询: 400-123-4567
+                    </a>
+                  </div>
+
+                  <div class="mt-8 pt-8 border-t border-white/10 relative z-10">
+                    <div class="flex items-center gap-4">
+                      <div class="h-12 w-12 rounded-full bg-brand-500/20 flex items-center justify-center text-brand-500">
+                        <i data-lucide="clock" class="h-6 w-6"></i>
+                      </div>
+                      <div>
+                        <div class="text-sm font-medium text-slate-400">咨询时间</div>
+                        <div data-content="contactHotlineTime" class="font-bold">周一至周日 9:00 - 18:00</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-8 p-8 bg-white rounded-3xl border border-slate-200">
+                  <h3 class="text-lg font-bold text-slate-900 mb-6">其他热门项目</h3>
+                  <div class="space-y-4">
+                    <a href="./program-slt.html" class="flex items-center justify-between group">
+                      <span class="text-slate-600 group-hover:text-brand-500 transition-colors">言语治疗 (SLT)</span>
+                      <i data-lucide="arrow-right" class="h-4 w-4 text-slate-300 group-hover:text-brand-500 transition-all group-hover:translate-x-1"></i>
+                    </a>
+                    <a href="./program-social.html" class="flex items-center justify-between group">
+                      <span class="text-slate-600 group-hover:text-brand-500 transition-colors">社交康复训练</span>
+                      <i data-lucide="arrow-right" class="h-4 w-4 text-slate-300 group-hover:text-brand-500 transition-all group-hover:translate-x-1"></i>
+                    </a>
+                    <a href="./integration.html" class="flex items-center justify-between group">
+                      <span class="text-slate-600 group-hover:text-brand-500 transition-colors">幼康融合课</span>
+                      <i data-lucide="arrow-right" class="h-4 w-4 text-slate-300 group-hover:text-brand-500 transition-all group-hover:translate-x-1"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./admin/content-loader.js"></script>
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

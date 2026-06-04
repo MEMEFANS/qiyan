@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="启言专题｜启言社交训练中心" />
+    <title>启言专题｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '3rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">跳到正文</a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <section class="bg-gradient-to-b from-brand-50 to-white">
+        <div class="mx-auto max-w-7xl px-6 py-12 md:py-14">
+          <nav class="flex items-center gap-2 text-sm text-slate-600" aria-label="面包屑">
+            <a class="hover:text-brand-600 transition-colors" href="./index.html">网站首页</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-slate-400"></i>
+            <a class="hover:text-brand-600 transition-colors" href="./news.html">启言新闻</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-slate-400"></i>
+            <span class="font-medium text-slate-900">启言专题</span>
+          </nav>
+          <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-slate-900">启言专题</h1>
+          <p class="mt-3 max-w-3xl text-slate-600 leading-relaxed">深入探讨特定领域的发展难题，提供系统性的评估思路与康复策略。</p>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-12 md:py-14">
+        <div class="grid gap-6 md:grid-cols-3">
+          <a href="./news-article-007.html" class="group rounded-3xl border border-slate-200 bg-white p-8 shadow-card hover:border-brand-200 transition-all">
+            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
+              <i data-lucide="message-square" class="h-6 w-6"></i>
+            </div>
+            <div class="text-xl font-bold text-slate-900 group-hover:text-brand-600 transition-colors">语言迟缓专题</div>
+            <div class="mt-3 text-sm leading-relaxed text-slate-600">从生理发育、认知水平到环境因素，多维度解析语言发育迟缓，提供科学的家庭引导策略。</div>
+            <div class="mt-6 flex items-center gap-2 text-sm font-semibold text-brand-600">
+              了解详情
+              <i data-lucide="arrow-right" class="h-4 w-4"></i>
+            </div>
+          </a>
+          <a href="./news-article-008.html" class="group rounded-3xl border border-slate-200 bg-white p-8 shadow-card hover:border-brand-200 transition-all">
+            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-50 text-accent-600">
+              <i data-lucide="users" class="h-6 w-6"></i>
+            </div>
+            <div class="text-xl font-bold text-slate-900 group-hover:text-brand-600 transition-colors">ASD 社交沟通专题</div>
+            <div class="mt-3 text-sm leading-relaxed text-slate-600">聚焦自闭症谱系障碍儿童的社交沟通核心障碍，探索基于关系的干预模式与情绪调节方法。</div>
+            <div class="mt-6 flex items-center gap-2 text-sm font-semibold text-brand-600">
+              了解详情
+              <i data-lucide="arrow-right" class="h-4 w-4"></i>
+            </div>
+          </a>
+          <a href="./news-article-009.html" class="group rounded-3xl border border-slate-200 bg-white p-8 shadow-card hover:border-brand-200 transition-all">
+            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-green-50 text-green-600">
+              <i data-lucide="graduation-cap" class="h-6 w-6"></i>
+            </div>
+            <div class="text-xl font-bold text-slate-900 group-hover:text-brand-600 transition-colors">入园入学融合专题</div>
+            <div class="mt-3 text-sm leading-relaxed text-slate-600">解决孩子在园所/学校面临的规则理解、同伴互动及学业适应问题，助力顺利开启校园生活。</div>
+            <div class="mt-6 flex items-center gap-2 text-sm font-semibold text-brand-600">
+              了解详情
+              <i data-lucide="arrow-right" class="h-4 w-4"></i>
+            </div>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+
+
+
