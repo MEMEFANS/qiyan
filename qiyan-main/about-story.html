@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="文化故事｜启言社交训练中心" />
+    <title>文化故事｜启言社交训练中心</title>
+
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12",
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.08)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.04)",
+              hover: "0 20px 40px rgba(249, 115, 22, 0.12)",
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+
+  <body class="bg-white text-slate-900">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">跳到正文</a>
+
+    <div id="siteHeader"></div>
+
+    <main id="content">
+      <!-- Hero Section -->
+      <section class="relative bg-white pt-20 pb-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div class="mx-auto max-w-7xl px-6 relative">
+          <nav class="flex items-center gap-2 text-sm font-medium text-slate-400 mb-8">
+            <a href="./index.html" class="hover:text-brand-500 transition-colors">网站首页</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <a href="./about.html" class="hover:text-brand-500 transition-colors">关于启言</a>
+            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <span class="text-slate-900">文化故事</span>
+          </nav>
+          
+          <div class="max-w-3xl">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+              文化故事
+            </h1>
+            <p class="mt-6 text-xl leading-relaxed text-slate-600 font-medium">
+              每一个声音都值得被聆听，每一个灵魂都值得被理解。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-12 md:py-20">
+        <div class="rounded-3xl border border-slate-100 bg-white p-10 shadow-card">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="p-2 bg-brand-100 text-brand-600 rounded-lg">
+              <i data-lucide="history" class="h-5 w-5"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">品牌故事</h2>
+          </div>
+          <div class="prose prose-slate max-w-none text-slate-700 leading-8">
+            <p class="mb-6">
+              启言的诞生，源于一群对言语康复事业充满热情的专业人士的共同心愿。自2010年创立以来，我们见证了数千个家庭从焦虑走向从容，从沉默走向沟通。
+            </p>
+            <p class="mb-6">
+              我们相信，康复不仅仅是技能的训练，更是情感的链接与生命尊严的重塑。在启言，我们坚持“以儿童为中心，以家庭为基石”的理念，让每一个孩子都能在爱与专业的包围下，勇敢开启属于自己的沟通大门。
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-12 grid gap-8 md:grid-cols-3">
+          <div class="group rounded-3xl border border-slate-100 bg-white p-8 shadow-card hover:shadow-hover transition-all duration-300 text-center">
+            <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-brand-500 group-hover:text-white transition-colors">
+              <i data-lucide="heart" class="h-7 w-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-4">价值观</h3>
+            <p class="text-slate-600 leading-relaxed">
+              专业、诚信、温度、共创
+            </p>
+          </div>
+
+          <div class="group rounded-3xl border border-slate-100 bg-white p-8 shadow-card hover:shadow-hover transition-all duration-300 text-center">
+            <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent-600 group-hover:bg-accent-500 group-hover:text-white transition-colors">
+              <i data-lucide="eye" class="h-7 w-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-4">愿景</h3>
+            <p class="text-slate-600 leading-relaxed">
+              成为最受家庭信赖的儿童社交康复引领者
+            </p>
+          </div>
+
+          <div class="group rounded-3xl border border-slate-100 bg-white p-8 shadow-card hover:shadow-hover transition-all duration-300 text-center">
+            <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-brand-500 group-hover:text-white transition-colors">
+              <i data-lucide="flag" class="h-7 w-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-4">使命</h3>
+            <p class="text-slate-600 leading-relaxed">
+              用专业赋能每一个沟通障碍的孩子，连接更广阔的世界
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="./layout.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
+
+
+
