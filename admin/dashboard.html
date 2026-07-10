@@ -1599,51 +1599,289 @@
         const fields = record.fields || {};
         const scores = record.scores || {};
         const report = record.report || {};
+        const items = Array.isArray(record.items) ? record.items : [];
+        const byDomain = Array.isArray(scores.byDomain) ? scores.byDomain : [];
+        const packageLabels = {
+          pep3: 'PEP-3结构总评估',
+          performance: '表现测验',
+          caregiver: '照护者报告',
+          communication: '沟通组合',
+          motor: '动作组合',
+          maladaptive: '行为特征组合',
+          pre: '快速预评估'
+        };
+        const packageLabel = packageLabels[fields.assessmentPackage] || fields.assessmentPackage || '儿童发展评估';
+        const scoreableItems = scores.scoreableItems || items.filter(item => String(item.score) !== 'na').length || 0;
+        const scoredItems = scores.scoredItems || items.filter(item => ['A', 'B', '0', '1', '2'].includes(String(item.score))).length || 0;
+        const highPriority = Array.isArray(scores.highPriority)
+          ? scores.highPriority
+          : byDomain.filter(domain => domain.priority === '高');
+        const emergingTotal = scores.emergingTotal ?? items.filter(item => String(item.score) === '1').length;
+        const domainMap = Object.fromEntries(byDomain.map(domain => [domain.id, domain]));
+        const unmetItems = items
+          .filter(item => ['B', '0'].includes(String(item.score)))
+          .slice(0, 8)
+          .map(item => `${domainMap[item.domain]?.label || '未分类'}：${item.title || '未命名项目'}`);
+        const emergingItems = items
+          .filter(item => String(item.score) === '1')
+          .slice(0, 8)
+          .map(item => `${domainMap[item.domain]?.label || '未分类'}：${item.title || '未命名项目'}`);
+        const sectionTitle = (number, title, desc = '') => `
+          <div class="report-section-heading mb-4 flex items-start justify-between gap-4 border-b border-slate-200 pb-3">
+            <div class="flex items-start gap-3">
+              <span class="report-section-number flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-900 text-xs font-extrabold text-white">${escapeAdminHtml(number)}</span>
+              <div>
+                <h3 class="text-base font-extrabold tracking-tight text-slate-950">${escapeAdminHtml(title)}</h3>
+                ${desc ? `<p class="mt-1 text-xs leading-5 text-slate-500">${escapeAdminHtml(desc)}</p>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        const infoCell = (label, value) => `
+          <div class="report-cell rounded-md border border-slate-200 bg-white px-4 py-3">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">${escapeAdminHtml(label)}</div>
+            <div class="mt-1 text-sm font-bold text-slate-900">${escapeAdminHtml(value || '未填写')}</div>
+          </div>
+        `;
+        const scoreSummaryCards = [
+          { label: '综合完成率', value: `${scores.completion ?? 0}%`, note: `${scoredItems}/${scoreableItems || items.length} 个可评分项目已评分` },
+          { label: '综合能力指数', value: `${scores.overall ?? 0}%`, note: '各已评领域平均表现' },
+          { label: '萌芽项目', value: `${emergingTotal}`, note: '可优先转化训练目标' },
+          { label: '高优先领域', value: `${highPriority.length}`, note: highPriority.length ? highPriority.map(domain => domain.label || domain.code).join('、') : '暂无高优先领域' }
+        ].map((item, index) => `
+          <div class="report-score-card rounded-md border border-slate-200 bg-white p-4 shadow-sm">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-xs font-extrabold text-slate-500">${escapeAdminHtml(item.label)}</div>
+              <span class="h-2 w-2 rounded-full ${index === 3 && highPriority.length ? 'bg-red-500' : 'bg-brand-500'}"></span>
+            </div>
+            <div class="report-score-card-value mt-3 text-3xl font-extrabold tracking-tight text-slate-950">${escapeAdminHtml(item.value)}</div>
+            <div class="mt-2 min-h-8 text-xs leading-5 text-slate-500">${escapeAdminHtml(item.note)}</div>
+          </div>
+        `).join('');
         const domainRows = Array.isArray(scores.byDomain) ? scores.byDomain.map(domain => `
-          <tr>
-            <td>${escapeAdminHtml(domain.code || '')} · ${escapeAdminHtml(domain.label || '')}</td>
-            <td>${escapeAdminHtml(`${domain.raw ?? 0}/${domain.max ?? 0}`)}</td>
-            <td>${escapeAdminHtml(`${domain.percent ?? 0}%`)}</td>
-            <td>${escapeAdminHtml(domain.level || '-')}</td>
-            <td>${escapeAdminHtml(domain.priority || '-')}</td>
+          <tr class="border-b border-slate-100">
+            <td class="px-4 py-3 pr-3">
+              <div class="flex items-center gap-2">
+                <span class="h-3 w-3 shrink-0 rounded-sm" style="background:${escapeAdminHtml(domain.color || '#64748b')}"></span>
+                <span class="font-extrabold text-slate-900">${escapeAdminHtml(domain.code || '')} · ${escapeAdminHtml(domain.label || '')}</span>
+              </div>
+              <div class="mt-1 text-xs leading-5 text-slate-500">${escapeAdminHtml(domain.description || '')}</div>
+            </td>
+            <td class="px-4 py-3 pr-3 font-bold text-slate-700">${escapeAdminHtml(`${domain.raw ?? 0}/${domain.max ?? 0}`)}</td>
+            <td class="px-4 py-3 pr-3">
+              <div class="flex items-center gap-2">
+                <span class="w-10 font-bold text-slate-900">${escapeAdminHtml(`${domain.percent ?? 0}%`)}</span>
+                <span class="h-2 min-w-12 flex-1 overflow-hidden rounded-full bg-slate-100">
+                  <span class="block h-full rounded-full" style="width:${Number(domain.percent) || 0}%; background:${escapeAdminHtml(domain.color || '#64748b')}"></span>
+                </span>
+              </div>
+            </td>
+            <td class="px-2 py-3 align-middle"><span class="inline-flex whitespace-nowrap rounded-md bg-slate-100 px-2.5 py-1 text-xs font-bold leading-none text-slate-700">${escapeAdminHtml(domain.level || '-')}</span></td>
+            <td class="px-2 py-3 align-middle"><span class="inline-flex whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-bold leading-none ${domain.priority === '高' ? 'bg-red-50 text-red-700' : domain.priority === '中' ? 'bg-amber-50 text-amber-700' : domain.priority === '低' ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}">${escapeAdminHtml(domain.priority || '-')}</span></td>
           </tr>
         `).join('') : '';
+        const domainLegendCards = byDomain.map(domain => `
+          <div class="report-domain-card flex gap-3 rounded-md border border-slate-200 bg-white p-3">
+            <span class="mt-1 h-3 w-3 shrink-0 rounded-sm" style="background:${escapeAdminHtml(domain.color || '#64748b')}"></span>
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <span class="text-sm font-extrabold text-slate-950">${escapeAdminHtml(domain.code || '')}</span>
+                <span class="text-sm font-extrabold text-slate-900">${escapeAdminHtml(domain.label || '')}</span>
+                <span class="text-xs font-extrabold text-slate-500">${escapeAdminHtml(`${domain.percent ?? 0}%`)}</span>
+                <span class="rounded-sm bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-500">${escapeAdminHtml(domain.priority || '-')}</span>
+              </div>
+              <p class="mt-1 text-xs leading-5 text-slate-500">${escapeAdminHtml(domain.description || '')}</p>
+            </div>
+          </div>
+        `).join('');
+        const compositeDefinitions = [
+          { label: '沟通组合', domains: ['cognitive', 'expressive', 'receptive'] },
+          { label: '动作组合', domains: ['fineMotor', 'grossMotor', 'visualMotor'] },
+          { label: '行为特征组合', domains: ['affective', 'social', 'motorBehavior', 'verbalBehavior'] },
+          { label: '照护者报告', domains: ['problemBehavior', 'selfCare', 'adaptive'] }
+        ];
+        const compositeRows = compositeDefinitions.map(composite => {
+          const parts = composite.domains.map(id => domainMap[id]).filter(Boolean);
+          const scoredParts = parts.filter(domain => (Array.isArray(domain.scored) ? domain.scored.length : Number(domain.max || 0)) > 0);
+          const percent = scoredParts.length
+            ? Math.round(scoredParts.reduce((sum, domain) => sum + Number(domain.percent || 0), 0) / scoredParts.length)
+            : 0;
+          const level = scoredParts.length ? (percent >= 80 ? '优势/稳定' : percent >= 50 ? '发展中' : '重点支持') : '未完成';
+          return `
+            <tr class="border-b border-slate-100">
+              <td class="px-4 py-3 pr-3 font-bold text-slate-900">${escapeAdminHtml(composite.label)}</td>
+              <td class="px-4 py-3 pr-3 text-slate-600">${escapeAdminHtml(scoredParts.map(part => part.code).join('、') || '未完成')}</td>
+              <td class="px-4 py-3 pr-3 font-bold text-slate-900">${percent}%</td>
+              <td class="px-4 py-3 text-slate-700">${escapeAdminHtml(level)}</td>
+            </tr>
+          `;
+        }).join('');
         return `
-          <div class="report-shell">
-            <header class="report-header">
-              <div class="report-print-kicker">专业评估系统｜启言儿童健康咨询中心</div>
-              <h1>儿童发展评估报告</h1>
-              <p>编号：${escapeAdminHtml(record.id || fields.recordId || '-')}</p>
-            </header>
-            <section class="report-card">
-              <h2>基本信息</h2>
-              <div class="report-info-grid">
-                <div><b>儿童姓名</b><span>${escapeAdminHtml(fields.childName || '-')}</span></div>
-                <div><b>出生日期</b><span>${escapeAdminHtml(fields.birthDate || '-')}</span></div>
-                <div><b>评估日期</b><span>${escapeAdminHtml(fields.assessmentDate || '-')}</span></div>
-                <div><b>评估师</b><span>${escapeAdminHtml(fields.examiner || '-')}</span></div>
-                <div><b>照护者</b><span>${escapeAdminHtml(fields.guardianName || '-')}</span></div>
-                <div><b>评估地点</b><span>${escapeAdminHtml(fields.site || '-')}</span></div>
+          <div class="report-sheet mx-auto max-w-5xl bg-white text-slate-900">
+            <div class="report-header overflow-hidden rounded-md border border-slate-200">
+              <div class="report-print-kicker bg-white px-7 py-3 text-center text-xs font-extrabold tracking-wide text-slate-700">
+                专业评估系统｜启言儿童健康咨询中心
+              </div>
+              <div class="h-2 bg-brand-500"></div>
+              <div class="report-header-body flex flex-col gap-6 bg-slate-50 px-7 py-6 sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex items-center gap-4">
+                  <div class="report-logo-box flex h-20 w-20 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-white p-2">
+                    <img src="/assets/logo.png" alt="启言儿童健康咨询中心 LOGO" class="h-full w-full object-contain" />
+                  </div>
+                  <div>
+                    <div class="text-sm font-extrabold tracking-wide text-brand-700">六枝特区启言儿童健康咨询中心</div>
+                    <h2 class="report-title mt-2 text-3xl font-extrabold tracking-tight text-slate-950">儿童发展评估报告</h2>
+                    <p class="mt-2 text-sm text-slate-500">${escapeAdminHtml(packageLabel)}</p>
+                  </div>
+                </div>
+                <div class="report-meta-card min-w-52 rounded-md border border-slate-200 bg-white p-4 text-sm shadow-sm">
+                  <div class="flex justify-between gap-4 border-b border-slate-100 pb-2">
+                    <span class="font-bold text-slate-500">档案编号</span>
+                    <span class="font-extrabold text-slate-900">${escapeAdminHtml(record.id || fields.recordId || '未填写')}</span>
+                  </div>
+                  <div class="mt-2 flex justify-between gap-4">
+                    <span class="font-bold text-slate-500">评估日期</span>
+                    <span class="font-extrabold text-slate-900">${escapeAdminHtml(fields.assessmentDate || '未填写')}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('01', '基本信息', '儿童档案、监护人与施测人员信息')}
+              <div class="report-info-grid grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
+                ${infoCell('儿童姓名', fields.childName)}
+                ${infoCell('性别', fields.childSex)}
+                ${infoCell('月龄', fields.childAgeMonths)}
+                ${infoCell('监护人', fields.guardianName)}
+                ${infoCell('评估师', fields.examiner)}
+                ${infoCell('评估地点', fields.site)}
+              </div>
+              <div class="report-note mt-3 rounded-md border border-slate-200 bg-white px-4 py-3 text-sm leading-6">
+                <span class="font-bold text-slate-500">主要关注：</span>${escapeAdminHtml(fields.primaryConcern || '未填写')}
               </div>
             </section>
-            <section class="report-card">
-              <h2>综合摘要</h2>
-              <p>综合能力指数：${escapeAdminHtml(`${scores.overall ?? 0}%`)}；完成率：${escapeAdminHtml(`${scores.completion ?? 0}%`)}；已评分项目：${escapeAdminHtml(`${scores.scoredItems ?? 0}/${scores.scoreableItems ?? 0}`)}。</p>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('02', '评估工具与资料来源', '施测工具、版本、材料来源与流程说明')}
+              <div class="report-tool-grid grid gap-3 sm:grid-cols-3">
+                ${infoCell('工具/版本', fields.instrumentName)}
+                ${infoCell('授权/材料编号', fields.licenseNote)}
+                ${infoCell('施测方式', fields.assessmentMode)}
+              </div>
+              <div class="report-note mt-3 rounded-md border border-amber-100 bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-800">
+                说明：本系统记录原始表现和机构流程分；若使用 PEP-3 等版权量表，题目施测、原始分解释、常模分换算和专业结论须以机构持有的正版材料及手册为准。
+              </div>
             </section>
-            <section class="report-card">
-              <h2>领域计分</h2>
-              <table>
-                <thead><tr><th>领域</th><th>原始分</th><th>完成率</th><th>等级</th><th>优先级</th></tr></thead>
-                <tbody>${domainRows || '<tr><td colspan="5">暂无领域计分</td></tr>'}</tbody>
-              </table>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('03', '综合计分报告', '汇总完成率、综合能力指数、萌芽项目和干预优先级')}
+              <div class="report-summary-grid mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                ${scoreSummaryCards}
+              </div>
+              <h4 class="mt-5 text-sm font-extrabold text-slate-900">PEP-3 组合摘要</h4>
+              <div class="report-table-wrap mt-3 overflow-hidden rounded-md border border-slate-200">
+                <table class="w-full table-fixed border-collapse text-left text-sm">
+                  <colgroup>
+                    <col style="width:40%">
+                    <col style="width:28%">
+                    <col style="width:16%">
+                    <col style="width:16%">
+                  </colgroup>
+                  <thead class="bg-slate-50">
+                    <tr class="border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
+                      <th class="px-4 py-3 pr-3">组合</th>
+                      <th class="px-4 py-3 pr-3">包含分测验</th>
+                      <th class="px-4 py-3 pr-3">完成率</th>
+                      <th class="px-4 py-3">水平</th>
+                    </tr>
+                  </thead>
+                  <tbody>${compositeRows}</tbody>
+                </table>
+              </div>
             </section>
-            <section class="report-card">
-              <h2>综合结论</h2>
-              <p>${escapeAdminHtml(report.clinicalImpression || fields.clinicalImpression || '未填写')}</p>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('04', '领域计分摘要', '各评估领域原始分、完成率、等级与优先级')}
+              <div class="report-table-wrap mt-3 overflow-hidden rounded-md border border-slate-200">
+                <table class="w-full table-fixed border-collapse text-left text-sm">
+                  <colgroup>
+                    <col style="width:34%">
+                    <col style="width:10%">
+                    <col style="width:20%">
+                    <col style="width:18%">
+                    <col style="width:18%">
+                  </colgroup>
+                  <thead class="bg-slate-50">
+                    <tr class="border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
+                      <th class="px-4 py-3 pr-3">领域</th>
+                      <th class="px-4 py-3 pr-3">原始分</th>
+                      <th class="px-4 py-3 pr-3">完成率</th>
+                      <th class="px-2 py-3">等级</th>
+                      <th class="px-2 py-3">优先级</th>
+                    </tr>
+                  </thead>
+                  <tbody>${domainRows || '<tr><td colspan="5">暂无领域计分</td></tr>'}</tbody>
+                </table>
+              </div>
             </section>
-            <section class="report-card">
-              <h2>个别化训练建议</h2>
-              <p>${escapeAdminHtml(report.interventionPlan || fields.interventionPlan || '未填写')}</p>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('05', '能力图谱', '将各领域完成率转化为能力发展轮廓')}
+              <p class="mt-3 text-sm text-slate-500">能力图谱以生成报告时保存的前端快照为准；旧记录未保存图谱时，此处不再补绘。</p>
+            </section>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('06', '领域解释', '色彩方块对应能力图谱与领域计分表')}
+              <div class="report-domain-grid mt-3 grid gap-3 sm:grid-cols-2">
+                ${domainLegendCards || '<p class="text-sm text-slate-500">暂无领域解释</p>'}
+              </div>
+            </section>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('07', '观察与访谈摘要', '现场观察、照护者报告与家庭情境信息')}
+              <div class="report-two-col-grid grid gap-3 lg:grid-cols-2">
+                <div class="report-text-box rounded-md border border-slate-200 bg-white p-4">
+                  <div class="text-xs font-extrabold text-slate-500">现场观察摘要</div>
+                  <p class="mt-2 whitespace-pre-line text-sm leading-6 text-slate-700">${escapeAdminHtml(fields.observationSummary || '未填写')}</p>
+                </div>
+                <div class="report-text-box rounded-md border border-slate-200 bg-white p-4">
+                  <div class="text-xs font-extrabold text-slate-500">照护者报告摘要</div>
+                  <p class="mt-2 whitespace-pre-line text-sm leading-6 text-slate-700">${escapeAdminHtml(fields.caregiverSummary || '未填写')}</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('08', '关键项目记录', '未满足项目与萌芽项目用于近期目标选择')}
+              <div class="report-two-col-grid grid gap-3 lg:grid-cols-2">
+                <div class="report-key-box rounded-md border border-red-100 bg-red-50 p-4 text-sm leading-6 text-red-900">
+                  <div class="text-xs font-extrabold text-red-700">未满足/未通过项目</div>
+                  <p class="mt-2">${escapeAdminHtml(unmetItems.length ? unmetItems.join('；') : '暂无')}</p>
+                </div>
+                <div class="report-key-box rounded-md border border-amber-100 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
+                  <div class="text-xs font-extrabold text-amber-700">萌芽项目</div>
+                  <p class="mt-2">${escapeAdminHtml(emergingItems.length ? emergingItems.join('；') : '暂无')}</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('09', '综合结论', '结合量表、观察、访谈与病史形成专业判断')}
+              <div class="report-text-box rounded-md border border-slate-200 bg-white p-4">
+                <p class="whitespace-pre-line text-sm leading-7 text-slate-700">${escapeAdminHtml(report.clinicalImpression || fields.clinicalImpression || '未填写')}</p>
+              </div>
+            </section>
+
+            <section class="report-section mt-6">
+              ${sectionTitle('10', '个别化训练建议', '训练频次、阶段目标、家庭配合与复评安排')}
+              <div class="report-text-box rounded-md border border-slate-200 bg-white p-4">
+                <p class="whitespace-pre-line text-sm leading-7 text-slate-700">${escapeAdminHtml(report.interventionPlan || fields.interventionPlan || '未填写')}</p>
+              </div>
+            </section>
+
+            <section class="report-disclaimer mt-8 rounded-md border border-slate-200 bg-slate-50 p-4">
+              <p class="text-xs leading-5 text-slate-500">本报告用于康复训练与教育支持计划制定，不单独作为医学诊断证明。诊断与用药等医学决策请由具备资质的医疗机构完成。</p>
             </section>
           </div>
         `;
@@ -1654,39 +1892,98 @@
       }
 
       function createAssessmentReportDocument(record) {
-        const fields = record.fields || {};
-        const title = `${fields.childName || '儿童'}评估报告`;
+        const origin = window.location.origin;
+        const tailwindConfigScript = '<scr' + `ipt>
+          tailwind.config = {
+            theme: {
+              extend: {
+                colors: {
+                  brand: { 50: "#fff7ed", 100: "#ffedd5", 200: "#fed7aa", 300: "#fdba74", 400: "#fb923c", 500: "#f97316", 600: "#ea580c", 700: "#c2410c", 800: "#9a3412", 900: "#7c2d12" },
+                  accent: { 50: "#f0f9ff", 100: "#e0f2fe", 200: "#bae6fd", 300: "#7dd3fc", 400: "#38bdf8", 500: "#0ea5e9", 600: "#0284c7", 700: "#0369a1", 800: "#075985", 900: "#0c4a6e" }
+                },
+                boxShadow: {
+                  soft: "0 10px 30px rgba(249, 115, 22, 0.12)",
+                  card: "0 10px 20px rgba(15, 23, 42, 0.06)"
+                }
+              }
+            }
+          };
+        ` + '</scr' + 'ipt>';
         const tailwindScript = '<scr' + 'ipt src="https://cdn.tailwindcss.com"></scr' + 'ipt>';
         return `<!doctype html>
           <html lang="zh-CN">
             <head>
               <meta charset="utf-8">
               <meta name="viewport" content="width=device-width, initial-scale=1">
-              <title>${escapeAdminHtml(title)}</title>
+              <base href="${origin}/">
+              <title>&nbsp;</title>
+              ${tailwindConfigScript}
               ${tailwindScript}
               <style>
-                @page { size: A4; margin: 12mm; }
-                body { margin: 0; background: #e5e7eb; color: #0f172a; font-family: Arial, "Microsoft YaHei", sans-serif; }
-                #printReport { max-width: 210mm; margin: 20px auto; background: #fff; padding: 16mm; box-shadow: 0 18px 50px rgba(15,23,42,.16); }
-                .report-shell { background: #fff; }
-                .report-header { border-bottom: 4px solid #f97316; padding-bottom: 18px; margin-bottom: 18px; text-align: center; }
-                .report-print-kicker { font-size: 12px; font-weight: 800; color: #475569; margin-bottom: 10px; }
-                .report-header h1 { margin: 0; font-size: 28px; font-weight: 900; color: #0f172a; }
-                .report-header p { margin: 8px 0 0; color: #64748b; font-size: 13px; }
-                .report-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-top: 14px; break-inside: avoid; }
-                .report-card h2 { margin: 0 0 12px; font-size: 16px; font-weight: 900; color: #0f172a; }
-                .report-card p { white-space: pre-line; line-height: 1.8; font-size: 13px; color: #334155; }
-                .report-info-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
-                .report-info-grid div { border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; }
-                .report-info-grid b { display: block; font-size: 11px; color: #64748b; margin-bottom: 4px; }
-                .report-info-grid span { font-size: 13px; font-weight: 700; color: #0f172a; }
-                table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
-                th, td { border: 1px solid #e2e8f0; padding: 8px; text-align: left; vertical-align: top; word-break: break-word; }
-                th { background: #f8fafc; color: #475569; font-weight: 800; }
+                :root { color-scheme: light; }
+                html { scroll-behavior: smooth; }
+                body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+                .report-sheet { color: #0f172a; }
+                .report-table-wrap table { min-width: 100%; }
+                body { margin: 0; background: #d1d5db; color: #0f172a; }
+                #printReport { max-width: 210mm; margin: 0 auto; background: #fff; padding: 12mm; min-height: 297mm; box-shadow: 0 0 0 1px rgba(15,23,42,.12); }
+                #printReport * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
                 @media print {
+                  @page {
+                    size: A4;
+                    margin: 12mm 12mm 16mm;
+                    @top-left { content: ""; }
+                    @top-center { content: ""; }
+                    @top-right { content: ""; }
+                    @bottom-left { content: ""; }
+                    @bottom-center {
+                      content: counter(page) "/" counter(pages);
+                      color: #64748b;
+                      font-size: 9pt;
+                      font-weight: 700;
+                    }
+                    @bottom-right { content: ""; }
+                  }
+                  html, body { background: #fff !important; }
+                  body { margin: 0 !important; }
+                  #printReport { display: block !important; padding: 0 !important; background: #fff !important; max-width: none !important; margin: 0 !important; min-height: 0 !important; box-shadow: none !important; }
+                  #printReport * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                  #printReport .report-sheet { width: 100% !important; max-width: none !important; font-size: 10pt; line-height: 1.55; }
+                  #printReport .report-header { break-inside: avoid; page-break-inside: avoid; border-radius: 0 !important; }
+                  #printReport .report-print-kicker { text-align: center !important; padding: 7pt 14pt !important; font-size: 9pt !important; letter-spacing: 0 !important; }
+                  #printReport .report-header-body { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 18pt !important; padding: 14pt !important; }
+                  #printReport .report-logo-box { width: 52pt !important; height: 52pt !important; }
+                  #printReport .report-title { font-size: 22pt !important; line-height: 1.15 !important; }
+                  #printReport .report-meta-card { min-width: 150pt !important; padding: 9pt !important; box-shadow: none !important; }
+                  #printReport .report-section { margin-top: 12pt !important; break-inside: auto; page-break-inside: auto; }
+                  #printReport .report-section-heading { margin-bottom: 7pt !important; padding-bottom: 6pt !important; }
+                  #printReport .report-section-number { width: 19pt !important; height: 19pt !important; font-size: 8pt !important; }
+                  #printReport .report-section-heading h3 { font-size: 12pt !important; line-height: 1.25 !important; }
+                  #printReport .report-section-heading p { font-size: 8.5pt !important; margin-top: 1pt !important; }
+                  #printReport .report-info-grid { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 6pt !important; }
+                  #printReport .report-tool-grid { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 6pt !important; }
+                  #printReport .report-summary-grid { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 6pt !important; }
+                  #printReport .report-domain-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6pt !important; }
+                  #printReport .report-two-col-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 7pt !important; }
+                  #printReport .report-cell,
+                  #printReport .report-score-card,
+                  #printReport .report-domain-card,
+                  #printReport .report-text-box,
+                  #printReport .report-note,
+                  #printReport .report-key-box { padding: 7pt !important; box-shadow: none !important; break-inside: avoid; page-break-inside: avoid; }
+                  #printReport .report-score-card-value { font-size: 18pt !important; margin-top: 5pt !important; }
+                  #printReport .report-table-wrap { overflow: visible !important; border-radius: 0 !important; }
+                  #printReport table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; font-size: 8.6pt !important; }
+                  #printReport thead { display: table-header-group; }
+                  #printReport th,
+                  #printReport td { padding: 5pt 6pt !important; vertical-align: top !important; }
+                  #printReport .report-chart-box { padding: 6pt !important; break-inside: avoid; page-break-inside: avoid; }
+                  #printReport .report-chart-box img { max-height: 250pt !important; }
+                  #printReport .report-disclaimer { margin-top: 14pt !important; padding: 8pt !important; }
+                  #printReport img { max-width: 100% !important; break-inside: avoid; page-break-inside: avoid; }
+                  #printReport section { break-inside: auto; page-break-inside: auto; }
+                  #printReport tr { break-inside: avoid; page-break-inside: avoid; }
                   body { background: #fff; }
-                  #printReport { max-width: none; margin: 0; padding: 0; box-shadow: none; }
-                  .report-card { break-inside: avoid; page-break-inside: avoid; }
                 }
               </style>
             </head>
