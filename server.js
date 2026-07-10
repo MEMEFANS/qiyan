@@ -14,6 +14,8 @@ const CASES_FILE = path.join(DATA_DIR, "cases.json");
 const EXPERTS_FILE = path.join(DATA_DIR, "experts.json");
 const ASSESSMENTS_FILE = path.join(DATA_DIR, "assessments.json");
 const ASSESSORS_FILE = path.join(DATA_DIR, "assessors.json");
+const ASSESSMENT_QUESTIONS_FILE = path.join(DATA_DIR, "assessment_questions.json");
+const ASSESSMENT_QUESTIONS_SEED_FILE = path.join(root, "assessment_questions.seed.json");
 const ADMIN_FILE = path.join(DATA_DIR, "admin.json");
 
 // 安全配置
@@ -86,6 +88,62 @@ const readAssessors = () => {
 
 const writeAssessors = assessors => {
   fs.writeFileSync(ASSESSORS_FILE, JSON.stringify(assessors, null, 2));
+};
+
+const readAssessmentQuestionSeed = () => {
+  try {
+    const seed = JSON.parse(fs.readFileSync(ASSESSMENT_QUESTIONS_SEED_FILE, "utf-8"));
+    return {
+      domains: Array.isArray(seed.domains) ? seed.domains : [],
+      packages: seed.packages && typeof seed.packages === "object" ? seed.packages : {},
+      questions: Array.isArray(seed.questions) ? seed.questions : []
+    };
+  } catch (e) {
+    return { domains: [], packages: {}, questions: [] };
+  }
+};
+
+const normalizeAssessmentQuestions = questions => (Array.isArray(questions) ? questions : [])
+  .map((item, index) => ({
+    id: String(item.id || `question-${Date.now()}-${index}`),
+    domain: String(item.domain || "").trim(),
+    title: String(item.title || "").trim(),
+    prompt: String(item.prompt || ""),
+    administration: String(item.administration || ""),
+    criteria: String(item.criteria || ""),
+    goal: String(item.goal || ""),
+    scoreScale: ["ab", "pep"].includes(String(item.scoreScale || "")) ? String(item.scoreScale) : "ab",
+    manualRef: String(item.manualRef || ""),
+    material: String(item.material || "")
+  }))
+  .filter(item => item.domain && item.title);
+
+const ensureAssessmentQuestionsFile = () => {
+  if (fs.existsSync(ASSESSMENT_QUESTIONS_FILE)) return;
+  const seed = readAssessmentQuestionSeed();
+  fs.writeFileSync(ASSESSMENT_QUESTIONS_FILE, JSON.stringify({
+    version: 1,
+    updatedAt: new Date().toISOString(),
+    questions: normalizeAssessmentQuestions(seed.questions)
+  }, null, 2));
+};
+
+const readAssessmentQuestions = () => {
+  ensureAssessmentQuestionsFile();
+  try {
+    const data = JSON.parse(fs.readFileSync(ASSESSMENT_QUESTIONS_FILE, "utf-8"));
+    return normalizeAssessmentQuestions(Array.isArray(data) ? data : data.questions);
+  } catch (e) {
+    return normalizeAssessmentQuestions(readAssessmentQuestionSeed().questions);
+  }
+};
+
+const writeAssessmentQuestions = questions => {
+  fs.writeFileSync(ASSESSMENT_QUESTIONS_FILE, JSON.stringify({
+    version: 1,
+    updatedAt: new Date().toISOString(),
+    questions: normalizeAssessmentQuestions(questions)
+  }, null, 2));
 };
 
 const publicAssessor = assessor => ({
@@ -565,7 +623,53 @@ const serverHandler = (req, res) => {
       }
     }
 
-    // 8. 专业评估记录接口
+    // 8. 评估题库接口
+    if (urlPath === "/api/assessment-questions") {
+      const cookies = req.headers.cookie || "";
+
+      if (req.method === "GET") {
+        if (!hasAssessmentAccess(cookies)) {
+          return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+        }
+        const seed = readAssessmentQuestionSeed();
+        return sendJsonResponse(200, {
+          success: true,
+          domains: seed.domains,
+          packages: seed.packages,
+          questions: readAssessmentQuestions()
+        }, requestOrigin);
+      }
+
+      if (!isAdminAuthenticated(cookies)) {
+        return sendJsonResponse(401, { success: false, message: "Unauthorized" }, requestOrigin);
+      }
+
+      if (req.method === "POST") {
+        let body = "";
+        req.on("data", chunk => { body += chunk.toString(); });
+        req.on("end", () => {
+          try {
+            const payload = JSON.parse(body || "{}");
+            const questions = normalizeAssessmentQuestions(Array.isArray(payload) ? payload : payload.questions);
+            writeAssessmentQuestions(questions);
+            sendJsonResponse(200, { success: true, count: questions.length }, requestOrigin);
+          } catch (e) {
+            sendJsonResponse(400, { success: false, message: "Bad Request" }, requestOrigin);
+          }
+        });
+        return;
+      }
+
+      if (req.method === "DELETE") {
+        const query = new URL(req.url, `http://${req.headers.host}`).searchParams;
+        const id = query.get("id");
+        if (!id) return sendJsonResponse(400, { success: false, message: "ID is required" }, requestOrigin);
+        writeAssessmentQuestions(readAssessmentQuestions().filter(item => item.id !== id));
+        return sendJsonResponse(200, { success: true }, requestOrigin);
+      }
+    }
+
+    // 9. 专业评估记录接口
     if (urlPath === "/api/assessments") {
       const cookies = req.headers.cookie || "";
 

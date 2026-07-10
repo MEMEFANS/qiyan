@@ -465,6 +465,7 @@
   }));
 
   starterItems.push(...expandedBankItems);
+  let questionBankItems = starterItems;
 
   const $ = (id) => document.getElementById(id);
 
@@ -483,8 +484,43 @@
     return `QY-${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}`;
   };
 
-  const createStarterItems = () => starterItems.map((item, index) => ({
+  const normalizeQuestionBank = (items) => (Array.isArray(items) ? items : [])
+    .map((item) => ({
+      id: item.id || "",
+      domain: item.domain || "",
+      title: item.title || "",
+      prompt: item.prompt || "",
+      manualRef: item.manualRef || "",
+      material: item.material || "",
+      administration: item.administration || "",
+      criteria: item.criteria || "",
+      scoreScale: ["ab", "pep"].includes(item.scoreScale) ? item.scoreScale : "ab",
+      observation: item.observation || "",
+      goal: item.goal || ""
+    }))
+    .filter((item) => item.domain && item.title);
+
+  const loadAssessmentQuestionBank = async () => {
+    try {
+      const res = await fetch(`/api/assessment-questions?t=${Date.now()}`, {
+        credentials: "include",
+        cache: "no-store"
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const payload = await res.json();
+      const questions = Array.isArray(payload) ? payload : payload.questions;
+      if (Array.isArray(questions)) {
+        questionBankItems = normalizeQuestionBank(questions);
+      }
+    } catch (error) {
+      console.warn("Failed to load assessment question bank, using local defaults:", error);
+      questionBankItems = starterItems;
+    }
+  };
+
+  const createStarterItems = () => questionBankItems.map((item, index) => ({
     id: `item-${Date.now()}-${index}`,
+    sourceQuestionId: item.id || "",
     domain: item.domain,
     title: item.title,
     prompt: item.prompt || "",
@@ -1444,8 +1480,9 @@
     renderSummary();
   };
 
-  const resetItems = () => {
+  const resetItems = async () => {
     if (!window.confirm("确定要重置评估项目吗？当前项目记录会被替换。")) return;
+    await loadAssessmentQuestionBank();
     assessmentItems = createStarterItems();
     updateAll();
   };
@@ -1605,17 +1642,17 @@
     window.addEventListener("resize", () => drawRadar(calculateScores().byDomain));
   };
 
-  const init = () => {
+  const init = async () => {
     $("recordId").value = createRecordId();
     $("assessmentDate").value = todayString();
+    await Promise.resolve(window.__assessmentAccessPromise);
+    await loadAssessmentQuestionBank();
     assessmentItems = createStarterItems();
     bindEvents();
-    Promise.resolve(window.__assessmentAccessPromise).then(() => {
-      if (window.__currentAssessor?.name && $("examiner") && !$("examiner").value) {
-        $("examiner").value = window.__currentAssessor.name;
-        renderSummary();
-      }
-    });
+    if (window.__currentAssessor?.name && $("examiner") && !$("examiner").value) {
+      $("examiner").value = window.__currentAssessor.name;
+      renderSummary();
+    }
     updateAll();
     showStep(activeStep);
   };

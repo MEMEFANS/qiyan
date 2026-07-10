@@ -5,3 +5,4 @@ data/
 *.log
 assessments.json
 assessors.json
+assessment_questions.json

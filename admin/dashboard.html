@@ -748,6 +748,95 @@
                 </div>
               </div>
             </div>
+
+            <div class="mt-6 grid gap-6 lg:grid-cols-[420px_minmax(0,1fr)]">
+              <div class="bg-white rounded-2xl shadow-card p-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-accent-100 rounded-lg flex items-center justify-center text-accent-600">
+                    <i data-lucide="clipboard-list" class="h-4 w-4"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-bold text-slate-900">评估题目</h3>
+                    <p id="questionFormMode" class="mt-1 text-xs text-slate-500">新增题目</p>
+                  </div>
+                </div>
+                <form id="assessmentQuestionForm" class="mt-6 space-y-5">
+                  <input type="hidden" id="questionId">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">所属领域</label>
+                    <select id="questionDomain" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-brand-500 outline-none transition-all"></select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">题目名称</label>
+                    <input type="text" id="questionTitle" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="如：看图叙事">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">评分方式</label>
+                    <select id="questionScoreScale" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-brand-500 outline-none transition-all">
+                      <option value="ab">A/B 满足制</option>
+                      <option value="pep">0/1/2 表现制</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">题干/评估问题</label>
+                    <textarea id="questionPrompt" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-y text-sm leading-6"></textarea>
+                  </div>
+                  <div class="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <label class="block text-sm font-bold text-slate-700 mb-2">题号/手册编号</label>
+                      <input type="text" id="questionManualRef" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-bold text-slate-700 mb-2">材料</label>
+                      <input type="text" id="questionMaterial" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">操作方法</label>
+                    <textarea id="questionAdministration" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-y text-sm leading-6"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">满足标准</label>
+                    <textarea id="questionCriteria" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-y text-sm leading-6"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">可转化训练目标</label>
+                    <textarea id="questionGoal" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all resize-y text-sm leading-6"></textarea>
+                  </div>
+                  <div class="flex gap-3 pt-2">
+                    <button type="submit" class="flex-1 px-5 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 transition-colors flex items-center justify-center gap-2">
+                      <i data-lucide="save" class="h-4 w-4"></i>
+                      保存题目
+                    </button>
+                    <button type="button" onclick="resetAssessmentQuestionForm()" class="px-5 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-colors">
+                      清空
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+                <div class="p-6 border-b border-slate-100">
+                  <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+                    <div>
+                      <h3 class="text-lg font-bold text-slate-900">题库列表</h3>
+                      <p id="assessmentQuestionCount" class="mt-1 text-xs text-slate-500">正在加载题库...</p>
+                    </div>
+                    <div class="flex flex-col gap-3 md:flex-row md:items-center">
+                      <select id="questionFilterDomain" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-600 focus:border-brand-500 outline-none"></select>
+                      <input type="search" id="questionSearch" class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-brand-500 outline-none" placeholder="搜索题目">
+                      <button onclick="loadAssessmentQuestions()" class="px-4 py-2.5 text-sm font-bold text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="refresh-cw" class="h-4 w-4"></i>
+                        刷新
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div id="assessmentQuestionsList" class="divide-y divide-slate-100 max-h-[760px] overflow-y-auto">
+                  <div class="px-8 py-12 text-center text-slate-400">点击左侧“评估系统”标签加载题库</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Bookings Tab -->
@@ -1072,6 +1161,8 @@
       let casesData = [];
       let expertsData = [];
       let assessorsData = [];
+      let assessmentQuestionsData = [];
+      let assessmentQuestionDomains = [];
 
       const escapeAdminHtml = (value) => String(value ?? '')
         .replace(/&/g, '&amp;')
@@ -1079,6 +1170,16 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+
+      const showToast = (message) => {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+          toast.textContent = '保存成功！';
+        }, 2000);
+      };
 
       // Tab Switching Logic
       document.querySelectorAll('.nav-link').forEach(link => {
@@ -1102,7 +1203,10 @@
           if (id === 'bookings') loadBookings();
           if (id === 'cases') loadCases();
           if (id === 'experts') loadExperts();
-          if (id === 'assessors') loadAssessors();
+          if (id === 'assessors') {
+            loadAssessors();
+            loadAssessmentQuestions();
+          }
           if (id === 'images') loadImages();
         });
       });
@@ -1383,6 +1487,222 @@
           alert('删除失败: ' + e.message);
         }
       }
+
+      // --- Assessment Question Bank Management ---
+      const assessmentQuestionFieldIds = [
+        'questionId',
+        'questionDomain',
+        'questionTitle',
+        'questionScoreScale',
+        'questionPrompt',
+        'questionManualRef',
+        'questionMaterial',
+        'questionAdministration',
+        'questionCriteria',
+        'questionGoal'
+      ];
+
+      function getQuestionDomainMeta(domainId) {
+        return assessmentQuestionDomains.find(domain => domain.id === domainId) || {
+          id: domainId,
+          code: domainId || '未分类',
+          label: domainId || '未分类',
+          group: '',
+          color: '#64748b'
+        };
+      }
+
+      function renderQuestionDomainOptions() {
+        const inferredDomains = [...new Set(assessmentQuestionsData.map(item => item.domain).filter(Boolean))]
+          .map(id => getQuestionDomainMeta(id));
+        const domains = assessmentQuestionDomains.length ? assessmentQuestionDomains : inferredDomains;
+        const options = domains.map(domain => (
+          `<option value="${escapeAdminHtml(domain.id)}">${escapeAdminHtml(domain.code)} · ${escapeAdminHtml(domain.label)}</option>`
+        )).join('');
+
+        document.getElementById('questionDomain').innerHTML = options;
+        document.getElementById('questionFilterDomain').innerHTML = [
+          '<option value="">全部领域</option>',
+          options
+        ].join('');
+      }
+
+      async function loadAssessmentQuestions() {
+        const list = document.getElementById('assessmentQuestionsList');
+        list.innerHTML = '<div class="px-8 py-12 text-center text-slate-400">正在加载题库...</div>';
+        try {
+          const res = await fetch('/api/assessment-questions?t=' + Date.now(), { credentials: 'include' });
+          if (!res.ok) {
+            if (res.status === 401) throw new Error('登录已过期，请重新登录');
+            throw new Error(`HTTP ${res.status}`);
+          }
+          const payload = await res.json();
+          assessmentQuestionDomains = Array.isArray(payload.domains) ? payload.domains : [];
+          assessmentQuestionsData = Array.isArray(payload.questions) ? payload.questions : [];
+          renderQuestionDomainOptions();
+          renderAssessmentQuestions();
+        } catch (e) {
+          console.error('加载题库失败:', e);
+          list.innerHTML = '<div class="px-8 py-12 text-center text-red-400">题库加载失败</div>';
+          if (e.message.includes('登录已过期')) {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.href = '/admin/login.html';
+          }
+        }
+      }
+
+      function renderAssessmentQuestions() {
+        const list = document.getElementById('assessmentQuestionsList');
+        const keyword = document.getElementById('questionSearch').value.trim().toLowerCase();
+        const domainFilter = document.getElementById('questionFilterDomain').value;
+        const indexedQuestions = assessmentQuestionsData.map((item, index) => ({ item, index }));
+        const visibleQuestions = indexedQuestions.filter(({ item }) => {
+          const haystack = [
+            item.title,
+            item.prompt,
+            item.administration,
+            item.criteria,
+            item.goal,
+            item.material,
+            item.manualRef
+          ].join(' ').toLowerCase();
+          return (!domainFilter || item.domain === domainFilter) && (!keyword || haystack.includes(keyword));
+        });
+
+        document.getElementById('assessmentQuestionCount').textContent =
+          `共 ${assessmentQuestionsData.length} 题，当前显示 ${visibleQuestions.length} 题`;
+
+        if (!visibleQuestions.length) {
+          list.innerHTML = '<div class="px-8 py-12 text-center text-slate-400">暂无匹配题目</div>';
+          lucide.createIcons();
+          return;
+        }
+
+        list.innerHTML = visibleQuestions.map(({ item, index }) => {
+          const domain = getQuestionDomainMeta(item.domain);
+          const scaleLabel = item.scoreScale === 'pep' ? '0/1/2 表现制' : 'A/B 满足制';
+          return `
+            <div class="px-6 py-5 hover:bg-slate-50 transition-colors">
+              <div class="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                <div class="min-w-0">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="h-3 w-3 rounded-sm" style="background:${escapeAdminHtml(domain.color)}"></span>
+                    <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-xs font-bold text-slate-600">${escapeAdminHtml(domain.code)} · ${escapeAdminHtml(domain.label)}</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-brand-50 text-xs font-bold text-brand-700">${escapeAdminHtml(scaleLabel)}</span>
+                    ${item.manualRef ? `<span class="px-2.5 py-1 rounded-lg bg-slate-50 text-xs font-bold text-slate-500">${escapeAdminHtml(item.manualRef)}</span>` : ''}
+                  </div>
+                  <h4 class="mt-3 text-base font-extrabold text-slate-900">${escapeAdminHtml(item.title)}</h4>
+                  <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">${escapeAdminHtml(item.prompt || '未填写题干')}</p>
+                  ${item.material ? `<p class="mt-2 text-xs font-bold text-slate-400">材料：${escapeAdminHtml(item.material)}</p>` : ''}
+                </div>
+                <div class="flex shrink-0 items-center gap-2">
+                  <button onclick="editAssessmentQuestion(${index})" class="p-2 bg-white hover:bg-brand-50 rounded-lg transition-colors border border-slate-100 text-brand-600" title="编辑题目">
+                    <i data-lucide="edit-2" class="h-4 w-4"></i>
+                  </button>
+                  <button onclick="deleteAssessmentQuestion(${index})" class="p-2 bg-white hover:bg-red-50 rounded-lg transition-colors border border-slate-100 text-red-500" title="删除题目">
+                    <i data-lucide="trash-2" class="h-4 w-4"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        lucide.createIcons();
+      }
+
+      function resetAssessmentQuestionForm() {
+        assessmentQuestionFieldIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('questionScoreScale').value = 'ab';
+        if (assessmentQuestionDomains[0]) document.getElementById('questionDomain').value = assessmentQuestionDomains[0].id;
+        document.getElementById('questionFormMode').textContent = '新增题目';
+      }
+
+      function editAssessmentQuestion(index) {
+        const question = assessmentQuestionsData[index];
+        if (!question) return;
+        document.getElementById('questionId').value = question.id || '';
+        document.getElementById('questionDomain').value = question.domain || '';
+        document.getElementById('questionTitle').value = question.title || '';
+        document.getElementById('questionScoreScale').value = question.scoreScale || 'ab';
+        document.getElementById('questionPrompt').value = question.prompt || '';
+        document.getElementById('questionManualRef').value = question.manualRef || '';
+        document.getElementById('questionMaterial').value = question.material || '';
+        document.getElementById('questionAdministration').value = question.administration || '';
+        document.getElementById('questionCriteria').value = question.criteria || '';
+        document.getElementById('questionGoal').value = question.goal || '';
+        document.getElementById('questionFormMode').textContent = '正在编辑题目';
+        document.getElementById('questionTitle').focus();
+      }
+
+      async function persistAssessmentQuestions(message) {
+        const res = await fetch('/api/assessment-questions', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ questions: assessmentQuestionsData })
+        });
+        const result = await res.json().catch(() => ({}));
+        if (!res.ok || !result.success) throw new Error(result.message || '保存失败');
+        showToast(message || '题库保存成功');
+        await loadAssessmentQuestions();
+      }
+
+      document.getElementById('assessmentQuestionForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin"></i>保存中...';
+        lucide.createIcons();
+
+        const id = document.getElementById('questionId').value || ('question-' + Date.now());
+        const question = {
+          id,
+          domain: document.getElementById('questionDomain').value,
+          title: document.getElementById('questionTitle').value.trim(),
+          scoreScale: document.getElementById('questionScoreScale').value,
+          prompt: document.getElementById('questionPrompt').value.trim(),
+          manualRef: document.getElementById('questionManualRef').value.trim(),
+          material: document.getElementById('questionMaterial').value.trim(),
+          administration: document.getElementById('questionAdministration').value.trim(),
+          criteria: document.getElementById('questionCriteria').value.trim(),
+          goal: document.getElementById('questionGoal').value.trim()
+        };
+
+        try {
+          if (!question.domain || !question.title) throw new Error('请选择领域并填写题目名称');
+          const index = assessmentQuestionsData.findIndex(item => item.id === id);
+          if (index >= 0) assessmentQuestionsData[index] = question;
+          else assessmentQuestionsData.push(question);
+          await persistAssessmentQuestions(index >= 0 ? '题目已更新' : '题目已添加');
+          resetAssessmentQuestionForm();
+        } catch (e) {
+          alert('保存失败: ' + e.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+          lucide.createIcons();
+        }
+      });
+
+      async function deleteAssessmentQuestion(index) {
+        const question = assessmentQuestionsData[index];
+        if (!question) return;
+        if (!confirm(`确定要删除“${question.title || '此题目'}”吗？删除后前端评估页将不再显示这道题。`)) return;
+        try {
+          assessmentQuestionsData.splice(index, 1);
+          await persistAssessmentQuestions('题目已删除');
+          resetAssessmentQuestionForm();
+        } catch (e) {
+          alert('删除失败: ' + e.message);
+        }
+      }
+
+      document.getElementById('questionSearch').addEventListener('input', renderAssessmentQuestions);
+      document.getElementById('questionFilterDomain').addEventListener('change', renderAssessmentQuestions);
 
       // --- End Assessment Access Management ---
 
