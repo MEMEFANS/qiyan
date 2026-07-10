@@ -162,6 +162,9 @@
                 <a href="./programs.html" class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-8 py-4 text-base font-bold text-slate-700 transition-all hover:bg-slate-50 hover:border-brand-300 active:scale-95">
                   了解康复项目
                 </a>
+                <button id="openAssessmentAccess" type="button" class="inline-flex items-center justify-center rounded-full border border-brand-200 bg-brand-50 px-8 py-4 text-base font-bold text-brand-700 transition-all hover:bg-brand-100 hover:border-brand-300 active:scale-95">
+                  立即评估
+                </button>
               </div>
 
               <div class="mt-12 flex items-center gap-8 border-t border-slate-100 pt-8">
@@ -386,6 +389,35 @@
       </section>
     </main>
 
+    <div id="assessmentAccessModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <button type="button" id="assessmentAccessBackdrop" class="absolute inset-0 bg-slate-950/55 backdrop-blur-sm" aria-label="关闭评估师代码输入"></button>
+      <div class="relative w-full max-w-md rounded-2xl bg-white p-7 shadow-2xl">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+              <i data-lucide="badge-check" class="h-5 w-5"></i>
+            </div>
+            <h2 class="text-xl font-extrabold text-slate-950">请输入评估师代码</h2>
+            <p class="mt-2 text-sm leading-6 text-slate-500">评估系统仅限授权评估师使用。</p>
+          </div>
+          <button type="button" id="closeAssessmentAccess" class="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700" aria-label="关闭">
+            <i data-lucide="x" class="h-5 w-5"></i>
+          </button>
+        </div>
+        <form id="assessmentAccessForm" class="mt-6 space-y-4">
+          <label class="block">
+            <span class="text-xs font-bold text-slate-600">评估师代码</span>
+            <input id="assessmentAccessCode" type="text" autocomplete="off" class="mt-1 w-full rounded-xl border border-slate-200 px-4 py-3 font-mono text-base font-bold tracking-wide outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100" placeholder="请输入代码" />
+          </label>
+          <p id="assessmentAccessError" class="hidden text-sm font-bold text-red-500"></p>
+          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-500 px-5 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-brand-600 active:scale-95">
+            <i data-lucide="unlock" class="h-4 w-4"></i>
+            进入评估系统
+          </button>
+        </form>
+      </div>
+    </div>
+
     <div id="siteFooter"></div>
 
     <script src="./admin/content-loader.js"></script>
@@ -394,6 +426,67 @@
     <script>
       // Initialize Lucide icons
       lucide.createIcons();
+
+      const assessmentAccessModal = document.getElementById('assessmentAccessModal');
+      const assessmentAccessCode = document.getElementById('assessmentAccessCode');
+      const assessmentAccessError = document.getElementById('assessmentAccessError');
+      const assessmentAccessForm = document.getElementById('assessmentAccessForm');
+
+      function openAssessmentAccessModal() {
+        assessmentAccessModal.classList.remove('hidden');
+        assessmentAccessError.classList.add('hidden');
+        assessmentAccessError.textContent = '';
+        setTimeout(() => assessmentAccessCode.focus(), 50);
+      }
+
+      function closeAssessmentAccessModal() {
+        assessmentAccessModal.classList.add('hidden');
+        assessmentAccessCode.value = '';
+      }
+
+      function showAssessmentAccessError(message) {
+        assessmentAccessError.textContent = message;
+        assessmentAccessError.classList.remove('hidden');
+      }
+
+      document.getElementById('openAssessmentAccess')?.addEventListener('click', openAssessmentAccessModal);
+      document.getElementById('closeAssessmentAccess')?.addEventListener('click', closeAssessmentAccessModal);
+      document.getElementById('assessmentAccessBackdrop')?.addEventListener('click', closeAssessmentAccessModal);
+
+      assessmentAccessForm?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const code = assessmentAccessCode.value.trim();
+        if (!code) {
+          showAssessmentAccessError('请输入评估师代码');
+          return;
+        }
+
+        const submitButton = assessmentAccessForm.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin"></i>正在验证...';
+        lucide.createIcons();
+
+        try {
+          const res = await fetch('/api/assessors/verify', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code })
+          });
+          const result = await res.json().catch(() => ({}));
+          if (!res.ok || !result.success) {
+            throw new Error(result.message || '评估师代码不正确');
+          }
+          window.location.href = './assessment.html';
+        } catch (error) {
+          showAssessmentAccessError(error.message || '验证失败，请稍后重试');
+        } finally {
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalText;
+          lucide.createIcons();
+        }
+      });
     </script>
   </body>
 </html>

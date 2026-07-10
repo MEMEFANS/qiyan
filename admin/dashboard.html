@@ -129,6 +129,10 @@
                 <i data-lucide="users" class="h-5 w-5"></i>
                 <span class="font-medium">专家团队</span>
               </a>
+              <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="assessors">
+                <i data-lucide="badge-check" class="h-5 w-5"></i>
+                <span class="font-medium">评估系统</span>
+              </a>
               <a href="#" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors" data-tab="bookings">
                 <i data-lucide="calendar-check" class="h-5 w-5"></i>
                 <span class="font-medium">预约列表</span>
@@ -690,6 +694,62 @@
             </div>
           </div>
 
+          <!-- Assessors Tab -->
+          <div id="tab-assessors" class="tab-content">
+            <div class="grid gap-6 lg:grid-cols-[360px_minmax(0,1fr)]">
+              <div class="bg-white rounded-2xl shadow-card p-8">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                  <div class="h-8 w-8 bg-brand-100 rounded-lg flex items-center justify-center text-brand-600">
+                    <i data-lucide="badge-check" class="h-4 w-4"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900">评估师代码</h3>
+                </div>
+                <form id="assessorForm" class="mt-6 space-y-5">
+                  <input type="hidden" id="assessorId">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">评估师姓名</label>
+                    <input type="text" id="assessorName" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all" placeholder="如：张老师">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">进入代码</label>
+                    <input type="text" id="assessorCode" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-500 outline-none transition-all font-mono tracking-wide" placeholder="如：QY2026">
+                  </div>
+                  <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex gap-3">
+                    <i data-lucide="info" class="h-5 w-5 text-brand-500 shrink-0"></i>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                      首页“立即评估”会要求输入这里设置的代码；代码正确后才能进入评估工作台。
+                    </p>
+                  </div>
+                  <div class="flex gap-3 pt-2">
+                    <button type="submit" class="flex-1 px-5 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 transition-colors flex items-center justify-center gap-2">
+                      <i data-lucide="save" class="h-4 w-4"></i>
+                      保存评估师
+                    </button>
+                    <button type="button" onclick="resetAssessorForm()" class="px-5 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-colors">
+                      清空
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                  <div>
+                    <h3 class="text-lg font-bold text-slate-900">评估师名单</h3>
+                    <p class="mt-1 text-xs text-slate-500">维护可进入评估工作台的授权人员</p>
+                  </div>
+                  <button onclick="loadAssessors()" class="px-4 py-2 text-sm font-bold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors flex items-center gap-2">
+                    <i data-lucide="refresh-cw" class="h-4 w-4"></i>
+                    刷新
+                  </button>
+                </div>
+                <div id="assessorsList" class="divide-y divide-slate-100">
+                  <div class="px-8 py-12 text-center text-slate-400">点击左侧“评估系统”标签加载数据</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Bookings Tab -->
           <div id="tab-bookings" class="tab-content">
             <div class="bg-white rounded-2xl shadow-card overflow-hidden">
@@ -1011,6 +1071,14 @@
       let currentQRData = { qrOfficial: null, qrService: null };
       let casesData = [];
       let expertsData = [];
+      let assessorsData = [];
+
+      const escapeAdminHtml = (value) => String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 
       // Tab Switching Logic
       document.querySelectorAll('.nav-link').forEach(link => {
@@ -1034,6 +1102,7 @@
           if (id === 'bookings') loadBookings();
           if (id === 'cases') loadCases();
           if (id === 'experts') loadExperts();
+          if (id === 'assessors') loadAssessors();
           if (id === 'images') loadImages();
         });
       });
@@ -1187,6 +1256,135 @@
       }
 
       // --- End Experts Management ---
+
+      // --- Assessment Access Management ---
+      async function loadAssessors() {
+        const list = document.getElementById('assessorsList');
+        list.innerHTML = '<div class="px-8 py-12 text-center text-slate-400">正在加载评估师...</div>';
+        try {
+          const res = await fetch('/api/assessors?t=' + Date.now(), { credentials: 'include' });
+          if (!res.ok) {
+            if (res.status === 401) throw new Error('登录已过期，请重新登录');
+            throw new Error(`HTTP ${res.status}`);
+          }
+          assessorsData = await res.json();
+          renderAssessors();
+        } catch (e) {
+          console.error('加载评估师失败:', e);
+          list.innerHTML = '<div class="px-8 py-12 text-center text-red-400">加载失败</div>';
+          if (e.message.includes('登录已过期')) {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.href = '/admin/login.html';
+          }
+        }
+      }
+
+      function renderAssessors() {
+        const list = document.getElementById('assessorsList');
+        if (!assessorsData.length) {
+          list.innerHTML = '<div class="px-8 py-12 text-center text-slate-400">暂无评估师，请在左侧添加姓名和代码</div>';
+          return;
+        }
+        list.innerHTML = assessorsData.map((item, index) => `
+          <div class="px-6 py-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between hover:bg-slate-50 transition-colors">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <div class="h-9 w-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+                  <i data-lucide="user-round-check" class="h-4 w-4"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-900">${escapeAdminHtml(item.name)}</h4>
+                  <p class="text-xs text-slate-400">更新时间：${item.updatedAt ? new Date(item.updatedAt).toLocaleString() : '-'}</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 font-mono text-sm font-bold tracking-wide">${escapeAdminHtml(item.code)}</span>
+              <button onclick="editAssessor(${index})" class="p-2 bg-white hover:bg-brand-50 rounded-lg transition-colors border border-slate-100 text-brand-600" title="编辑">
+                <i data-lucide="edit-2" class="h-4 w-4"></i>
+              </button>
+              <button onclick="deleteAssessor('${escapeAdminHtml(item.id)}')" class="p-2 bg-white hover:bg-red-50 rounded-lg transition-colors border border-slate-100 text-red-500" title="删除">
+                <i data-lucide="trash-2" class="h-4 w-4"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+        lucide.createIcons();
+      }
+
+      function editAssessor(index) {
+        const assessor = assessorsData[index];
+        if (!assessor) return;
+        document.getElementById('assessorId').value = assessor.id || '';
+        document.getElementById('assessorName').value = assessor.name || '';
+        document.getElementById('assessorCode').value = assessor.code || '';
+        document.getElementById('assessorName').focus();
+      }
+
+      function resetAssessorForm() {
+        document.getElementById('assessorId').value = '';
+        document.getElementById('assessorName').value = '';
+        document.getElementById('assessorCode').value = '';
+      }
+
+      document.getElementById('assessorForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin"></i>保存中...';
+        lucide.createIcons();
+
+        const payload = {
+          id: document.getElementById('assessorId').value,
+          name: document.getElementById('assessorName').value.trim(),
+          code: document.getElementById('assessorCode').value.trim()
+        };
+
+        try {
+          const res = await fetch('/api/assessors', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const result = await res.json().catch(() => ({}));
+          if (!res.ok || !result.success) throw new Error(result.message || '保存失败');
+          resetAssessorForm();
+          await loadAssessors();
+          const toast = document.getElementById('toast');
+          toast.textContent = '评估师保存成功';
+          toast.classList.remove('hidden');
+          setTimeout(() => {
+            toast.classList.add('hidden');
+            toast.textContent = '保存成功！';
+          }, 2000);
+        } catch (e) {
+          alert('保存失败: ' + e.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+          lucide.createIcons();
+        }
+      });
+
+      async function deleteAssessor(id) {
+        if (!confirm('确定要删除这个评估师代码吗？删除后该代码将无法进入评估系统。')) return;
+        try {
+          const res = await fetch(`/api/assessors?id=${encodeURIComponent(id)}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          const result = await res.json().catch(() => ({}));
+          if (!res.ok || !result.success) throw new Error(result.message || '删除失败');
+          resetAssessorForm();
+          await loadAssessors();
+        } catch (e) {
+          alert('删除失败: ' + e.message);
+        }
+      }
+
+      // --- End Assessment Access Management ---
 
       async function updateAdminConfig(e) {
         e.preventDefault();

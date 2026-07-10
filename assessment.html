@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="启言儿童健康咨询中心专业儿童发展评估系统，用于儿童档案、评估项目录入、自动计分、能力图谱和报告生成。" />
+    <title>专业评估系统｜启言儿童健康咨询中心</title>
+    <link rel="icon" href="/assets/logo.png" type="image/png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                200: "#fed7aa",
+                300: "#fdba74",
+                400: "#fb923c",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412",
+                900: "#7c2d12"
+              },
+              accent: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e"
+              }
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(249, 115, 22, 0.12)",
+              card: "0 10px 20px rgba(15, 23, 42, 0.06)"
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      body.assessment-locked #siteHeader,
+      body.assessment-locked main,
+      body.assessment-locked #siteFooter { display: none !important; }
+      input, select, textarea { outline: none; }
+      .score-option input:checked + span {
+        background: #f97316;
+        border-color: #f97316;
+        color: #fff;
+      }
+      .report-sheet { color: #0f172a; }
+      .report-table-wrap table { min-width: 100%; }
+      @media print {
+        @page {
+          size: A4;
+          margin: 12mm 12mm 16mm;
+          @top-left { content: ""; }
+          @top-center { content: ""; }
+          @top-right { content: ""; }
+          @bottom-left { content: ""; }
+          @bottom-center {
+            content: counter(page) "/" counter(pages);
+            color: #64748b;
+            font-size: 9pt;
+            font-weight: 700;
+          }
+          @bottom-right { content: ""; }
+        }
+        html, body { background: #fff !important; }
+        body { margin: 0 !important; }
+        #siteHeader, #siteFooter, #appWorkspace, #topActions, .no-print { display: none !important; }
+        main { padding: 0 !important; background: #fff !important; }
+        #printReport { display: block !important; padding: 0 !important; background: #fff !important; }
+        #printReport * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        #printReport .report-sheet { width: 100% !important; max-width: none !important; font-size: 10pt; line-height: 1.55; }
+        #printReport .report-header { break-inside: avoid; page-break-inside: avoid; border-radius: 0 !important; }
+        #printReport .report-print-kicker { text-align: center !important; padding: 7pt 14pt !important; font-size: 9pt !important; letter-spacing: 0 !important; }
+        #printReport .report-header-body { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 18pt !important; padding: 14pt !important; }
+        #printReport .report-logo-box { width: 52pt !important; height: 52pt !important; }
+        #printReport .report-title { font-size: 22pt !important; line-height: 1.15 !important; }
+        #printReport .report-meta-card { min-width: 150pt !important; padding: 9pt !important; box-shadow: none !important; }
+        #printReport .report-section { margin-top: 12pt !important; break-inside: auto; page-break-inside: auto; }
+        #printReport .report-section-heading { margin-bottom: 7pt !important; padding-bottom: 6pt !important; }
+        #printReport .report-section-number { width: 19pt !important; height: 19pt !important; font-size: 8pt !important; }
+        #printReport .report-section-heading h3 { font-size: 12pt !important; line-height: 1.25 !important; }
+        #printReport .report-section-heading p { font-size: 8.5pt !important; margin-top: 1pt !important; }
+        #printReport .report-info-grid { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 6pt !important; }
+        #printReport .report-tool-grid { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 6pt !important; }
+        #printReport .report-summary-grid { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 6pt !important; }
+        #printReport .report-domain-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6pt !important; }
+        #printReport .report-two-col-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 7pt !important; }
+        #printReport .report-cell,
+        #printReport .report-score-card,
+        #printReport .report-domain-card,
+        #printReport .report-text-box,
+        #printReport .report-note,
+        #printReport .report-key-box { padding: 7pt !important; box-shadow: none !important; break-inside: avoid; page-break-inside: avoid; }
+        #printReport .report-score-card-value { font-size: 18pt !important; margin-top: 5pt !important; }
+        #printReport .report-table-wrap { overflow: visible !important; border-radius: 0 !important; }
+        #printReport table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; font-size: 8.6pt !important; }
+        #printReport thead { display: table-header-group; }
+        #printReport th,
+        #printReport td { padding: 5pt 6pt !important; vertical-align: top !important; }
+        #printReport .report-chart-box { padding: 6pt !important; break-inside: avoid; page-break-inside: avoid; }
+        #printReport .report-chart-box img { max-height: 250pt !important; }
+        #printReport .report-disclaimer { margin-top: 14pt !important; padding: 8pt !important; }
+        #printReport img { max-width: 100% !important; break-inside: avoid; page-break-inside: avoid; }
+        #printReport section { break-inside: auto; page-break-inside: auto; }
+        #printReport tr { break-inside: avoid; page-break-inside: avoid; }
+      }
+    </style>
+  </head>
+  <body class="assessment-locked bg-slate-50 text-slate-900">
+    <div id="assessmentAccessGuard" class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-100 px-6">
+      <div class="rounded-2xl border border-slate-200 bg-white px-8 py-7 text-center shadow-card">
+        <div class="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+          <i data-lucide="shield-check" class="h-5 w-5"></i>
+        </div>
+        <div class="text-base font-extrabold text-slate-950">正在验证评估师权限</div>
+        <div class="mt-2 text-sm text-slate-500">请稍候...</div>
+      </div>
+    </div>
+    <script>
+      window.__assessmentAccessPromise = (async function verifyAssessmentAccess() {
+        try {
+          const res = await fetch('/api/assessors/session', {
+            credentials: 'include',
+            cache: 'no-store'
+          });
+          if (!res.ok) throw new Error('Unauthorized');
+          const result = await res.json();
+          window.__currentAssessor = result.assessor || null;
+          document.body.classList.remove('assessment-locked');
+          document.getElementById('assessmentAccessGuard')?.remove();
+        } catch (e) {
+          window.location.replace('/?assessmentAccess=required');
+        }
+      })();
+    </script>
+    <div id="siteHeader"></div>
+
+    <main class="min-h-screen bg-slate-100 pt-6 pb-12">
+      <section class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div id="topActions" class="mb-5 grid gap-4 rounded-md border border-slate-200 bg-white px-5 py-4 shadow-card lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+          <div class="hidden lg:block"></div>
+          <div class="text-center">
+            <div class="mb-3 text-sm font-extrabold tracking-wide text-slate-700">
+              专业评估系统｜启言儿童健康咨询中心
+            </div>
+            <div class="mb-2 inline-flex items-center justify-center gap-2 rounded-md bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700">
+              <i data-lucide="shield-check" class="h-4 w-4"></i>
+              PEP-3结构化施测
+            </div>
+            <h1 class="text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">儿童发展评估工作台</h1>
+            <p class="mx-auto mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+              用于机构内部授权施测记录、照护者报告、能力图谱和评估报告生成。
+            </p>
+          </div>
+          <div class="flex flex-wrap justify-center gap-3 lg:justify-end">
+            <button id="loadDemoBtn" type="button" class="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50">
+              <i data-lucide="clipboard-list" class="h-4 w-4"></i>
+              载入示例
+            </button>
+            <button id="exportJsonBtn" type="button" class="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50">
+              <i data-lucide="download" class="h-4 w-4"></i>
+              导出数据
+            </button>
+            <button id="printBtn" type="button" class="inline-flex items-center gap-2 rounded-md bg-brand-500 px-4 py-2.5 text-sm font-bold text-white shadow-soft transition hover:bg-brand-600">
+              <i data-lucide="printer" class="h-4 w-4"></i>
+              打印报告
+            </button>
+          </div>
+        </div>
+
+        <div id="appWorkspace" class="grid gap-5 lg:grid-cols-[280px_minmax(0,1fr)]">
+          <aside class="h-fit border border-slate-200 bg-white p-4 shadow-card lg:sticky lg:top-24">
+            <div class="mb-4 rounded-md border border-brand-100 bg-brand-50 p-4 text-slate-900">
+              <div class="flex items-center gap-2 text-xs font-bold text-brand-700">
+                <i data-lucide="user-round-check" class="h-4 w-4"></i>
+                当前儿童
+              </div>
+              <div id="sideChildName" class="mt-2 text-lg font-extrabold">未填写姓名</div>
+              <div id="sideChildMeta" class="mt-1 text-xs font-semibold text-slate-500">月龄 / 评估日期待填写</div>
+            </div>
+            <nav class="space-y-2" aria-label="评估步骤">
+              <button data-step-target="profile" type="button" class="step-link flex w-full items-center gap-3 rounded-md px-3 py-3 text-left text-sm font-bold text-brand-700 bg-brand-50">
+                <i data-lucide="user-round" class="h-4 w-4"></i>
+                儿童档案
+              </button>
+              <button data-step-target="battery" type="button" class="step-link flex w-full items-center gap-3 rounded-md px-3 py-3 text-left text-sm font-bold text-slate-600 hover:bg-slate-50">
+                <i data-lucide="clipboard-pen" class="h-4 w-4"></i>
+                评估项目录入
+              </button>
+              <button data-step-target="scoring" type="button" class="step-link flex w-full items-center gap-3 rounded-md px-3 py-3 text-left text-sm font-bold text-slate-600 hover:bg-slate-50">
+                <i data-lucide="calculator" class="h-4 w-4"></i>
+                自动计分
+              </button>
+              <button data-step-target="chart" type="button" class="step-link flex w-full items-center gap-3 rounded-md px-3 py-3 text-left text-sm font-bold text-slate-600 hover:bg-slate-50">
+                <i data-lucide="radar" class="h-4 w-4"></i>
+                能力图谱
+              </button>
+              <button data-step-target="report" type="button" class="step-link flex w-full items-center gap-3 rounded-md px-3 py-3 text-left text-sm font-bold text-slate-600 hover:bg-slate-50">
+                <i data-lucide="file-text" class="h-4 w-4"></i>
+                报告生成
+              </button>
+            </nav>
+
+            <div class="mt-6 border-t border-slate-100 pt-5">
+              <div class="text-xs font-bold uppercase tracking-wider text-slate-400">当前记录</div>
+              <div class="mt-3 space-y-3 text-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500">档案编号</span>
+                  <span id="sideRecordId" class="font-bold text-slate-900">未建立</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500">评估包</span>
+                  <span id="sidePackage" class="max-w-36 truncate text-right font-bold text-slate-900">PEP-3结构总评估</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500">当前模块</span>
+                  <span id="sideDomain" class="max-w-36 truncate text-right font-bold text-slate-900">认知/语言前技能</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500">完成度</span>
+                  <span id="sideProgress" class="font-bold text-brand-700">0%</span>
+                </div>
+                <div class="h-2 overflow-hidden rounded-full bg-slate-100">
+                  <div id="progressBar" class="h-full w-0 rounded-full bg-brand-500 transition-all"></div>
+                </div>
+              </div>
+              <button id="saveRecordBtn" type="button" class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-brand-500 px-4 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-brand-600">
+                <i data-lucide="save" class="h-4 w-4"></i>
+                保存评估记录
+              </button>
+              <p id="saveStatus" class="mt-3 min-h-5 text-xs text-slate-500"></p>
+            </div>
+          </aside>
+
+          <div class="space-y-6">
+            <section id="profile" class="step-panel border border-slate-200 bg-white p-5 shadow-card sm:p-6">
+              <div class="mb-5 flex items-center justify-between gap-4">
+                <div>
+                  <h2 class="text-xl font-extrabold text-slate-950">儿童档案</h2>
+                  <p class="mt-1 text-sm text-slate-500">建立评估对象、照护者与施测基本信息。</p>
+                </div>
+                <div class="hidden rounded-md bg-slate-50 px-3 py-2 text-xs font-bold text-slate-500 sm:block">Step 01</div>
+              </div>
+
+              <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">档案编号</span>
+                  <input id="recordId" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" placeholder="QY-20260710-001" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">儿童姓名</span>
+                  <input id="childName" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" placeholder="请输入姓名" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">性别</span>
+                  <select id="childSex" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400">
+                    <option value="">请选择</option>
+                    <option>男</option>
+                    <option>女</option>
+                    <option>未说明</option>
+                  </select>
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">出生日期</span>
+                  <input id="birthDate" type="date" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">评估日期</span>
+                  <input id="assessmentDate" type="date" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">月龄</span>
+                  <input id="childAgeMonths" readonly class="mt-1 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-600" placeholder="自动计算" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">监护人</span>
+                  <input id="guardianName" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" placeholder="家长/监护人" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">联系电话</span>
+                  <input id="guardianPhone" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" placeholder="联系方式" />
+                </label>
+                <label class="block md:col-span-2">
+                  <span class="text-xs font-bold text-slate-600">主要关注</span>
+                  <input id="primaryConcern" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" placeholder="语言迟缓、社交沟通、情绪行为、学习准备等" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">评估师</span>
+                  <input id="examiner" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" placeholder="评估人员姓名" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">评估地点</span>
+                  <input id="site" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" placeholder="启言中心/家庭/幼儿园" />
+                </label>
+              </div>
+
+              <div class="mt-4 grid gap-4 lg:grid-cols-2">
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">医学/诊断与转介信息</span>
+                  <textarea id="medicalHistory" rows="4" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm leading-6 focus:border-brand-400" placeholder="既往诊断、听力视力、用药、转介来源、重要病史等"></textarea>
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">教育/康复经历</span>
+                  <textarea id="educationHistory" rows="4" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm leading-6 focus:border-brand-400" placeholder="入园情况、既往训练、家庭配合、近期目标等"></textarea>
+                </label>
+              </div>
+            </section>
+
+            <section id="battery" class="step-panel border border-slate-200 bg-white p-5 shadow-card sm:p-6">
+              <div class="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 class="text-xl font-extrabold text-slate-950">评估项目录入</h2>
+                  <p class="mt-1 text-sm text-slate-500">领域结构支持 PEP-3 授权施测记录与机构自建项目记录。</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <button id="addItemBtn" type="button" class="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-50">
+                    <i data-lucide="plus" class="h-4 w-4"></i>
+                    新增项目
+                  </button>
+                  <button id="resetItemsBtn" type="button" class="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-50">
+                    <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
+                    重置领域
+                  </button>
+                </div>
+              </div>
+
+              <div class="mb-5 grid gap-4 lg:grid-cols-4">
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">评估包</span>
+                  <select id="assessmentPackage" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm font-bold text-slate-700 focus:border-brand-400">
+                    <option value="pep3">PEP-3结构总评估</option>
+                    <option value="performance">表现测验（10个分测验）</option>
+                    <option value="caregiver">照护者报告</option>
+                    <option value="communication">沟通组合</option>
+                    <option value="motor">动作组合</option>
+                    <option value="maladaptive">行为特征组合</option>
+                    <option value="pre">快速预评估（辅助）</option>
+                  </select>
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">评估工具/版本</span>
+                  <input id="instrumentName" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" value="PEP-3 授权施测记录" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">授权/材料编号</span>
+                  <input id="licenseNote" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400" placeholder="填写机构正版量表/材料编号" />
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">施测方式</span>
+                  <select id="assessmentMode" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:border-brand-400">
+                    <option>个别施测 + 家长访谈</option>
+                    <option>个别施测</option>
+                    <option>课堂/自然情境观察</option>
+                    <option>复评追踪</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                <div id="domainTabs" class="flex gap-2 overflow-x-auto pb-1"></div>
+                <div id="itemCountLabel" class="shrink-0 rounded-md bg-slate-100 px-3 py-2 text-xs font-bold text-slate-500">当前模块 0 题</div>
+              </div>
+              <div id="itemsPanel" class="overflow-hidden border border-slate-200 bg-slate-50">
+                <div id="itemsList" class="divide-y divide-slate-100"></div>
+              </div>
+              <div class="mt-4 grid gap-4 lg:grid-cols-2">
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">家长访谈摘要</span>
+                  <textarea id="caregiverSummary" rows="4" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm leading-6 focus:border-brand-400" placeholder="照护者报告、家庭主要困扰、日常沟通与适应情况"></textarea>
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">行为观察摘要</span>
+                  <textarea id="observationSummary" rows="4" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm leading-6 focus:border-brand-400" placeholder="合作度、注意力、模仿、游戏、转换、感官/情绪反应等"></textarea>
+                </label>
+              </div>
+            </section>
+
+            <section id="scoring" class="step-panel border border-slate-200 bg-white p-5 shadow-card sm:p-6">
+              <div class="mb-5 flex items-center justify-between gap-4">
+                <div>
+                  <h2 class="text-xl font-extrabold text-slate-950">自动计分</h2>
+                  <p class="mt-1 text-sm text-slate-500">按领域自动生成原始分、完成率、萌芽项目与干预优先级。</p>
+                </div>
+                <button id="recalculateBtn" type="button" class="inline-flex items-center gap-2 rounded-md bg-brand-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-brand-600">
+                  <i data-lucide="refresh-cw" class="h-4 w-4"></i>
+                  重新计算
+                </button>
+              </div>
+              <div id="summaryStats" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4"></div>
+              <div class="mt-5 overflow-hidden border border-slate-200">
+                <div class="grid grid-cols-[1.2fr_.8fr_.8fr_.9fr_1fr] bg-slate-100 px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500 max-lg:hidden">
+                  <div>领域</div>
+                  <div>原始分</div>
+                  <div>完成率</div>
+                  <div>等级</div>
+                  <div>优先级</div>
+                </div>
+                <div id="scoreTable" class="divide-y divide-slate-100"></div>
+              </div>
+            </section>
+
+            <section id="chart" class="step-panel border border-slate-200 bg-white p-5 shadow-card sm:p-6">
+              <div class="mb-5">
+                <h2 class="text-xl font-extrabold text-slate-950">能力图谱</h2>
+                <p class="mt-1 text-sm text-slate-500">将各领域发展表现转化为可视化轮廓，便于个别化目标制定和复评对比。</p>
+              </div>
+              <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+                <div class="flex min-h-[420px] items-center justify-center border border-slate-200 bg-slate-50 p-4">
+                  <canvas id="radarChart" width="760" height="480" class="h-full max-h-[480px] w-full"></canvas>
+                </div>
+                <div class="border border-slate-200 p-4">
+                  <h3 class="text-sm font-extrabold text-slate-900">领域解释</h3>
+                  <div id="chartLegend" class="mt-4 space-y-3"></div>
+                </div>
+              </div>
+            </section>
+
+            <section id="report" class="step-panel border border-slate-200 bg-white p-5 shadow-card sm:p-6">
+              <div class="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 class="text-xl font-extrabold text-slate-950">报告生成</h2>
+                  <p class="mt-1 text-sm text-slate-500">自动形成结构化评估报告，评估师可继续编辑结论与训练建议。</p>
+                </div>
+                <button id="generateReportBtn" type="button" class="inline-flex items-center gap-2 rounded-md bg-brand-500 px-4 py-2.5 text-sm font-bold text-white shadow-soft transition hover:bg-brand-600">
+                  <i data-lucide="file-check-2" class="h-4 w-4"></i>
+                  生成报告
+                </button>
+              </div>
+              <div class="grid gap-4 lg:grid-cols-2">
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">综合结论</span>
+                  <textarea id="clinicalImpression" rows="6" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm leading-6 focus:border-brand-400" placeholder="由评估师结合量表、观察、访谈与病史填写"></textarea>
+                </label>
+                <label class="block">
+                  <span class="text-xs font-bold text-slate-600">个别化训练建议</span>
+                  <textarea id="interventionPlan" rows="6" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm leading-6 focus:border-brand-400" placeholder="频次、阶段目标、家庭配合与复评时间"></textarea>
+                </label>
+              </div>
+              <div id="reportPreview" class="mt-6 border border-slate-200 bg-white p-6"></div>
+            </section>
+          </div>
+        </div>
+
+        <article id="printReport" class="hidden bg-white p-8"></article>
+      </section>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <script src="/layout.js"></script>
+    <script src="/assessment.js"></script>
+  </body>
+</html>
