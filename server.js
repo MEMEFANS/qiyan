@@ -46,6 +46,14 @@ const ASSESSOR_SESSION_MAX_AGE = 60 * 60 * 12;
 
 const isAdminAuthenticated = (cookies = "") => cookies.includes("admin_session=authenticated");
 
+const safeDecodeURIComponent = value => {
+  try {
+    return decodeURIComponent(value);
+  } catch (e) {
+    return null;
+  }
+};
+
 const parseCookies = (cookies = "") => cookies
   .split(";")
   .map(part => part.trim())
@@ -53,7 +61,10 @@ const parseCookies = (cookies = "") => cookies
   .reduce((acc, part) => {
     const eqIndex = part.indexOf("=");
     if (eqIndex === -1) return acc;
-    acc[part.slice(0, eqIndex)] = decodeURIComponent(part.slice(eqIndex + 1));
+    const decodedValue = safeDecodeURIComponent(part.slice(eqIndex + 1));
+    if (decodedValue !== null) {
+      acc[part.slice(0, eqIndex)] = decodedValue;
+    }
     return acc;
   }, {});
 
@@ -148,7 +159,13 @@ const safeJoin = (base, target) => {
 };
 
 const serverHandler = (req, res) => {
-  const urlPath = decodeURIComponent((req.url || "/").split("?")[0]);
+  const urlPath = safeDecodeURIComponent((req.url || "/").split("?")[0]);
+  if (urlPath === null) {
+    res.writeHead(400, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("Bad Request");
+    return;
+  }
+
   const requestOrigin = req.headers.origin;
 
   // 统一处理响应头的助手函数
