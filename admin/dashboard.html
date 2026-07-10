@@ -749,6 +749,22 @@
               </div>
             </div>
 
+            <div class="mt-6 bg-white rounded-2xl shadow-card overflow-hidden">
+              <div class="p-6 border-b border-slate-100 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <h3 class="text-lg font-bold text-slate-900">评估报告记录</h3>
+                  <p id="assessmentReportsCount" class="mt-1 text-xs text-slate-500">点击左侧“评估系统”标签加载报告记录</p>
+                </div>
+                <button onclick="loadAssessmentReports()" class="px-4 py-2.5 text-sm font-bold text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
+                  <i data-lucide="refresh-cw" class="h-4 w-4"></i>
+                  刷新记录
+                </button>
+              </div>
+              <div id="assessmentReportsList" class="divide-y divide-slate-100">
+                <div class="px-8 py-12 text-center text-slate-400">暂无加载数据</div>
+              </div>
+            </div>
+
             <div class="mt-6 grid gap-6 lg:grid-cols-[420px_minmax(0,1fr)]">
               <div class="bg-white rounded-2xl shadow-card p-8">
                 <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
@@ -1163,6 +1179,7 @@
       let assessorsData = [];
       let assessmentQuestionsData = [];
       let assessmentQuestionDomains = [];
+      let assessmentReportsData = [];
 
       const escapeAdminHtml = (value) => String(value ?? '')
         .replace(/&/g, '&amp;')
@@ -1206,6 +1223,7 @@
           if (id === 'assessors') {
             loadAssessors();
             loadAssessmentQuestions();
+            loadAssessmentReports();
           }
           if (id === 'images') loadImages();
         });
@@ -1483,6 +1501,245 @@
           if (!res.ok || !result.success) throw new Error(result.message || '删除失败');
           resetAssessorForm();
           await loadAssessors();
+        } catch (e) {
+          alert('删除失败: ' + e.message);
+        }
+      }
+
+      // --- Assessment Report Records ---
+      const formatAssessmentDate = (value) => {
+        if (!value) return '-';
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+      };
+
+      const assessmentReportFileName = (record) => {
+        const fields = record.fields || {};
+        const name = fields.childName || record.id || 'assessment-report';
+        const date = fields.assessmentDate || (record.updatedAt || '').slice(0, 10);
+        return `${name}-${date || 'report'}`.replace(/[\\/:*?"<>|]+/g, '-');
+      };
+
+      async function loadAssessmentReports() {
+        const list = document.getElementById('assessmentReportsList');
+        list.innerHTML = '<div class="px-8 py-12 text-center text-slate-400">正在加载报告记录...</div>';
+        try {
+          const res = await fetch('/api/assessments?t=' + Date.now(), { credentials: 'include' });
+          if (!res.ok) {
+            if (res.status === 401) throw new Error('登录已过期，请重新登录');
+            throw new Error(`HTTP ${res.status}`);
+          }
+          assessmentReportsData = await res.json();
+          if (!Array.isArray(assessmentReportsData)) assessmentReportsData = [];
+          renderAssessmentReports();
+        } catch (e) {
+          console.error('加载报告记录失败:', e);
+          list.innerHTML = '<div class="px-8 py-12 text-center text-red-400">报告记录加载失败</div>';
+          if (e.message.includes('登录已过期')) {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.href = '/admin/login.html';
+          }
+        }
+      }
+
+      function renderAssessmentReports() {
+        const list = document.getElementById('assessmentReportsList');
+        document.getElementById('assessmentReportsCount').textContent = `共 ${assessmentReportsData.length} 份报告记录`;
+        if (!assessmentReportsData.length) {
+          list.innerHTML = '<div class="px-8 py-12 text-center text-slate-400">暂无报告记录。前端点击“生成报告”后会自动保存到这里。</div>';
+          lucide.createIcons();
+          return;
+        }
+
+        const sorted = assessmentReportsData
+          .map((record, index) => ({ record, index }))
+          .sort((a, b) => new Date(b.record.updatedAt || b.record.createdAt || 0) - new Date(a.record.updatedAt || a.record.createdAt || 0));
+
+        list.innerHTML = sorted.map(({ record, index }) => {
+          const fields = record.fields || {};
+          const scores = record.scores || {};
+          const hasSnapshot = Boolean(record.report?.html || record.reportHtml || record.report?.reportHtml);
+          return `
+            <div class="px-6 py-5 hover:bg-slate-50 transition-colors">
+              <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+                <div class="min-w-0">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="px-2.5 py-1 rounded-lg bg-brand-50 text-xs font-bold text-brand-700">${escapeAdminHtml(fields.assessmentPackage || '评估报告')}</span>
+                    <span class="px-2.5 py-1 rounded-lg ${hasSnapshot ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'} text-xs font-bold">${hasSnapshot ? '完整报告' : '基础报告'}</span>
+                  </div>
+                  <h4 class="mt-3 text-base font-extrabold text-slate-900">${escapeAdminHtml(fields.childName || '未填写儿童姓名')}</h4>
+                  <p class="mt-1 text-sm text-slate-500">
+                    编号：${escapeAdminHtml(record.id || fields.recordId || '-')} · 评估日期：${escapeAdminHtml(fields.assessmentDate || '-')} · 评估师：${escapeAdminHtml(fields.examiner || '-')}
+                  </p>
+                  <p class="mt-1 text-xs text-slate-400">
+                    综合能力 ${scores.overall ?? 0}% · 完成率 ${scores.completion ?? 0}% · 更新时间 ${escapeAdminHtml(formatAssessmentDate(record.updatedAt || record.createdAt))}
+                  </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <button onclick="printAssessmentReport(${index})" class="px-4 py-2 bg-brand-500 text-white text-sm font-bold rounded-xl hover:bg-brand-600 transition-colors flex items-center gap-2">
+                    <i data-lucide="printer" class="h-4 w-4"></i>
+                    打印
+                  </button>
+                  <button onclick="downloadAssessmentReport(${index})" class="px-4 py-2 bg-slate-100 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-200 transition-colors flex items-center gap-2">
+                    <i data-lucide="download" class="h-4 w-4"></i>
+                    下载
+                  </button>
+                  <button onclick="deleteAssessmentReport('${escapeAdminHtml(record.id || '')}')" class="p-2 bg-white hover:bg-red-50 rounded-lg transition-colors border border-slate-100 text-red-500" title="删除记录">
+                    <i data-lucide="trash-2" class="h-4 w-4"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        lucide.createIcons();
+      }
+
+      function buildFallbackAssessmentReport(record) {
+        const fields = record.fields || {};
+        const scores = record.scores || {};
+        const report = record.report || {};
+        const domainRows = Array.isArray(scores.byDomain) ? scores.byDomain.map(domain => `
+          <tr>
+            <td>${escapeAdminHtml(domain.code || '')} · ${escapeAdminHtml(domain.label || '')}</td>
+            <td>${escapeAdminHtml(`${domain.raw ?? 0}/${domain.max ?? 0}`)}</td>
+            <td>${escapeAdminHtml(`${domain.percent ?? 0}%`)}</td>
+            <td>${escapeAdminHtml(domain.level || '-')}</td>
+            <td>${escapeAdminHtml(domain.priority || '-')}</td>
+          </tr>
+        `).join('') : '';
+        return `
+          <div class="report-shell">
+            <header class="report-header">
+              <div class="report-print-kicker">专业评估系统｜启言儿童健康咨询中心</div>
+              <h1>儿童发展评估报告</h1>
+              <p>编号：${escapeAdminHtml(record.id || fields.recordId || '-')}</p>
+            </header>
+            <section class="report-card">
+              <h2>基本信息</h2>
+              <div class="report-info-grid">
+                <div><b>儿童姓名</b><span>${escapeAdminHtml(fields.childName || '-')}</span></div>
+                <div><b>出生日期</b><span>${escapeAdminHtml(fields.birthDate || '-')}</span></div>
+                <div><b>评估日期</b><span>${escapeAdminHtml(fields.assessmentDate || '-')}</span></div>
+                <div><b>评估师</b><span>${escapeAdminHtml(fields.examiner || '-')}</span></div>
+                <div><b>照护者</b><span>${escapeAdminHtml(fields.guardianName || '-')}</span></div>
+                <div><b>评估地点</b><span>${escapeAdminHtml(fields.site || '-')}</span></div>
+              </div>
+            </section>
+            <section class="report-card">
+              <h2>综合摘要</h2>
+              <p>综合能力指数：${escapeAdminHtml(`${scores.overall ?? 0}%`)}；完成率：${escapeAdminHtml(`${scores.completion ?? 0}%`)}；已评分项目：${escapeAdminHtml(`${scores.scoredItems ?? 0}/${scores.scoreableItems ?? 0}`)}。</p>
+            </section>
+            <section class="report-card">
+              <h2>领域计分</h2>
+              <table>
+                <thead><tr><th>领域</th><th>原始分</th><th>完成率</th><th>等级</th><th>优先级</th></tr></thead>
+                <tbody>${domainRows || '<tr><td colspan="5">暂无领域计分</td></tr>'}</tbody>
+              </table>
+            </section>
+            <section class="report-card">
+              <h2>综合结论</h2>
+              <p>${escapeAdminHtml(report.clinicalImpression || fields.clinicalImpression || '未填写')}</p>
+            </section>
+            <section class="report-card">
+              <h2>个别化训练建议</h2>
+              <p>${escapeAdminHtml(report.interventionPlan || fields.interventionPlan || '未填写')}</p>
+            </section>
+          </div>
+        `;
+      }
+
+      function getAssessmentReportFragment(record) {
+        return record.report?.html || record.reportHtml || record.report?.reportHtml || buildFallbackAssessmentReport(record);
+      }
+
+      function createAssessmentReportDocument(record) {
+        const fields = record.fields || {};
+        const title = `${fields.childName || '儿童'}评估报告`;
+        const tailwindScript = '<scr' + 'ipt src="https://cdn.tailwindcss.com"></scr' + 'ipt>';
+        return `<!doctype html>
+          <html lang="zh-CN">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <title>${escapeAdminHtml(title)}</title>
+              ${tailwindScript}
+              <style>
+                @page { size: A4; margin: 12mm; }
+                body { margin: 0; background: #e5e7eb; color: #0f172a; font-family: Arial, "Microsoft YaHei", sans-serif; }
+                #printReport { max-width: 210mm; margin: 20px auto; background: #fff; padding: 16mm; box-shadow: 0 18px 50px rgba(15,23,42,.16); }
+                .report-shell { background: #fff; }
+                .report-header { border-bottom: 4px solid #f97316; padding-bottom: 18px; margin-bottom: 18px; text-align: center; }
+                .report-print-kicker { font-size: 12px; font-weight: 800; color: #475569; margin-bottom: 10px; }
+                .report-header h1 { margin: 0; font-size: 28px; font-weight: 900; color: #0f172a; }
+                .report-header p { margin: 8px 0 0; color: #64748b; font-size: 13px; }
+                .report-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-top: 14px; break-inside: avoid; }
+                .report-card h2 { margin: 0 0 12px; font-size: 16px; font-weight: 900; color: #0f172a; }
+                .report-card p { white-space: pre-line; line-height: 1.8; font-size: 13px; color: #334155; }
+                .report-info-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+                .report-info-grid div { border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; }
+                .report-info-grid b { display: block; font-size: 11px; color: #64748b; margin-bottom: 4px; }
+                .report-info-grid span { font-size: 13px; font-weight: 700; color: #0f172a; }
+                table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
+                th, td { border: 1px solid #e2e8f0; padding: 8px; text-align: left; vertical-align: top; word-break: break-word; }
+                th { background: #f8fafc; color: #475569; font-weight: 800; }
+                @media print {
+                  body { background: #fff; }
+                  #printReport { max-width: none; margin: 0; padding: 0; box-shadow: none; }
+                  .report-card { break-inside: avoid; page-break-inside: avoid; }
+                }
+              </style>
+            </head>
+            <body>
+              <main id="printReport">${getAssessmentReportFragment(record)}</main>
+            </body>
+          </html>`;
+      }
+
+      function printAssessmentReport(index) {
+        const record = assessmentReportsData[index];
+        if (!record) return;
+        const win = window.open('', '_blank');
+        if (!win) {
+          alert('浏览器阻止了弹窗，请允许弹窗后再打印。');
+          return;
+        }
+        win.document.open();
+        win.document.write(createAssessmentReportDocument(record));
+        win.document.close();
+        setTimeout(() => {
+          win.focus();
+          win.print();
+        }, 900);
+      }
+
+      function downloadAssessmentReport(index) {
+        const record = assessmentReportsData[index];
+        if (!record) return;
+        const html = createAssessmentReportDocument(record);
+        const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${assessmentReportFileName(record)}.html`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      async function deleteAssessmentReport(id) {
+        if (!id) return;
+        if (!confirm('确定要删除这份评估报告记录吗？')) return;
+        try {
+          const res = await fetch(`/api/assessments?id=${encodeURIComponent(id)}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          const result = await res.json().catch(() => ({}));
+          if (!res.ok || !result.success) throw new Error(result.message || '删除失败');
+          showToast('报告记录已删除');
+          await loadAssessmentReports();
         } catch (e) {
           alert('删除失败: ' + e.message);
         }

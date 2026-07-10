@@ -1380,6 +1380,7 @@
   const collectPayload = () => {
     const fields = collectFields();
     const scores = calculateScores();
+    const reportHtml = buildReportHtml();
     return {
       id: fields.recordId || createRecordId(),
       createdAt: new Date().toISOString(),
@@ -1389,14 +1390,16 @@
       scores,
       report: {
         clinicalImpression: $("clinicalImpression").value,
-        interventionPlan: $("interventionPlan").value
+        interventionPlan: $("interventionPlan").value,
+        html: reportHtml,
+        generatedAt: new Date().toISOString()
       }
     };
   };
 
-  const saveRecord = async () => {
+  const saveRecord = async (options = {}) => {
     const status = $("saveStatus");
-    status.textContent = "正在保存...";
+    status.textContent = options.pendingMessage || "正在保存...";
     const payload = collectPayload();
     try {
       const res = await fetch("/api/assessments", {
@@ -1411,9 +1414,22 @@
         return;
       }
       if (!res.ok || !result.success) throw new Error(result.message || "保存失败");
-      status.textContent = `已保存：${new Date().toLocaleString("zh-CN")}`;
+      status.textContent = options.successMessage || `已保存：${new Date().toLocaleString("zh-CN")}`;
+      return result;
     } catch (error) {
       status.textContent = `保存失败：${error.message}`;
+    }
+  };
+
+  const generateAndSaveReport = async () => {
+    renderReport();
+    try {
+      await saveRecord({
+        pendingMessage: "报告已生成，正在保存到后台记录...",
+        successMessage: `报告已生成并保存到后台：${new Date().toLocaleString("zh-CN")}`
+      });
+    } catch (error) {
+      // saveRecord 已经把错误显示在页面状态里
     }
   };
 
@@ -1623,8 +1639,8 @@
     $("addItemBtn").addEventListener("click", addItem);
     $("resetItemsBtn").addEventListener("click", resetItems);
     $("recalculateBtn").addEventListener("click", renderSummary);
-    $("generateReportBtn").addEventListener("click", renderReport);
-    $("saveRecordBtn").addEventListener("click", saveRecord);
+    $("generateReportBtn").addEventListener("click", generateAndSaveReport);
+    $("saveRecordBtn").addEventListener("click", () => saveRecord());
     $("exportJsonBtn").addEventListener("click", exportJson);
     $("loadDemoBtn").addEventListener("click", loadDemo);
     $("printBtn").addEventListener("click", () => {
